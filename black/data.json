@@ -1,5 +1,6 @@
 {
 "links": [
+{"source":"Black-All","target":"Black","value":"6124591"},
 
 {"source":"Black","target":"Black-HS diploma","value":"5453028"},
 {"source":"Black-HS diploma","target":"Black-Bach","value":"1315379"},
@@ -15,7 +16,7 @@
 
 ] ,
 "nodes": [
-
+{"name": "Black-All"},
 {"name": "Black"},
 {"name": "Black-HS diploma"},
 {"name": "Black-Bach"},

@@ -13,7 +13,9 @@
   pointer-events: none;
   text-shadow: 0 1px 0 #fff;
 }
- 
+.node-Asian-All, .link-Asian-All {
+  opacity: 0;
+} 
 .link {
   fill: none;
   stroke: #000;
@@ -81,7 +83,9 @@ d3.json("data.json", function(error, graph) {
   var link = svg.append("g").selectAll(".link")
       .data(graph.links)
     .enter().append("path")
-      .attr("class", "link")
+      .attr("class", function(d) {
+        return "link" + " link-" + d.source.name;
+      }) 
       .attr("d", path)
       .style("stroke-width", function(d) { return Math.max(1, d.dy); })
       .sort(function(a, b) { return b.dy - a.dy; });
@@ -96,7 +100,9 @@ d3.json("data.json", function(error, graph) {
   var node = svg.append("g").selectAll(".node")
       .data(graph.nodes)
     .enter().append("g")
-      .attr("class", "node")
+      .attr("class", function(d) {console.log(d)
+        return "node " + "node-" + d.name; 
+      })       
       .attr("transform", function(d) { 
       return "translate(" + d.x + "," + d.y + ")"; })
     .call(d3.behavior.drag()

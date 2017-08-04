@@ -1,6 +1,10 @@
 {
 "links": [
-
+{"source":"White-All","target":"White","value":"24810849"},
+{"source":"Asian-All","target":"Asian","value":"3393171"},
+{"source":"Black-All","target":"Black","value":"6124591"},
+{"source":"Hispanic-All","target":"Hispanic","value":"8861370"},
+{"source":"Other-All","target":"Other","value":"634487"},
 {"source":"White","target":"White-HS diploma","value":"23408059"},
 {"source":"Black","target":"Black-HS diploma","value":"5453028"},
 {"source":"Hispanic","target":"Hispanic-HS diploma","value":"6659753"},
@@ -33,6 +37,11 @@
 
 ] ,
 "nodes": [
+{"name":"White-All"},
+{"name":"Asian-All"},
+{"name":"Black-All"},
+{"name":"Hispanic-All"},
+{"name":"Other-All"},
 
 {"name":"White"},
 {"name":"White-HS diploma"},

@@ -24,10 +24,10 @@
   stroke-opacity: .5;
 }
 
-.link.link-Total.White {
+.link.link-White-All {
   opacity: 0;
 }
-.node-Total.White {
+.node-White-All {
   opacity: 0;
 }
  
@@ -106,7 +106,7 @@ d3.json("data.json", function(error, graph) {
   var node = svg.append("g").selectAll(".node")
       .data(graph.nodes)
     .enter().append("g")
-      .attr("class", function(d) {console.log(d)
+      .attr("class", function(d) {
         return "node " + "node-" + d.name; 
       })
       .attr("transform", function(d) { 

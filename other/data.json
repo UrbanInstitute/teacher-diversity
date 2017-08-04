@@ -2,6 +2,7 @@
 "links": [
 
 
+{"source":"Other-All","target":"Other","value":"634487"},
 {"source":"Other","target":"Other-HS diploma","value":"556792"},
 {"source":"Other-HS diploma","target":"Other-Bach","value":"146214"},
 {"source":"Other-Bach","target":"Teacher","value":"6936"},
@@ -16,6 +17,7 @@
 
 ] ,
 "nodes": [
+{"name": "Other-All"},
 {"name": "Other"},
 {"name": "Other-HS diploma"},
 
