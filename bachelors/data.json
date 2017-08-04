@@ -26,16 +26,6 @@
 ] ,
 "nodes": [
 
-{"name":"White"},
-{"name":"White-HS diploma"},
-{"name":"Black"},
-{"name":"Black-HS diploma"},
-{"name":"Hispanic"},
-{"name":"Hispanic-HS diploma"},
-{"name":"Asian"},
-{"name":"Asian-HS diploma"},
-{"name":"Other"},
-{"name":"Other-HS diploma"},
 {"name": "White-Bach"},
 {"name": "Black-Bach"},
 {"name": "Hispanic-Bach"},
