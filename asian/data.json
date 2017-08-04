@@ -1,10 +1,8 @@
 {
 "links": [
 
-
-
-{"source":"Asian","target":"Asian-HS diploma","value":"1129771"},
-{"source":"Asian-HS diploma","target":"Asian-Bach","value":"1987973"},
+{"source":"Asian","target":"Asian-HS diploma","value":"3207722"},
+{"source":"Asian-HS diploma","target":"Asian-Bach","value":"2097650"},
 
 {"source":"Asian-Bach","target":"Teacher","value":"56846"},
 {"source":"Asian-Bach","target":"Asian-Teaching degree","value":"52831"},

@@ -1,8 +1,9 @@
 {
 "links": [
 
-{"source":"Hispanic","target":"Hispanic-HS diploma","value":"5228719"},
-{"source":"Hispanic-HS diploma","target":"Hispanic-Bach","value":"1251268"},
+
+{"source":"Hispanic","target":"Hispanic-HS diploma","value":"6659753"},
+{"source":"Hispanic-HS diploma","target":"Hispanic-Bach","value":"1431034"},
 {"source":"Hispanic-Bach","target":"Teacher","value":"77780"},
 {"source":"Hispanic-Bach","target":"Hispanic-Teaching degree","value":"101986"},
 {"source":"Hispanic-Teaching degree","target":"Teacher","value":"56613"}

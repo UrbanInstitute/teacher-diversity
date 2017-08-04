@@ -1,7 +1,10 @@
 {
 "links": [
-{"source":"White","target":"White-HS diploma","value":"13397740"},
-{"source":"White-HS diploma","target":"White-Bach","value":"8590908"},
+
+
+
+{"source":"White","target":"White-HS diploma","value":"23408059"},
+{"source":"White-HS diploma","target":"White-Bach","value":"10010319"},
 
 
 {"source":"White-Bach","target":"Teacher","value":"505537"},

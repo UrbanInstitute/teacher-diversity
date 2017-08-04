@@ -84,7 +84,8 @@ d3.json("data.json", function(error, graph) {
       .attr("class", "link")
       .attr("d", path)
       .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-      .sort(function(a, b) { return b.dy - a.dy; });
+      .sort(function(a, b) { return b.dy - a.dy; })
+
  
 // add the link titles
   link.append("title")

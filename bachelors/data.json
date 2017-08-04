@@ -1,6 +1,8 @@
 {
 "links": [
 
+
+
 {"source":"White-Bach","target":"Teacher","value":"505537"},
 {"source":"Black-Bach","target":"Teacher","value":"69675"},
 {"source":"Hispanic-Bach","target":"Teacher","value":"77780"},
@@ -16,8 +18,6 @@
 {"source":"Asian-Teaching degree","target":"Teacher","value":"19699"},
 {"source":"Other-Bach","target":"Other-Teaching degree","value":"12002"},
 {"source":"Other-Teaching degree","target":"Teacher","value":"5853"}
-
-
 
 
 
