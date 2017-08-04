@@ -2,6 +2,10 @@
 "links": [
 
 
+
+{"source":"Asian","target":"Asian-HS diploma","value":"1129771"},
+{"source":"Asian-HS diploma","target":"Asian-Bach","value":"1987973"},
+
 {"source":"Asian-Bach","target":"Teacher","value":"56846"},
 {"source":"Asian-Bach","target":"Asian-Teaching degree","value":"52831"},
 {"source":"Asian-Teaching degree","target":"Teacher","value":"19699"}
@@ -13,6 +17,8 @@
 
 ] ,
 "nodes": [
+{"name": "Asian"},
+{"name": "Asian-HS diploma"},
 
 {"name": "Asian-Bach"},
 {"name": "Teacher"},

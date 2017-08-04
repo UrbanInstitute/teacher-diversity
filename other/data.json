@@ -1,6 +1,9 @@
 {
 "links": [
 
+
+{"source":"Other","target":"Other-HS diploma","value":"410578"},
+{"source":"Other-HS diploma","target":"Other-Bach","value":"127276"},
 {"source":"Other-Bach","target":"Teacher","value":"6936"},
 {"source":"Other-Bach","target":"Other-Teaching degree","value":"12002"},
 {"source":"Other-Teaching degree","target":"Teacher","value":"5853"}
@@ -13,6 +16,8 @@
 
 ] ,
 "nodes": [
+{"name": "Other"},
+{"name": "Other-HS diploma"},
 
 {"name": "Other-Bach"},
 {"name": "Teacher"},

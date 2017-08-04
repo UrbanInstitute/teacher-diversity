@@ -1,5 +1,8 @@
 {
 "links": [
+{"source":"White","target":"White-HS diploma","value":"13397740"},
+{"source":"White-HS diploma","target":"White-Bach","value":"8590908"},
+
 
 {"source":"White-Bach","target":"Teacher","value":"505537"},
 {"source":"White-Bach","target":"White-Teaching degree","value":"913874"},
@@ -11,7 +14,7 @@
 
 ] ,
 "nodes": [
-
+{"name":"White-HS diploma"},
 {"name":"White"},
 {"name": "White-Bach"},
 {"name": "Teacher"},

@@ -1,6 +1,8 @@
 {
 "links": [
 
+{"source":"Hispanic","target":"Hispanic-HS diploma","value":"5228719"},
+{"source":"Hispanic-HS diploma","target":"Hispanic-Bach","value":"1251268"},
 {"source":"Hispanic-Bach","target":"Teacher","value":"77780"},
 {"source":"Hispanic-Bach","target":"Hispanic-Teaching degree","value":"101986"},
 {"source":"Hispanic-Teaching degree","target":"Teacher","value":"56613"}
@@ -11,6 +13,8 @@
 ] ,
 "nodes": [
 
+{"name": "Hispanic"},
+{"name": "Hispanic-HS diploma"},
 
 {"name": "Hispanic-Bach"},
 {"name": "Hispanic-Teaching degree"},
