@@ -1,0 +1,41 @@
+<html>
+<body>
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div id="sankey_multiple" style="width: 900px; height: 300px;"></div>
+
+<script type="text/javascript">
+  google.charts.load("current", {packages:["sankey"]});
+  google.charts.setOnLoadCallback(drawChart);
+   function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'From');
+    data.addColumn('string', 'To');
+    data.addColumn('number', 'Weight');
+    data.addRows([
+       ['White', 'High School', 14800530],
+       ['Black', 'High School', 4809212],
+       ['Hispanic', 'High School', 7430336],
+       ['Asian', 'High School', 1295521],
+       ['Other', 'High School', 488273]
+       ['High School', 'White-HS', 13397740],
+       ['High School', 'Black-HS', 4137649],
+       ['High School', 'Hispanic-HS', 5228719],
+       ['High School', 'Asian-HS', 1129771],
+       ['High School', 'Other-HS', 410578],
+
+
+    ]);
+
+    // Set chart options
+    var options = {
+      width: 600,
+    };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.Sankey(document.getElementById('sankey_multiple'));
+    chart.draw(data, options);
+   }
+</script>
+</body>
+</html>
