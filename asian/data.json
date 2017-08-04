@@ -1,0 +1,24 @@
+{
+"links": [
+
+
+{"source":"Asian-Bach","target":"Teacher","value":"56846"},
+{"source":"Asian-Bach","target":"Asian-Teaching degree","value":"52831"},
+{"source":"Asian-Teaching degree","target":"Teacher","value":"19699"}
+
+
+
+
+
+
+] ,
+"nodes": [
+
+{"name": "Asian-Bach"},
+{"name": "Teacher"},
+{"name": "Asian-Teaching degree"}
+
+
+
+
+] }

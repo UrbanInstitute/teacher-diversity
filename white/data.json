@@ -1,0 +1,24 @@
+{
+"links": [
+
+{"source":"White-Bach","target":"Teacher","value":"505537"},
+{"source":"White-Bach","target":"White-Teaching degree","value":"913874"},
+{"source":"White-Teaching degree","target":"Teacher","value":"575757"}
+
+
+
+
+
+] ,
+"nodes": [
+
+{"name":"White"},
+{"name": "White-Bach"},
+{"name": "Teacher"},
+{"name": "White-Teaching degree"}
+
+
+
+
+
+] }

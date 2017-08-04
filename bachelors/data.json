@@ -1,30 +1,20 @@
 {
 "links": [
 
-{"source":"White","target":"White-HS diploma","value":"13397740"},
-{"source":"Black","target":"Black-HS diploma","value":"4137649"},
-{"source":"Hispanic","target":"Hispanic-HS diploma","value":"5228719"},
-{"source":"Asian","target":"Asian-HS diploma","value":"1129771"},
-{"source":"Other","target":"Other-HS diploma","value":"410578"},
-{"source":"White-HS diploma","target":"White-Bach","value":"8590908"},
-{"source":"Black-HS diploma","target":"Black-Bach","value":"1162665"},
-{"source":"Hispanic-HS diploma","target":"Hispanic-Bach","value":"1251268"},
-{"source":"Asian-HS diploma","target":"Asian-Bach","value":"1987973"},
-{"source":"Other-HS diploma","target":"Other-Bach","value":"127276"},
 {"source":"White-Bach","target":"Teacher","value":"505537"},
 {"source":"Black-Bach","target":"Teacher","value":"69675"},
 {"source":"Hispanic-Bach","target":"Teacher","value":"77780"},
 {"source":"Asian-Bach","target":"Teacher","value":"56846"},
 {"source":"Other-Bach","target":"Teacher","value":"6936"},
-{"source":"White-Bach","target":"White-Teaching degree","value":"338117"},
+{"source":"White-Bach","target":"White-Teaching degree","value":"913874"},
 {"source":"White-Teaching degree","target":"Teacher","value":"575757"},
-{"source":"Black-Bach","target":"Black-Teaching degree","value":"39756"},
+{"source":"Black-Bach","target":"Black-Teaching degree","value":"83039"},
 {"source":"Black-Teaching degree","target":"Teacher","value":"43283"},
-{"source":"Hispanic-Bach","target":"Hispanic-Teaching degree","value":"45373"},
+{"source":"Hispanic-Bach","target":"Hispanic-Teaching degree","value":"101986"},
 {"source":"Hispanic-Teaching degree","target":"Teacher","value":"56613"},
-{"source":"Asian-Bach","target":"Asian-Teaching degree","value":"33132"},
+{"source":"Asian-Bach","target":"Asian-Teaching degree","value":"52831"},
 {"source":"Asian-Teaching degree","target":"Teacher","value":"19699"},
-{"source":"Other-Bach","target":"Other-Teaching degree","value":"6149"},
+{"source":"Other-Bach","target":"Other-Teaching degree","value":"12002"},
 {"source":"Other-Teaching degree","target":"Teacher","value":"5853"}
 
 

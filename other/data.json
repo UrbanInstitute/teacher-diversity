@@ -1,0 +1,25 @@
+{
+"links": [
+
+{"source":"Other-Bach","target":"Teacher","value":"6936"},
+{"source":"Other-Bach","target":"Other-Teaching degree","value":"12002"},
+{"source":"Other-Teaching degree","target":"Teacher","value":"5853"}
+
+
+
+
+
+
+
+] ,
+"nodes": [
+
+{"name": "Other-Bach"},
+{"name": "Teacher"},
+{"name": "Other-Teaching degree"}
+
+
+
+
+
+] }

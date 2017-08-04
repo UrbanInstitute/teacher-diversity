@@ -1,0 +1,25 @@
+{
+"links": [
+
+{"source":"Black-Bach","target":"Teacher","value":"69675"},
+{"source":"Black-Bach","target":"Black-Teaching degree","value":"83039"},
+{"source":"Black-Teaching degree","target":"Teacher","value":"43283"}
+
+
+
+
+
+
+] ,
+"nodes": [
+
+
+{"name": "Black-Bach"},
+{"name": "Teacher"},
+{"name": "Black-Teaching degree"}
+
+
+
+
+
+] }

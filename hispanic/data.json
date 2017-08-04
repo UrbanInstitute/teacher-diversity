@@ -1,0 +1,23 @@
+{
+"links": [
+
+{"source":"Hispanic-Bach","target":"Teacher","value":"77780"},
+{"source":"Hispanic-Bach","target":"Hispanic-Teaching degree","value":"101986"},
+{"source":"Hispanic-Teaching degree","target":"Teacher","value":"56613"}
+
+
+
+
+] ,
+"nodes": [
+
+
+{"name": "Hispanic-Bach"},
+{"name": "Hispanic-Teaching degree"},
+{"name": "Teacher"}
+
+
+
+
+
+] }
