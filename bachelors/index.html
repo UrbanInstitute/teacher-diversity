@@ -11,23 +11,24 @@
  
 .node text {
   pointer-events: none;
-  text-shadow: 0 1px 0 #fff;
 }
  
-.link {
+.link.link-Teacher {
   fill: none;
-  stroke: #000;
-  stroke-opacity: .2;
+  stroke: #696969;
+  stroke-opacity: .5;
 }
  
 .link:hover {
-  stroke-opacity: .5;
+  stroke-opacity: .7;
 }
 
-.link.degree {
-  stroke: #154b7c !important;
-  opacity: .7 !important;
+.link{
+  stroke: #000 ;
+  opacity: .4 ;
 }
+
+
  
 </style>
 <body>
@@ -86,13 +87,21 @@ d3.json("data.json", function(error, graph) {
   var link = svg.append("g").selectAll(".link")
       .data(graph.links)
     .enter().append("path")
-      .attr("class", function(d) {console.log(d.source.name)
-        return "link link-" + d.source.name
+      .attr("class", function(d) {console.log(d.target.name)
+        return "link link-" + d.target.name
        })
       .attr("d", path)
       .style("stroke-width", function(d) { return Math.max(1, d.dy); })
       .sort(function(a, b) { return b.dy - a.dy; });
- 
+ d3.selectAll(".link-Teacher")
+  .classed("link-Teacher", function(d) {
+    if ((d.source.name).includes("degree")) {
+      return false
+    }else {
+      return true
+    }
+
+  })
 // add the link titles
   link.append("title")
         .text(function(d) {
