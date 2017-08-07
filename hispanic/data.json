@@ -1,6 +1,6 @@
 {
 "links": [
-
+{"source":"Hispanic-All","target":"Teacher","value":"1283586"},
 {"source":"Hispanic-All","target":"Hispanic","value":"8861370"},
 {"source":"Hispanic","target":"Hispanic-HS diploma","value":"6659753"},
 {"source":"Hispanic-HS diploma","target":"Hispanic-Bach","value":"1431034"},

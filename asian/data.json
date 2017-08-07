@@ -1,5 +1,6 @@
 {
 "links": [
+{"source":"Asian-All","target":"Teacher","value":"1341434"},
 {"source":"Asian-All","target":"Asian","value":"3393171"},
 {"source":"Asian","target":"Asian-HS diploma","value":"3227421"},
 {"source":"Asian-HS diploma","target":"Asian-Bach","value":"2097650"},
