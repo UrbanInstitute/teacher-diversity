@@ -2,6 +2,11 @@
 "links": [
 
 
+{"source":"White-HS diploma","target":"White-Bach","value":"10010319"},
+{"source":"Black-HS diploma","target":"Black-Bach","value":"1315379"},
+{"source":"Hispanic-HS diploma","target":"Hispanic-Bach","value":"1431034"},
+{"source":"Asian-HS diploma","target":"Asian-Bach","value":"2097650"},
+{"source":"Other-HS diploma","target":"Other-Bach","value":"146214"},
 
 {"source":"White-Bach","target":"Teacher","value":"505537"},
 {"source":"Black-Bach","target":"Teacher","value":"69675"},
@@ -25,6 +30,11 @@
 
 ] ,
 "nodes": [
+{"name": "White-HS diploma"},
+{"name": "Black-HS diploma"},
+{"name": "Hispanic-HS diploma"},
+{"name": "Asian-HS diploma"},
+{"name": "Other-HS diploma"},
 
 {"name": "White-Bach"},
 {"name": "Black-Bach"},

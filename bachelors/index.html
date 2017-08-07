@@ -28,6 +28,14 @@
   opacity: .4 ;
 }
 
+.link-White-Bach, .link-Black-Bach, .link-Hispanic-Bach, .link-Asian-Bach, .link-Other-Bach {
+  opacity: 0;
+}
+
+.node-White-HS, .node-Black-HS, .node-Hispanic-HS, .node-Asian-HS, .node-Other-HS {
+  opacity: 0;
+}
+
 
  
 </style>
@@ -112,8 +120,10 @@ d3.json("data.json", function(error, graph) {
   var node = svg.append("g").selectAll(".node")
       .data(graph.nodes)
     .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", function(d) { 
+      .attr("class", function(d) {console.log(d)
+        return "node " + "node-" + d.name; 
+      })        
+    .attr("transform", function(d) { 
       return "translate(" + d.x + "," + d.y + ")"; })
     .call(d3.behavior.drag()
       .origin(function(d) { return d; })
