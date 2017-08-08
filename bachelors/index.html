@@ -122,16 +122,17 @@ d3.json("data.json", function(error, graph) {
   var node = svg.append("g").selectAll(".node")
       .data(graph.nodes)
     .enter().append("g")
-      .attr("class", function(d) {console.log(d)
+      .attr("class", function(d) {
         return "node " + "node-" + d.name; 
       })        
-    .attr("transform", function(d) { 
+    .attr("transform", function(d) { console.log(d3.select(this).attr("class"));
       return "translate(" + d.x + "," + d.y + ")"; })
     .call(d3.behavior.drag()
-      .origin(function(d) { return d; })
+      .origin(function(d) { console.log(d); return d; })
       .on("dragstart", function() { 
       this.parentNode.appendChild(this); })
       .on("drag", dragmove));
+
  
 // add the rectangles for the nodes
   node.append("rect")

@@ -110,7 +110,7 @@ d3.json("data.json", function(error, graph) {
     .attr("transform", function(d) { 
       return "translate(" + d.x + "," + d.y + ")"; })
     .call(d3.behavior.drag()
-      .origin(function(d) { return d; })
+      .origin(function(d) { console.log(d); return d; })
       .on("dragstart", function() { 
       this.parentNode.appendChild(this); })
       .on("drag", dragmove));
