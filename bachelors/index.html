@@ -3,6 +3,9 @@
 <title>SANKEY Experiment</title>
 <style>
  
+ body, html {
+  font-family: "Lato", sans-serif;
+ }
 .node rect {
   cursor: move;
   fill-opacity: .9;
@@ -29,11 +32,11 @@
   fill: none;
 }
 
-.link-White-Bach, .link-Black-Bach, .link-Hispanic-Bach, .link-Asian-Bach, .link-Other-Bach {
+.link-White, .link-Black, .link-Hispanic, .link-Asian {
   opacity: 0;
 }
 
-.node-White-HS, .node-Black-HS, .node-Hispanic-HS, .node-Asian-HS, .node-Other-HS {
+.node-White-HS, .node-Black-HS, .node-Hispanic-HS, .node-Asian-HS {
   opacity: 0;
 }
 
@@ -49,13 +52,15 @@
 <script src="sankey.js"></script>
 <script>
   
-var units = "Students";
+var units = "of students";
+
+var steps = ["Bachelor's", "Teaching Degree", "Teacher"]
  
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 1200 - margin.left - margin.right,
     height = 740 - margin.top - margin.bottom;
  
-var formatNumber = d3.format("0%"),    // zero decimal places
+var formatNumber = d3.format(".2%"),    // zero decimal places
     format = function(d) { return formatNumber(d) + " " + units; },
     color = d3.scale.category20();
  
@@ -63,7 +68,7 @@ var formatNumber = d3.format("0%"),    // zero decimal places
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+    .append("g")
     .attr("transform", 
           "translate(" + margin.left + "," + margin.top + ")");
  
@@ -71,7 +76,7 @@ var svg = d3.select("#chart").append("svg")
 var sankey = d3.sankey()
     .nodeWidth(36)
     .nodePadding(10)
-    .size([width, height]);
+    .size([width, height*.95]);
  
 var path = sankey.link();
  
@@ -152,12 +157,35 @@ d3.json("data.json", function(error, graph) {
       .attr("y", function(d) { return d.dy / 2; })
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
-      .attr("transform", null)
-      .text(function(d) { return d.name; })
-    .filter(function(d) { return d.x < width / 2; })
+      .attr("transform","translate(" + (-width/10) +",0)")
+      .text(function(d) { 
+        if (d.name == "White" || d.name == "Black" || d.name == "Hispanic" || d.name == "Asian"){
+          return d.name
+        }
+        else {
+          return ""
+        }
+      })   
+      .filter(function(d) { return d.x < width / 2; })
       .attr("x", 6 + sankey.nodeWidth())
       .attr("text-anchor", "start");
- 
+  
+  var xLabels = svg.append("g")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", 50)
+      .attr("class", "g-xLabel")
+
+  for (i=0; i<=3; i++){
+    if(i !== 3){
+      xLabels.append("text")
+        .attr("class", "x-label")
+        .attr("x",(width/3.1 + (width/3.2)*i))
+        .attr("y", height)
+        .text(steps[i])
+
+
+    }
+  }
 // the function for moving the nodes
   function dragmove(d) {
     d3.select(this).attr("transform", 
