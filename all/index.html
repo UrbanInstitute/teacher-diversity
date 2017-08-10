@@ -6,8 +6,12 @@
  
  body, html {
   font-family: "Lato", sans-serif;
+  margin: 20px;
  }
 
+#chart {
+  max-width: 680px;
+}
 .node rect {
   cursor: move;
   fill-opacity: .9;
@@ -33,6 +37,12 @@
  
 .link:hover {
   stroke-opacity: .5;
+}
+
+#toggles {
+  width: 100%;
+  padding-top: 10px;
+  float: left;
 }
 
 .toggle_button{
@@ -63,14 +73,27 @@
     border:solid 1px #e1e1e1;
 }
 
+#source-div {
+  float: left;
+}
+
+.description {
+  font-size: 16px;
+  fill:  #1696d2;
+}
 
 </style>
 <body>
-<div id="toggles">
-  <div id="percent_button" class="toggle_button active"><span>Percentage</span></div>
-  <div id="numbers_button" class="toggle_button"><span>Numbers</span></div>
+<div id="chart">
+  <div id="toggles">
+    <div id="percent_button" class="toggle_button active"><span>Percentage</span></div>
+    <div id="numbers_button" class="toggle_button"><span>Numbers</span></div>
+  </div>
+  <div id="source-div">
+  </div>
+  <div id="stats-div">
+  </div>
 </div>
-<p id="chart">
  
 <script src="http://d3js.org/d3.v3.js"></script>
 <script src="sankey.js"></script>
@@ -79,10 +102,12 @@
 var units = "of students";
 var steps = ["All", "High School", "Bachelor's", "Teaching Degree", "Teacher"]
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 1200 - margin.left - margin.right,
-    height = 740 - margin.top - margin.bottom;
+    width = 710 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 var numberFormat = d3.format(",");
 var percentFormat = d3.format(".2%");
+var HEADERS2= ["WHITE", "BLACK", "ASIAN", "HISPANIC"];
+var HEADERS1= ["SOURCE", "TARGET"];
 
 var format = function(d) { 
   var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
@@ -93,16 +118,87 @@ var format = function(d) {
   }
 };
 
-    // format = function(d) { return formatNumber(d) },
+var headerFormat = function(d) { 
+  var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
+  if (category == "percent") {
+    return percentFormat(d) 
+  }else {
+    return numberFormat(d)
+  }
+};
+  // format = function(d) { return formatNumber(d) },
 var color = "#1696d2"
- 
+
+
+var descriptionSvg = d3.select("#source-div")
+  .append("svg")
+  .attr("width", width/3)
+  .attr("height", height/12 + margin.top)
+  .append("text")
+  .attr("class", "description")
+  .attr("x", function() {
+    // if (container_width < 400) {
+    //     return (.02*width);
+    //  }
+        return (.01*width);
+  })
+  .attr("y", width*.07)
+
+var statsSvg = d3.select("#stats-div")
+  .append("svg")
+  .attr("width", width/1.8)
+  .attr("height", height/8 + margin.top)
+for (i=0; i<=4; i++){
+  if(i !== 4){
+    statsSvg.append("text")
+      .attr("class", "stats-header")
+      .attr("x", function() {
+        // if (container_width < 400) {
+        //     return (.25*width)*i;
+        //  }
+            return (.15*width)*i;
+      })
+      .attr("y", 20)
+      .text(function(){ 
+          return (HEADERS2[i])
+      })
+      // .attr("transform", function(d) { 
+      //    // if (container_width < 400) {
+      //    //  return "translate("+ width*.055 +", 0)"
+      //    // }
+      //     return "translate("+ width*.045 +", 0)"; 
+      // })
+    statsSvg.append("text")
+      .attr("class", function() {
+        return "stats-text " + "text" + i})
+      .attr("x", function() {
+        // if (container_width < 400) {
+        //     return (.25*width)*i;
+        //  }
+            return (.15*width)*i;
+      })
+      .attr("y", function() {
+        // if (container_width < 400){
+        //   return height*.08
+        // } 
+        return width*.07
+      })
+      .attr("transform", function(d) { 
+        // if (container_width < 400) {
+        //   return "translate("+width*.06+",0)";
+        // }
+        //  return "translate("+ 0 +", 0)"; 
+      })
+  }
+}
+
 // append the svg canvas to the page
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", 
-          "translate(" + margin.left + "," + margin.top + ")");
+          "translate(" + -50+ "," + margin.top + ")");
  
 // Set the sankey diagram properties
 var sankey = d3.sankey()
@@ -165,18 +261,19 @@ d3.json("data.json", function(error, graph) {
 
 // add in the nodes
   var node = svg.append("g").selectAll(".node")
-      .data(graph.nodes)
+    .data(graph.nodes)
     .enter().append("g")
-      .attr("class", function(d) {
-        return "node " + "node-" + d.name; 
-      })      
+    .attr("class", function(d) {
+      return "node " + "node-" + d.name; 
+    })      
     .attr("transform", function(d) { 
       return "translate(" + d.x + "," + d.y + ")"; })
     .call(d3.behavior.drag()
-      .origin(function(d) { return d; })
-      .on("dragstart", function() { 
-      this.parentNode.appendChild(this); })
-      .on("drag", dragmove));
+    .origin(function(d) { return d; })
+    .on("dragstart", function() { 
+    this.parentNode.appendChild(this); })
+    .on("drag", dragmove))
+    .on("mouseover", showStats);
  
 // add the rectangles for the nodes
   node.append("rect")
@@ -198,7 +295,7 @@ d3.json("data.json", function(error, graph) {
       .attr("y", function(d) { return d.dy / 2; })
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
-      .attr("transform","translate(" + (-width/10) +",0)")
+      .attr("transform","translate(" + (-width/6) +",0)")
       .text(function(d) { 
         if (d.name == "White" || d.name == "Black" || d.name == "Hispanic" || d.name == "Asian"){
           return d.name
@@ -223,6 +320,18 @@ d3.json("data.json", function(error, graph) {
         .attr("x",(width/5 + (width/5.4)*i))
         .attr("y", height)
         .text(steps[i])
+    }
+  }
+
+  function showStats(d) {
+    console.log(d)
+    d3.select(".description")
+      .text(d.name)
+    for (i=0; i<=4; i++){
+      if(i !== 4){
+        d3.select(".text" + i)
+          .text(headerFormat(d.value))
+      }
     }
   }
 // the function for moving the nodes
