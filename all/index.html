@@ -34,10 +34,42 @@
 .link:hover {
   stroke-opacity: .5;
 }
- 
+
+.toggle_button{
+    margin-bottom: 30px;
+    padding: 5 10 5 10px;
+    float: left;
+    margin-right: 10px;
+    color: #404041;
+    cursor: pointer;
+}
+
+.toggle_button.active span{
+  background-color: #1696d2;
+  color: white;
+}
+.toggle_button span:hover{
+  background-color: #231f20;
+  color: white;
+}
+
+.toggle_button span{
+    color:#333;
+    background-color: #f2f2f2;
+    padding: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size:15px;
+    border:solid 1px #e1e1e1;
+}
+
+
 </style>
 <body>
- 
+<div id="toggles">
+  <div id="percent_button" class="toggle_button active"><span>Percentage</span></div>
+  <div id="numbers_button" class="toggle_button"><span>Numbers</span></div>
+</div>
 <p id="chart">
  
 <script src="http://d3js.org/d3.v3.js"></script>
@@ -46,7 +78,6 @@
   
 var units = "of students";
 var steps = ["All", "High School", "Bachelor's", "Teaching Degree", "Teacher"]
-
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 1200 - margin.left - margin.right,
     height = 740 - margin.top - margin.bottom;
@@ -73,38 +104,52 @@ var path = sankey.link();
  
 // load the data
 d3.json("data.json", function(error, graph) {
- 
     var nodeMap = {};
     graph.nodes.forEach(function(x) { nodeMap[x.name] = x; });
-    graph.links = graph.links.map(function(x) {
+
+    var graph_percent = graph.links.map(function(x) {
+      x.id = x.source + " -> " + x.target;
       return {
         source: nodeMap[x.source],
         target: nodeMap[x.target],
+        id: x.id,
         value: x.value
       };
     });
- 
+
+    var graph_number = graph.links.map(function(x) {
+      x.id = x.source + " -> " + x.target;
+      return {
+        source: nodeMap[x.source],
+        target: nodeMap[x.target],
+        id: x.id,
+        value: x.value2
+      };
+    });
+
+   console.log(graph_percent)
+
+  // console.log(graph2_links)
   sankey
       .nodes(graph.nodes)
-      .links(graph.links)
+      .links(graph_percent)
       .layout(32);
  
 // add in the links
   var link = svg.append("g").selectAll(".link")
-      .data(graph.links)
+    .data(graph_percent, function(d) {console.log(d.id); return d.id})
     .enter().append("path")
-      .attr("class", function(d) {
-        return "link" + " link-" + d.source.name;
-      })      
-      .attr("d", path)
-      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-      .sort(function(a, b) { return b.dy - a.dy; });
+    .attr("class", function(d) {
+      return "link" + " link-" + d.source.name;
+    })      
+    .attr("d", path)
+    .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+    .sort(function(a, b) {console.log(b); return b.dy - a.dy; });
  
   link.append("title")
-        .text(function(d) {
-        return d.source.name + " → " + 
-                d.target.name + "\n" + format(d.value); });
- 
+    .text(function(d) {
+      return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
+
 // add in the nodes
   var node = svg.append("g").selectAll(".node")
       .data(graph.nodes)
@@ -176,6 +221,56 @@ d3.json("data.json", function(error, graph) {
     sankey.relayout();
     link.attr("d", path);
   }
+  d3.selectAll(".toggle_button")
+    .on("click", function(){
+        // category = d3.select(".toggle_button.active").node().id.split("_")[0]
+        // var end = this.id.split("_")[0]
+        d3.selectAll(".toggle_button.active").classed("active",false)
+        d3.select(this).classed("active",true)
+        var category = this.id.split("_")[0]
+        var linkData = (category == "numbers") ? graph_number : graph_percent;
+        update(graph.nodes, linkData);
+    })
+
+
+  function update(nodeData, linkData) {
+  sankey
+      .nodes(nodeData)
+      .links(linkData)
+      .layout(32);
+
+    // sankey.relayout();
+    // fontScale.domain(d3.extent(nodeData, function(d) { return d.value }));
+console.log(linkData)
+    svg.selectAll(".link")
+      .data(linkData, function(x) { return x.id })
+      .sort(function(a, b) { 
+        return b.dy - a.dy;
+      })
+      .transition()
+      .duration(1300)
+      .attr("d", path)
+      .style("stroke-width", function(d) {
+        return Math.max(1, d.dy) + "px";
+      });
+
+    svg.selectAll(".node")
+      .data(nodeData, function(d) { return d.name; })
+      .transition()
+      .duration(1300)
+      .attr("transform", function(d) {
+        return "translate(" + d.x + "," + d.y + ")";
+      });
+
+    svg.selectAll(".node rect")
+      .transition()
+      .duration(1300)
+      .attr("height", function(d) {
+        return d.dy;
+      });
+
+
+  };
 });
  
 </script>
