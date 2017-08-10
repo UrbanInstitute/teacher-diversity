@@ -113,7 +113,8 @@ d3.json("data.json", function(error, graph) {
         source: nodeMap[x.source],
         target: nodeMap[x.target],
         id: x.id,
-        value: x.value
+        value: x.value,
+        position: x.position
       };
     });
 
@@ -123,7 +124,9 @@ d3.json("data.json", function(error, graph) {
         source: nodeMap[x.source],
         target: nodeMap[x.target],
         id: x.id,
-        value: x.value2
+        value: x.value2,
+        position: x.position
+
       };
     });
 
@@ -137,14 +140,14 @@ d3.json("data.json", function(error, graph) {
  
 // add in the links
   var link = svg.append("g").selectAll(".link")
-    .data(graph_percent, function(d) {console.log(d.id); return d.id})
+    .data(graph_percent, function(d) {return d.id})
     .enter().append("path")
     .attr("class", function(d) {
       return "link" + " link-" + d.source.name;
     })      
     .attr("d", path)
     .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-    .sort(function(a, b) {console.log(b); return b.dy - a.dy; });
+    .sort(function(a, b) {return b.dy - a.dy; });
  
   link.append("title")
     .text(function(d) {
@@ -160,7 +163,7 @@ d3.json("data.json", function(error, graph) {
     .attr("transform", function(d) { 
       return "translate(" + d.x + "," + d.y + ")"; })
     .call(d3.behavior.drag()
-      .origin(function(d) { console.log(d); return d; })
+      .origin(function(d) { return d; })
       .on("dragstart", function() { 
       this.parentNode.appendChild(this); })
       .on("drag", dragmove));
