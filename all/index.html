@@ -27,8 +27,8 @@
  
 .link {
   fill: none;
-  stroke: #000;
-  stroke-opacity: .2;
+  stroke: #d2d2d2;
+  stroke-opacity: 1;
 }
  
 .link:hover {
@@ -81,10 +81,20 @@ var steps = ["All", "High School", "Bachelor's", "Teaching Degree", "Teacher"]
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 1200 - margin.left - margin.right,
     height = 740 - margin.top - margin.bottom;
- 
-var formatNumber = d3.format(".2%"),    // zero decimal places
-    format = function(d) { return formatNumber(d) + " " + units; },
-    color = d3.scale.category20();
+var numberFormat = d3.format(",");
+var percentFormat = d3.format(".2%");
+
+var format = function(d) { 
+  var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
+  if (category == "percent") {
+    return percentFormat(d) + " of students"
+  }else {
+    return numberFormat(d) + " students"
+  }
+};
+
+    // format = function(d) { return formatNumber(d) },
+var color = "#1696d2"
  
 // append the svg canvas to the page
 var svg = d3.select("#chart").append("svg")
@@ -130,7 +140,6 @@ d3.json("data.json", function(error, graph) {
       };
     });
 
-   console.log(graph_percent)
 
   // console.log(graph2_links)
   sankey
@@ -151,7 +160,8 @@ d3.json("data.json", function(error, graph) {
  
   link.append("title")
     .text(function(d) {
-      return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
+      return d.source.name + " → " + d.target.name + "\n" + format(d.value); })
+    .attr("class", "link-text");
 
 // add in the nodes
   var node = svg.append("g").selectAll(".node")
@@ -172,14 +182,16 @@ d3.json("data.json", function(error, graph) {
   node.append("rect")
       .attr("height", function(d) { return d.dy; })
       .attr("width", sankey.nodeWidth())
-      .style("fill", function(d) { 
-      return d.color = color(d.name.replace(/ .*/, "")); })
-      .style("stroke", function(d) { 
-      return d3.rgb(d.color).darker(2); })
-    .append("title")
+      // .style("fill", function(d) { 
+      // return d.color = color(d.name.replace(/ .*/, "")); })
+      .style("fill", color)
+      // .style("stroke", function(d) { 
+      // return d3.rgb(d.color).darker(2); })
+      .append("title")
       .text(function(d) { 
-      return d.name + "\n" + format(d.value); });
- 
+      return d.name + "\n" + format(d.value); })
+      .attr("class", "node-text");
+
 // add in the title for the nodes
   node.append("text")
       .attr("x", -6)
@@ -237,14 +249,13 @@ d3.json("data.json", function(error, graph) {
 
 
   function update(nodeData, linkData) {
-  sankey
+    sankey
       .nodes(nodeData)
       .links(linkData)
       .layout(32);
 
     // sankey.relayout();
     // fontScale.domain(d3.extent(nodeData, function(d) { return d.value }));
-console.log(linkData)
     svg.selectAll(".link")
       .data(linkData, function(x) { return x.id })
       .sort(function(a, b) { 
@@ -271,8 +282,14 @@ console.log(linkData)
       .attr("height", function(d) {
         return d.dy;
       });
-
-
+    node.selectAll(".node-text")
+      .text(function(d) { 
+        return d.name + "\n" + format(d.value); })
+    link.selectAll(".link-text")
+      .data(linkData, function(x) { return x.id})
+      .text(function(d) { 
+        return d.source.name + " → " + d.target.name + "\n" + format(d.value); 
+      })
   };
 });
  
