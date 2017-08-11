@@ -27,6 +27,7 @@
 .node text {
   pointer-events: none;
   text-shadow: 0 1px 0 #fff;
+  fill: #000;
 }
 
 .node {
@@ -42,6 +43,10 @@
   stroke-opacity: .4;
 }
 
+.stats-text, #source-div {
+  font-weight: 700;
+  text-transform: uppercase;
+}
 .hover {
   stroke-opacity: 1;
 }
@@ -115,7 +120,7 @@
 <script>
   
 var units = "of students";
-var steps = ["All", "High School", "Bachelor's", "Teaching Degree", "Teacher"]
+var steps = ["All Students", "High School", "Bachelor's", "Teaching Degree", "Teacher"]
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 710 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -367,7 +372,7 @@ d3.json("data.json", function(error, graph) {
         }else if (description.search("Teacher") > 0) {
           return "Teacher"
         }else {
-          return "All"
+          return "All Students"
         }
         
       })
