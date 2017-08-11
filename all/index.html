@@ -82,6 +82,10 @@
   fill:  #1696d2;
 }
 
+#stats-div {
+  text-transform: uppercase;
+}
+
 </style>
 <body>
 <div id="chart">
@@ -106,8 +110,9 @@ var margin = {top: 10, right: 10, bottom: 10, left: 10},
     height = 500 - margin.top - margin.bottom;
 var numberFormat = d3.format(",");
 var percentFormat = d3.format(".2%");
-var HEADERS2= ["WHITE", "BLACK", "ASIAN", "HISPANIC"];
-var HEADERS1= ["SOURCE", "TARGET"];
+var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
+    HEADERS1= ["SOURCE", "TARGET"];
+
 
 var format = function(d) { 
   var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
@@ -324,13 +329,51 @@ d3.json("data.json", function(error, graph) {
   }
 
   function showStats(d) {
-    console.log(d)
     d3.select(".description")
-      .text(d.name)
+      .text(function() {
+        if (d.name.search("Bach") > 0) {
+          return "Bachelor's Degree"
+        }
+        else if (d.name.search("HS") > 0) {
+          return "High School Degree"
+        }
+        else if (d.name.search("Teaching") > 0) {
+          return "Teaching Degree"
+        }
+        else if (d.name.search("Teacher") > 0) {
+          return "Teacher"
+        }
+        else {
+          return "All"
+        }
+      })
     for (i=0; i<=4; i++){
       if(i !== 4){
         d3.select(".text" + i)
-          .text(headerFormat(d.value))
+          .text(function() {
+            if (d.name.search("Bach") > 0) {
+              var text = d3.select(".node-" + HEADERS2[i] + "-Bach").datum().targetLinks[0].value
+              return percentFormat(text)
+            }
+            else if (d.name.search("HS") > 0){
+              var text = d3.select(".node-" + HEADERS2[i] + "-HS").datum().targetLinks[0].value
+              return percentFormat(text)
+            }
+            else if (d.name.search("Teaching") > 0){
+              var text = d3.select(".node-" + HEADERS2[i] + "-Teaching").datum().targetLinks[0].value
+              console.log(text)
+              return percentFormat(text)
+            }
+            else if (d.name.search("Teacher") > 0){
+              var text = d3.select(".node-" + HEADERS2[i] + ".Teacher").datum().targetLinks[0].value
+              console.log(text)
+              return percentFormat(text)
+            }
+            else {
+              var text = d3.select(".node-" + HEADERS2[i]).datum().targetLinks[0].value
+              return percentFormat(text)
+            }
+          })
       }
     }
   }
