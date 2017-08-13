@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>SANKEY Experiment</title>
+<style>
+
+ 
+ body, html {
+  font-family: "Lato", sans-serif;
+  margin: 20px;
+ }
+
+#chart {
+  max-width: 680px;
+}
+.node rect {
+  cursor: move;
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+  cursor: pointer;
+}
+.node-White-All, .node-Asian-All, .node-Hispanic-All, .node-Black-All {
+  opacity: 0;
+}
+
+.link-White-All, .link-Asian-All, .link-Hispanic-All, .link-Black-All{
+  opacity: 0;
+}
+.node text {
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff;
+  fill: #000;
+}
+
+.node {
+  fill: #1696d2;
+}
+
+.node.hover {
+  fill: #0a4c6a;
+}
+.link {
+  fill: none;
+  stroke: #696969;
+  stroke-opacity: .4;
+}
+
+.stats-text, #source-div {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.hover {
+  stroke-opacity: 1;
+}
+ 
+
+#toggles {
+  width: 100%;
+  padding-top: 10px;
+  float: left;
+}
+
+.link {
+  cursor: pointer
+}
+.toggle_button{
+    margin-bottom: 30px;
+    padding: 5 10 5 10px;
+    float: left;
+    margin-right: 10px;
+    color: #404041;
+    cursor: pointer;
+}
+
+.toggle_button.active span{
+  background-color: #1696d2;
+  color: white;
+}
+.toggle_button span:hover{
+  background-color: #231f20;
+  color: white;
+}
+
+.toggle_button span{
+    color:#333;
+    background-color: #f2f2f2;
+    padding: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size:15px;
+    border:solid 1px #e1e1e1;
+}
+
+#source-div {
+  float: left;
+}
+
+.description {
+  font-size: 16px;
+  fill:  #1696d2;
+}
+
+#stats-div {
+  text-transform: uppercase;
+}
+
+</style>
+<body>
+<div id="chart" class="all">
+  <div id="toggles">
+    <div id="percent_button" class="toggle_button active"><span>Percentage</span></div>
+    <div id="numbers_button" class="toggle_button"><span>Numbers</span></div>
+  </div>
+  <div id="source-div">
+  </div>
+  <div id="stats-div">
+  </div>
+</div>
+ 
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="js/sankey.js"></script>
+<script src="js/main.js"></script>
+ 
+</body>
+</html>
