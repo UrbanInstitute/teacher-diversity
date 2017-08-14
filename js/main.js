@@ -142,7 +142,7 @@ var svg = d3.select("#chart").append("svg")
     });
  
 
- // var defs = svg.append("defs");
+ var defs = svg.append("defs");
 
 // Set the sankey diagram properties
 var sankey = d3.sankey()
@@ -188,52 +188,52 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
 //gradient help from: https://codepen.io/bencarmichael/pen/pJKgyr
 // define utility functions
-  // function getGradID(d) {
-  //   return "linkGrad-" + d.source.name + "-" + d.target.name;
-  // }
+  function getGradID(d) {
+    return "linkGrad-" + d.source.name + "-" + d.target.name;
+  }
 
-  // function nodeColor(d) {
-  //   return d.color = color(d.name.replace(/ .*/, ""));
-  // }
+  function nodeColor(d) {
+    return d.color = color(d.name.replace(/ .*/, ""));
+  }
 
   // create gradients for the links
 
-  // var grads = defs.selectAll("linearGradient")
-  //   .data(graph_percent, getGradID);
-  // grads.enter().append("linearGradient")
-  //   .attr("id", getGradID)
-  //   .attr("gradientUnits", "userSpaceOnUse");
+  var grads = defs.selectAll("linearGradient")
+    .data(graph_percent, getGradID);
+  grads.enter().append("linearGradient")
+    .attr("id", getGradID)
+    .attr("gradientUnits", "userSpaceOnUse");
 
-  // function positionGrads() {
-  //   grads.attr("x1", function(d) {
-  //       return d.source.x;
-  //     })
-  //     .attr("y1", function(d) {
-  //       return d.source.y;
-  //     })
-  //     .attr("x2", function(d) {
-  //       return d.target.x;
-  //     })
-  //     .attr("y2", function(d) {
-  //       return d.target.y;
-  //     });
-  // }
-  // positionGrads();
+  function positionGrads() {
+    grads.attr("x1", function(d) {
+        return d.source.x;
+      })
+      .attr("y1", function(d) {
+        return d.source.y;
+      })
+      .attr("x2", function(d) {
+        return d.target.x;
+      })
+      .attr("y2", function(d) {
+        return d.target.y;
+      });
+  }
+  positionGrads();
 
-  // grads.html("") //erase any existing <stop> elements on update
-  // .append("stop")
-  // .attr("offset", "0%")
-  // .attr("stop-color", function(d) {
-  //   return nodeColor((+d.source.x <= +d.target.x) ?
-  //     d.source : d.target);
-  // });
+  grads.html("") //erase any existing <stop> elements on update
+  .append("stop")
+  .attr("offset", "0%")
+  .attr("stop-color", function(d) {
+    return nodeColor((+d.source.x <= +d.target.x) ?
+      d.source : d.target);
+  });
 
-  // grads.append("stop")
-  //   .attr("offset", "100%")
-  //   .attr("stop-color", function(d) {
-  //     return nodeColor((+d.source.x > +d.target.x) ?
-  //       d.source : d.target)
-  //   });
+  grads.append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", function(d) {
+      return nodeColor((+d.source.x > +d.target.x) ?
+        d.source : d.target)
+    });
 // add in the links
   var link = svg.append("g").selectAll(".link")
     .data(graph_percent, function(d) {return d.id})
@@ -255,8 +255,12 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .sort(function(a, b) {return b.dy - a.dy; })
     .on("mouseover", showStats)
     .on("mouseout", function() {
-      d3.selectAll(".stats-text, .description")
-        .text("")
+      d3.selectAll(".stats-text")
+        .text("100%")
+      d3.select(".description")
+        .text(function() {
+          return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
+        })
       d3.selectAll(".node, .link")
         .classed("hover", false)
     });
@@ -284,8 +288,12 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     // .on("drag", dragmove))
     .on("mouseover", showStats)
     .on("mouseout", function(d) { 
-      d3.selectAll(".stats-text, .description")
-        .text("")
+      d3.selectAll(".stats-text")
+        .text("100%")
+      d3.select(".description")
+        .text(function() {
+          return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
+        })
       d3.selectAll(".node, .link")
         .classed("hover", false)
     });
@@ -310,11 +318,11 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
       .attr("transform","translate(" + (-width/6) +",0)")
-      .text(function(d) { 
-        if (d.name == "White" || d.name == "Black" || d.name == "Hispanic" || d.name == "Asian"){
+      .text(function(d,i) { 
+       if (d.name == "White" || d.name == "Black" || d.name == "Hispanic" || d.name == "Asian"){
           return d.name
-        }else {
-          return ""
+        }else if ((dataCategory != 'all') && (d.name == "White-Bach" || d.name == "Black-Bach" || d.name == "Hispanic-Bach" || d.name == "Asian-Bach")) {
+          return d.name.slice(0,-5)
         }
       })
     .filter(function(d) { return d.x < width / 2; })
@@ -428,36 +436,36 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         update(graph.nodes, linkData);
     })
 
-  // d3.selectAll(".node")
-  //   .each(function(d){
-  //     var node = d3.select(this).attr("class").split(" ")[1]
-  //         nodeRace = node.split("-")[1],
-  //         nodeCategory = node.split("-")[2],
-  //         category = (nodeCategory != undefined) ? "-" + nodeCategory : "",
-  //         nodeClass = nodeRace + category,
-  //         index = nodeNames.indexOf(category),
-  //         previousIndex = (nodeNames[index-1] != undefined ? nodeNames[index-1] : ""),
-  //         bachelorClass = nodeRace + "-Bach",
-  //         previousNodeClass = nodeRace + previousIndex,
-  //         previousNodeData = d3.select(".node-" + previousNodeClass).datum().value,
-  //         bachelorNodeData = d3.select(".node-" + bachelorClass).datum().value,
-  //         nodeData = (d3.select(".node-" + nodeClass).datum().value),
-  //         nodeValue = nodeData/previousNodeData
-  //         teacherNodeValue = nodeData/bachelorNodeData
-  //         value = (d3.select(this).attr("class").search("Teacher") > 0) ? teacherNodeValue : nodeValue;
-  //     d3.select(this)
-  //       .style("fill", function(d) {
-  //         if (value <= .25){
-  //           return "#cfe8f3"
-  //         }else if (value <= .5){
-  //           return "#73bfe2"
-  //         }else if (value <= .75){
-  //           return "#1696d2"
-  //         }else {
-  //           return "#0a4c6a"
-  //         }
-  //       })    
-  //     })
+  d3.selectAll(".node")
+    .each(function(d){
+      var node = d3.select(this).attr("class").split(" ")[1]
+          nodeRace = node.split("-")[1],
+          nodeCategory = node.split("-")[2],
+          category = (nodeCategory != undefined) ? "-" + nodeCategory : "",
+          nodeClass = nodeRace + category,
+          index = nodeNames.indexOf(category)
+          previousIndex = (nodeNames[index-1] != undefined ? nodeNames[index-1] : ""),
+          bachelorClass = nodeRace + "-Bach",
+          previousNodeClass = nodeRace + previousIndex,
+          previousNodeData = d3.select(".node-" + previousNodeClass).datum().value,
+          bachelorNodeData = d3.select(".node-" + bachelorClass).datum().value
+          nodeData = (d3.select(".node-" + nodeClass).datum().value)
+          nodeValue = nodeData/previousNodeData,
+          teacherNodeValue = nodeData/bachelorNodeData,
+          value = (d3.select(this).attr("class").search("Teacher") > 0) ? teacherNodeValue : nodeValue;
+      d3.select(this)
+        .style("fill", function(d) {
+          if (value <= .25){
+            return "#cfe8f3"
+          }else if (value <= .5){
+            return "#73bfe2"
+          }else if (value <= .75){
+            return "#1696d2"
+          }else {
+            return "#0a4c6a"
+          }
+        })    
+      })
 
   
   function update(nodeData, linkData) {
