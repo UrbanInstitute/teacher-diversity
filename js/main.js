@@ -142,7 +142,7 @@ var svg = d3.select("#chart").append("svg")
     });
  
 
- var defs = svg.append("defs");
+ // var defs = svg.append("defs");
 
 // Set the sankey diagram properties
 var sankey = d3.sankey()
@@ -188,52 +188,52 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
 //gradient help from: https://codepen.io/bencarmichael/pen/pJKgyr
 // define utility functions
-  function getGradID(d) {
-    return "linkGrad-" + d.source.name + "-" + d.target.name;
-  }
+  // function getGradID(d) {
+  //   return "linkGrad-" + d.source.name + "-" + d.target.name;
+  // }
 
-  function nodeColor(d) {
-    return d.color = color(d.name.replace(/ .*/, ""));
-  }
+  // function nodeColor(d) {
+  //   return d.color = color(d.name.replace(/ .*/, ""));
+  // }
 
   // create gradients for the links
 
-  var grads = defs.selectAll("linearGradient")
-    .data(graph_percent, getGradID);
-  grads.enter().append("linearGradient")
-    .attr("id", getGradID)
-    .attr("gradientUnits", "userSpaceOnUse");
+  // var grads = defs.selectAll("linearGradient")
+  //   .data(graph_percent, getGradID);
+  // grads.enter().append("linearGradient")
+  //   .attr("id", getGradID)
+  //   .attr("gradientUnits", "userSpaceOnUse");
 
-  function positionGrads() {
-    grads.attr("x1", function(d) {
-        return d.source.x;
-      })
-      .attr("y1", function(d) {
-        return d.source.y;
-      })
-      .attr("x2", function(d) {
-        return d.target.x;
-      })
-      .attr("y2", function(d) {
-        return d.target.y;
-      });
-  }
-  positionGrads();
+  // function positionGrads() {
+  //   grads.attr("x1", function(d) {
+  //       return d.source.x;
+  //     })
+  //     .attr("y1", function(d) {
+  //       return d.source.y;
+  //     })
+  //     .attr("x2", function(d) {
+  //       return d.target.x;
+  //     })
+  //     .attr("y2", function(d) {
+  //       return d.target.y;
+  //     });
+  // }
+  // positionGrads();
 
-  grads.html("") //erase any existing <stop> elements on update
-  .append("stop")
-  .attr("offset", "0%")
-  .attr("stop-color", function(d) {
-    return nodeColor((+d.source.x <= +d.target.x) ?
-      d.source : d.target);
-  });
+  // grads.html("") //erase any existing <stop> elements on update
+  // .append("stop")
+  // .attr("offset", "0%")
+  // .attr("stop-color", function(d) {
+  //   return nodeColor((+d.source.x <= +d.target.x) ?
+  //     d.source : d.target);
+  // });
 
-  grads.append("stop")
-    .attr("offset", "100%")
-    .attr("stop-color", function(d) {
-      return nodeColor((+d.source.x > +d.target.x) ?
-        d.source : d.target)
-    });
+  // grads.append("stop")
+  //   .attr("offset", "100%")
+  //   .attr("stop-color", function(d) {
+  //     return nodeColor((+d.source.x > +d.target.x) ?
+  //       d.source : d.target)
+  //   });
 // add in the links
   var link = svg.append("g").selectAll(".link")
     .data(graph_percent, function(d) {return d.id})
@@ -248,9 +248,9 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       }
     })      
     .attr("d", path)
-    .style("stroke", function(d) {
-      return "url(#" + getGradID(d) + ")";
-    })
+    // .style("stroke", function(d) {
+    //   return "url(#" + getGradID(d) + ")";
+    // })
     .style("stroke-width", function(d) { return Math.max(1, d.dy); })
     .sort(function(a, b) {return b.dy - a.dy; })
     .on("mouseover", showStats)
