@@ -10,10 +10,10 @@ var percentFormat = d3.format(".2%");
 var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
     HEADERS1= ["SOURCE", "TARGET"],
     nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
-    // color = d3.scale.ordinal()
-    //   .domain([""])
-  // (["#a2d4ec", "#46abdb", "#1696d2", " #12719e"])
-     color = d3.scale.category20();
+    color = d3.scale.ordinal()
+      .domain([0,.25,.5,1])
+      .range(["#cfe8f3", "#73bfe2", "#1696d2", "#0a4c6a"])
+  //   color = d3.scale.category20();
 
 var format = function(d) { 
   var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
@@ -192,8 +192,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     return "linkGrad-" + d.source.name + "-" + d.target.name;
   }
 
-  function nodeColor(d) {
-    return d.color = color(d.name.replace(/ .*/, ""));
+  function nodeColor(d) {console.log(color(d.value))
+    return d.color = color(d.value);
   }
 
   // create gradients for the links
@@ -248,9 +248,9 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       }
     })      
     .attr("d", path)
-    // .style("stroke", function(d) {
-    //   return "url(#" + getGradID(d) + ")";
-    // })
+    .style("stroke", function(d) {
+      return "url(#" + getGradID(d) + ")";
+    })
     .style("stroke-width", function(d) { return Math.max(1, d.dy); })
     .sort(function(a, b) {return b.dy - a.dy; })
     .on("mouseover", showStats)
