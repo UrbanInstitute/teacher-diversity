@@ -59,14 +59,14 @@ var descriptionSvg = d3.select("#source-div")
   .text(function() { 
     if (dataCategory == 'all'){ 
       return 'All Students'
-    }else {console.log('hi')
+    }else {
       return 'Bachelor\'s Degree'
     }
   })
 
 var statsSvg = d3.select("#stats-div")
   .append("svg")
-  .attr("width", function() { console.log(dataCategory);
+  .attr("width", function() { 
     return (dataCategory == 'all') ? width/1.8 : width/2
   })
   .attr("height", height/8 + margin.top)
@@ -455,7 +455,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           value = (d3.select(this).attr("class").search("Teacher") > 0) ? teacherNodeValue : nodeValue;
       d3.select(this)
         .style("fill", function(d) {
-          if (value <= .25){
+          if (value <= .25){ 
             return "#cfe8f3"
           }else if (value <= .5){
             return "#73bfe2"
@@ -510,6 +510,38 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .text(function(d) { 
         return d.source.name + " → " + d.target.name + "\n" + format(d.value); 
       })
+
+    d3.selectAll(".node")
+      .each(function(d){
+        var node = d3.select(this).attr("class").split(" ")[1]
+            nodeRace = node.split("-")[1],
+            nodeCategory = node.split("-")[2],
+            category = (nodeCategory != undefined) ? "-" + nodeCategory : "",
+            nodeClass = nodeRace + category,
+            index = nodeNames.indexOf(category)
+            previousIndex = (nodeNames[index-1] != undefined ? nodeNames[index-1] : ""),
+            bachelorClass = nodeRace + "-Bach",
+            previousNodeClass = nodeRace + previousIndex,
+            previousNodeData = d3.select(".node-" + previousNodeClass).datum().value,
+            bachelorNodeData = d3.select(".node-" + bachelorClass).datum().value
+            nodeData = (d3.select(".node-" + nodeClass).datum().value)
+            nodeValue = nodeData/previousNodeData,
+            teacherNodeValue = nodeData/bachelorNodeData,
+            value = (d3.select(this).attr("class").search("Teacher") > 0) ? teacherNodeValue : nodeValue;
+
+        d3.select(this)
+          .style("fill", function(d) {
+            if (value <= .25){ 
+              return "#cfe8f3"
+            }else if (value <= .5){
+              return "#73bfe2"
+            }else if (value <= .75){
+              return "#1696d2"
+            }else {
+              return "#0a4c6a"
+            }
+          })    
+        })
   };
 });
  
