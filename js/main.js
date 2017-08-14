@@ -255,8 +255,12 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .sort(function(a, b) {return b.dy - a.dy; })
     .on("mouseover", showStats)
     .on("mouseout", function() {
-      d3.selectAll(".stats-text, .description")
-        .text("")
+      d3.selectAll(".stats-text")
+        .text("100%")
+      d3.select(".description")
+        .text(function() {
+          return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
+        })
       d3.selectAll(".node, .link")
         .classed("hover", false)
     });
@@ -284,8 +288,12 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     // .on("drag", dragmove))
     .on("mouseover", showStats)
     .on("mouseout", function(d) { 
-      d3.selectAll(".stats-text, .description")
-        .text("")
+      d3.selectAll(".stats-text")
+        .text("100%")
+      d3.select(".description")
+        .text(function() {
+          return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
+        })
       d3.selectAll(".node, .link")
         .classed("hover", false)
     });

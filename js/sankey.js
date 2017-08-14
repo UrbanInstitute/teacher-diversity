@@ -242,8 +242,8 @@ d3.sankey = function() {
           for (i = n - 2; i >= 0; --i) {
             node = nodes[i];
             dy = node.y + node.dy + nodePadding - y0;
-            if (dy > 0) node.y -= dy;
-            y0 = node.y;
+           if (dy > 0) node.y -= dy;
+           y0 = node.y;
           }
         }
       });
@@ -281,7 +281,7 @@ d3.sankey = function() {
   }
  
   function center(node) {
-    return node.y + node.dy / 2;
+    return node.y + node.dy;
   }
  
   function value(link) {
