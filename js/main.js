@@ -10,6 +10,7 @@ var percentFormat = d3.format(".2%");
 var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
     HEADERS1= ["SOURCE", "TARGET"],
     nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
+    numberStats = (dataCategory == 'all') ? [92338890, 19560471, 25434140,10383460] : [92338890, 19560471, 25434140,10383460],
     // color = d3.scale.ordinal()
     //   .domain([""])
   // (["#a2d4ec", "#46abdb", "#1696d2", " #12719e"])
@@ -256,7 +257,10 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .on("mouseover", showStats)
     .on("mouseout", function() {
       d3.selectAll(".stats-text")
-        .text("100%")
+        .each(function(d,i) {
+          d3.select(this)
+            .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
+        })
       d3.select(".description")
         .text(function() {
           return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
@@ -289,7 +293,10 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .on("mouseover", showStats)
     .on("mouseout", function(d) { 
       d3.selectAll(".stats-text")
-        .text("100%")
+        .each(function(d,i) {
+          d3.select(this)
+            .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
+        })      
       d3.select(".description")
         .text(function() {
           return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
@@ -469,6 +476,15 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
   
   function update(nodeData, linkData) {
+    d3.selectAll(".stats-text")
+      .each(function(d,i) {
+        d3.select(this)
+          .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
+      })  
+    d3.select(".description")
+    .text(function() {
+      return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
+    })
     sankey
       .nodes(nodeData)
       .links(linkData)
