@@ -1,22 +1,22 @@
 {
 "links": [
 
-{"source":"White-HS diploma","target":"White","value":"1"},
-{"source":"Black-HS diploma","target":"Black","value":"1"},
-{"source":"Hispanic-HS diploma","target":"Hispanic","value":"1"},
-{"source":"Asian-HS diploma","target":"Asian","value":"1"},
-{"source":"White","target":"White-Teacher","value":".0505"},
-{"source":"Black","target":"Black-Teacher","value":".0530"},
-{"source":"Hispanic","target":"Hispanic-Teacher","value":".0544"},
-{"source":"Asian","target":"Asian-Teacher","value":".0271"},
-{"source":"White","target":"White-Teaching degree","value":".0913"},
-{"source":"White-Teaching degree","target":"White-Teacher","value":".0575"},
-{"source":"Black","target":"Black-Teaching degree","value":".0631"},
-{"source":"Black-Teaching degree","target":"Black-Teacher","value":".0329"},
-{"source":"Hispanic","target":"Hispanic-Teaching degree","value":".0713"},
-{"source":"Hispanic-Teaching degree","target":"Hispanic-Teacher","value":".0396"},
-{"source":"Asian","target":"Asian-Teaching degree","value":".0252"},
-{"source":"Asian-Teaching degree","target":"Asian-Teacher","value":".0094"}
+{"source":"White-HS diploma","target":"White","value":"1", "value2": 38644110},
+{"source":"Black-HS diploma","target":"Black","value":"1", "value2": 4513414},
+{"source":"Hispanic-HS diploma","target":"Hispanic","value":"1", "value2": 5243982},
+{"source":"Asian-HS diploma","target":"Asian","value":"1", "value2": 6990305},
+{"source":"White","target":"White-Teacher","value":".0510", "value2": 1970062},
+{"source":"Black","target":"Black-Teacher","value":".0547", "value2": 247003},
+{"source":"Hispanic","target":"Hispanic-Teacher","value":".0596", "value2": 312676},
+{"source":"Asian","target":"Asian-Teacher","value":".0242", "value2": 168835},
+{"source":"White","target":"White-Teaching degree","value":".0983", "value2": 3797340},
+{"source":"White-Teaching degree","target":"White-Teacher","value":".0626", "value2": 2419381},
+{"source":"Black","target":"Black-Teaching degree","value":".0668", "value2": 301539},
+{"source":"Black-Teaching degree","target":"Black-Teacher","value":".0348", "value2": 156966},
+{"source":"Hispanic","target":"Hispanic-Teaching degree","value":".0756", "value2": 396273},
+{"source":"Hispanic-Teaching degree","target":"Hispanic-Teacher","value":".0409", "value2": 214497},
+{"source":"Asian","target":"Asian-Teaching degree","value":".0244", "value2": 170676},
+{"source":"Asian-Teaching degree","target":"Asian-Teacher","value":".0083", "value2": 57722}
 
 
 
