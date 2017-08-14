@@ -1,7 +1,6 @@
 {
 "links": [
 
-
 {"source":"White-HS diploma","target":"White","value":"1"},
 {"source":"Black-HS diploma","target":"Black","value":"1"},
 {"source":"Hispanic-HS diploma","target":"Hispanic","value":"1"},
