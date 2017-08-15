@@ -356,11 +356,10 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
   var mouseoverRect = svg.append("g")
   .append("rect")
-  .attr("width", width/2.7)
-  .attr("height", height*.85)
+  .attr("width", width)
+  .attr("height", height)
   .attr("class", "mouseoverRect")
   .style("opacity", "0")
-  .attr("transform","translate(" + (width/1.6) +","+ height*.1+")")
   .on('mousemove', showStats2)
   .on("mouseout", function() {
     d3.selectAll(".stats-text")
@@ -383,6 +382,12 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           return "Teacher"
         }else if (event.clientX > 420 ) {
           return "Teaching Degree"
+        }else if (event.clientX > 290 ) {
+          return "Bachelor's Degree"
+        }else if (event.clientX > 150 ) {
+          return "High School"
+        }else {
+          return "All students"
         }
       })
     var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
@@ -405,9 +410,21 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
               return format(text)
             // var text = d3.select(".node-" + HEADERS2[i] + "-Teaching").datum().targetLinks[0].value
             // return format(text)
-          }else {
-
-          }
+          }else if (event.clientX > 290){
+              d3.selectAll(".node-" + HEADERS2[i] + "-Bach, .link-" + HEADERS2[i] + "-HS")
+                .classed("hover", true)
+              var text = d3.select(".node-" + HEADERS2[i] + "-Bach").datum().targetLinks[0].value
+              return format(text)
+          }else if (event.clientX > 150){
+              d3.selectAll(".node-" + HEADERS2[i] + "-HS, .link-" + HEADERS2[i])
+                .classed("hover", true)
+              var text = d3.select(".node-" + HEADERS2[i] + "-HS").datum().targetLinks[0].value
+              return format(text)          
+          }else if (event.clientX < 150) {
+              d3.selectAll(".node-" + HEADERS2[i])
+                .classed("hover", true)
+                return "100%"        
+              }
         })
       }
     }
