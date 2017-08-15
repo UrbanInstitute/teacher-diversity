@@ -2,6 +2,7 @@ d3.sankey = function() {
   var sankey = {},
       nodeWidth = 24,
       nodePadding = 8,
+      dataCategory = "",
       size = [1, 1],
       nodes = [],
       links = [];
@@ -17,7 +18,14 @@ d3.sankey = function() {
     nodePadding = +_;
     return sankey;
   };
- 
+  
+  sankey.dataCategory = function(_) {
+    if (!arguments.length) return dataCategory;
+    dataCategory = _;
+    return sankey;
+  };
+  
+
   sankey.nodes = function(_) {
     if (!arguments.length) return nodes;
     nodes = _;
@@ -158,25 +166,30 @@ d3.sankey = function() {
         .sortKeys(d3.ascending)
         .entries(nodes)
         .map(function(d) { return d.values; });
- 
-    //
+
     initializeNodeDepth();
     resolveCollisions();
-    for (var alpha = 1; iterations > 0; --iterations) {
-      relaxRightToLeft(alpha *= .99);
-      resolveCollisions();
-      relaxLeftToRight(alpha);
-      resolveCollisions();
-    }
+
  
     function initializeNodeDepth() {
       var ky = d3.min(nodesByBreadth, function(nodes) {
         return (size[1] - (nodes.length - 1) * nodePadding) / d3.sum(nodes, value);
       });
+      var scalars = [null, null, null, null];
  
       nodesByBreadth.forEach(function(nodes) {
         nodes.forEach(function(node, i) {
-          node.y = i;
+          //depending on whether graph is "all" or "bachelors" graph, graph the size of the first node (which corresponds to 100% of population)
+          if((dataCategory == "all" && node.name.search("-All") != -1) || (dataCategory == "bachelor" && node.name.search("-HS") != -1) ) {
+            //height (dy) of first node , store in scalars array
+            scalars[i] = node.value * ky
+          }
+          //initial y position, for row 0 (White)
+          node.y = (scalars[0] - node.value * ky);
+          for(var j = 1; j <= i; j++){
+            //for subsequent rows, add cumulative previous heights of row (equal to heigh of first node plus padding)
+            node.y += nodePadding + scalars[j]
+          }
           node.dy = node.value * ky;
         });
       });
@@ -185,37 +198,7 @@ d3.sankey = function() {
         link.dy = link.value * ky;
       });
     }
- 
-    function relaxLeftToRight(alpha) {
-      nodesByBreadth.forEach(function(nodes, breadth) {
-        nodes.forEach(function(node) {
-          if (node.targetLinks.length) {
-            var y = d3.sum(node.targetLinks, weightedSource) / d3.sum(node.targetLinks, value);
-            node.y += (y - center(node)) * alpha;
-          }
-        });
-      });
- 
-      function weightedSource(link) {
-        return center(link.source) * link.value;
-      }
-    }
- 
-    function relaxRightToLeft(alpha) {
-      nodesByBreadth.slice().reverse().forEach(function(nodes) {
-        nodes.forEach(function(node) {
-          if (node.sourceLinks.length) {
-            var y = d3.sum(node.sourceLinks, weightedTarget) / d3.sum(node.sourceLinks, value);
-            node.y += (y - center(node)) * alpha;
-          }
-        });
-      });
- 
-      function weightedTarget(link) {
-        return center(link.target) * link.value;
-      }
-    }
- 
+  
     function resolveCollisions() {
       nodesByBreadth.forEach(function(nodes) {
         var node,
@@ -280,10 +263,7 @@ d3.sankey = function() {
     }
   }
  
-  function center(node) {
-    return node.y + node.dy;
-  }
- 
+
   function value(link) {
     return link.value;
   }

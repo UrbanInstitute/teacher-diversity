@@ -32,9 +32,9 @@
 ] ,
 "nodes": [
 {"name":"White-All"},
-{"name":"Asian-All"},
 {"name":"Black-All"},
 {"name":"Hispanic-All"},
+{"name":"Asian-All"},
 
 {"name":"White"},
 {"name":"White-HS diploma"},
@@ -49,8 +49,8 @@
 {"name": "Hispanic-Bach"},
 {"name": "Asian-Bach"},
 {"name": "White-Teacher"},
-{"name": "Hispanic-Teacher"},
 {"name": "Black-Teacher"},
+{"name": "Hispanic-Teacher"},
 {"name": "Asian-Teacher"},
 {"name": "White-Teaching degree"},
 {"name": "Black-Teaching degree"},

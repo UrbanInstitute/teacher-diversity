@@ -149,6 +149,7 @@ var svg = d3.select("#chart").append("svg")
 var sankey = d3.sankey()
     .nodeWidth(36)
     .nodePadding(10)
+    .dataCategory(dataCategory)
     .size([width, height*.95]);
  
 var path = sankey.link();
