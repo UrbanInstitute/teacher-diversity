@@ -124,7 +124,7 @@ for (i=0; i<=4; i++){
         // }
         //  return "translate("+ 0 +", 0)"; 
       })
-      .text("100%")
+      .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
   }
 }
 
@@ -255,20 +255,20 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     // })
     .style("stroke-width", function(d) { return Math.max(1, d.dy); })
     .sort(function(a, b) {return b.dy - a.dy; })
-    .on("mouseover", showStats)
-    .on("mouseout", function() {
-      d3.selectAll(".stats-text")
-        .each(function(d,i) {
-          d3.select(this)
-            .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
-        })
-      d3.select(".description")
-        .text(function() {
-          return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
-        })
-      d3.selectAll(".node, .link")
-        .classed("hover", false)
-    });
+    // .on("mouseover", showStats)
+    // .on("mouseout", function() {
+    //   d3.selectAll(".stats-text")
+    //     .each(function(d,i) {
+    //       d3.select(this)
+    //         .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
+    //     })
+    //   d3.select(".description")
+    //     .text(function() {
+    //       return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
+    //     })
+    //   d3.selectAll(".node, .link")
+    //     .classed("hover", false)
+    // });
   link.append("title")
     .text(function(d) {
       return d.source.name + " → " + d.target.name + "\n" + format(d.value); })
@@ -291,20 +291,20 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     // .on("dragstart", function() { 
     // this.parentNode.appendChild(this); })
     // .on("drag", dragmove))
-    .on("mouseover", showStats)
-    .on("mouseout", function(d) { 
-      d3.selectAll(".stats-text")
-        .each(function(d,i) {
-          d3.select(this)
-            .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
-        })      
-      d3.select(".description")
-        .text(function() {
-          return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
-        })
-      d3.selectAll(".node, .link")
-        .classed("hover", false)
-    });
+    // .on("mouseover", showStats)
+    // .on("mouseout", function(d) { 
+    //   d3.selectAll(".stats-text")
+    //     .each(function(d,i) {
+    //       d3.select(this)
+    //         .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
+    //     })      
+    //   d3.select(".description")
+    //     .text(function() {
+    //       return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
+    //     })
+    //   d3.selectAll(".node, .link")
+    //     .classed("hover", false)
+    // });
 
 // add the rectangles for the nodes
   node.append("rect")
@@ -423,80 +423,81 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           }else if (event.clientX < 150) {
               d3.selectAll(".node-" + HEADERS2[i])
                 .classed("hover", true)
-                return "100%"        
+                var text = (d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i])  
+                  return text;
               }
         })
       }
     }
   }
 
-  function showStats(d) {
-    d3.select(".description")
-      .text(function() {
-        var description = (typeof d.id != 'undefined') ? d.target.name : d.name
-        if (description.search("Bach") > 0) {
-          return "Bachelor's Degree"
-        }else if (description.search("HS") > 0) {
-          return "High School Degree"
-        }else if (description.search("Teaching") > 0) {
-          return "Teaching Degree"
-        }else if (description.search("Teacher") > 0) {
-          return "Teacher"
-        }else {
-          return "All Students"
-        }
-      })
-    for (i=0; i<=4; i++){
-      if(i !== 4){
-        d3.select(".text" + i)
-          .text(function() {
-            var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
-            var format = (category == "numbers") ? numberFormat : percentFormat;
-            var description = (typeof d.id != 'undefined') ? d.target.name : d.name
-            if (description.search("Bach") > 0) {
-              d3.selectAll(".node-" + HEADERS2[i] + "-Bach, .link-" + HEADERS2[i] + "-HS")
-                .classed("hover", true)
-              var text = d3.select(".node-" + HEADERS2[i] + "-Bach").datum().targetLinks[0].value
-              return format(text)
-            }else if (description.search("HS") > 0){
-              d3.selectAll(".node-" + HEADERS2[i] + "-HS, .link-" + HEADERS2[i])
-                .classed("hover", true)
-              var text = d3.select(".node-" + HEADERS2[i] + "-HS").datum().targetLinks[0].value
-              return format(text)
-            }else if (description.search("Teaching") > 0){
-              d3.selectAll(".node-" + HEADERS2[i] + "-Teaching, .link-" + HEADERS2[i] + "-Bach.TD")
-                .classed("hover", true)
-              var text = d3.select(".node-" + HEADERS2[i] + "-Teaching").datum().targetLinks[0].value
-              return format(text)
-            }else if (description.search("Teacher") > 0){
-              //IF HOVERING OVER TEACHING DEGREE --> TEACHER LINK
-              if (typeof d.id != 'undefined' && d.source.name.search("Teaching") > 0) {
-                d3.selectAll(".node-" + HEADERS2[i] + "-Teacher, .link-" + HEADERS2[i] + "-Teaching")
-                  .classed("hover", true)
-                var text = d3.select(".link-" + HEADERS2[i] + "-Teaching").datum().value
-                return format(text)
-              }//IF HOVERING OVER BACHELOR --> TEACHER LINK
-              else if (typeof d.id != 'undefined' && d.source.name.search("Bach") > 0){
-                d3.selectAll(".node-" + HEADERS2[i] + "-Teacher, .link-" + HEADERS2[i] + "-Bach.no-TD")
-                  .classed("hover", true)
-                var text = d3.select(".link-" + HEADERS2[i] + "-Bach.no-TD").datum().value
-                return format(text)
-              }else{
-                d3.selectAll(".node-" + HEADERS2[i] + "-Teacher, .link-" + HEADERS2[i] + "-Bach.no-TD, .link-" + HEADERS2[i] + "-Teaching")
-                  .classed("hover", true)
-                var text = d3.select(".node-" + HEADERS2[i] + "-Teacher").datum().value
-                return format(text)
-              }
-            }else {
-              var text = d3.select(".node-" + HEADERS2[i]).datum().targetLinks[0].value
-              d3.selectAll(".node-" + HEADERS2[i])
-                .classed("hover", true)
-              return format(text)
-            }
-          })
-        }
-      }
-  }
+  // function showStats(d) {
+  //   d3.select(".description")
+  //     .text(function() {
+  //       var description = (typeof d.id != 'undefined') ? d.target.name : d.name
+  //       if (description.search("Bach") > 0) {
+  //         return "Bachelor's Degree"
+  //       }else if (description.search("HS") > 0) {
+  //         return "High School Degree"
+  //       }else if (description.search("Teaching") > 0) {
+  //         return "Teaching Degree"
+  //       }else if (description.search("Teacher") > 0) {
+  //         return "Teacher"
+  //       }else {
+  //         return "All Students"
+  //       }
+  //     })
+  //   for (i=0; i<=4; i++){
+  //     if(i !== 4){
+  //       d3.select(".text" + i)
+  //         .text(function() {
+  //           var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
+  //           var format = (category == "numbers") ? numberFormat : percentFormat;
+  //           var description = (typeof d.id != 'undefined') ? d.target.name : d.name
+  //           if (description.search("Bach") > 0) {
+  //             d3.selectAll(".node-" + HEADERS2[i] + "-Bach, .link-" + HEADERS2[i] + "-HS")
+  //               .classed("hover", true)
+  //             var text = d3.select(".node-" + HEADERS2[i] + "-Bach").datum().targetLinks[0].value
+  //             return format(text)
+  //           }else if (description.search("HS") > 0){
+  //             d3.selectAll(".node-" + HEADERS2[i] + "-HS, .link-" + HEADERS2[i])
+  //               .classed("hover", true)
+  //             var text = d3.select(".node-" + HEADERS2[i] + "-HS").datum().targetLinks[0].value
+  //             return format(text)
+  //           }else if (description.search("Teaching") > 0){
+  //             d3.selectAll(".node-" + HEADERS2[i] + "-Teaching, .link-" + HEADERS2[i] + "-Bach.TD")
+  //               .classed("hover", true)
+  //             var text = d3.select(".node-" + HEADERS2[i] + "-Teaching").datum().targetLinks[0].value
+  //             return format(text)
+  //           }else if (description.search("Teacher") > 0){
+  //             //IF HOVERING OVER TEACHING DEGREE --> TEACHER LINK
+  //             if (typeof d.id != 'undefined' && d.source.name.search("Teaching") > 0) {
+  //               d3.selectAll(".node-" + HEADERS2[i] + "-Teacher, .link-" + HEADERS2[i] + "-Teaching")
+  //                 .classed("hover", true)
+  //               var text = d3.select(".link-" + HEADERS2[i] + "-Teaching").datum().value
+  //               return format(text)
+  //             }//IF HOVERING OVER BACHELOR --> TEACHER LINK
+  //             else if (typeof d.id != 'undefined' && d.source.name.search("Bach") > 0){
+  //               d3.selectAll(".node-" + HEADERS2[i] + "-Teacher, .link-" + HEADERS2[i] + "-Bach.no-TD")
+  //                 .classed("hover", true)
+  //               var text = d3.select(".link-" + HEADERS2[i] + "-Bach.no-TD").datum().value
+  //               return format(text)
+  //             }else{
+  //               d3.selectAll(".node-" + HEADERS2[i] + "-Teacher, .link-" + HEADERS2[i] + "-Bach.no-TD, .link-" + HEADERS2[i] + "-Teaching")
+  //                 .classed("hover", true)
+  //               var text = d3.select(".node-" + HEADERS2[i] + "-Teacher").datum().value
+  //               return format(text)
+  //             }
+  //           }else {
+  //             var text = d3.select(".node-" + HEADERS2[i]).datum().targetLinks[0].value
+  //             d3.selectAll(".node-" + HEADERS2[i])
+  //               .classed("hover", true)
+  //             return format(text)
+  //           }
+  //         })
+  //       }
+  //     }
+  // }
 // the function for moving the nodes
   // function dragmove(d) {
   //   d3.select(this).attr("transform", 
