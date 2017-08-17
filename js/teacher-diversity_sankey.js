@@ -180,7 +180,7 @@ d3.sankey = function() {
       nodesByBreadth.forEach(function(nodes) {
         nodes.forEach(function(node, i) {
           //depending on whether graph is "all" or "bachelors" graph, graph the size of the first node (which corresponds to 100% of population)
-          if((dataCategory == "all" && node.name.search("-All") != -1) || (dataCategory == "bachelor" && node.name.search("-HS") != -1) ) {
+          if((dataCategory == "all" && node.name.search("-All") != -1) || (dataCategory == "bachelor" && node.name.search("diploma") != -1) ) {
             //height (dy) of first node , store in scalars array
             scalars[i] = node.value * ky
           }
