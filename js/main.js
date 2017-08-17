@@ -240,25 +240,9 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       }
     })      
     .attr("d", path)
-    // .style("stroke", function(d) {
-    //   return "url(#" + getGradID(d) + ")";
-    // })
     .style("stroke-width", function(d) { return Math.max(1, d.dy); })
     .sort(function(a, b) {return b.dy - a.dy; })
-    // .on("mouseover", showStats)
-    // .on("mouseout", function() {
-    //   d3.selectAll(".stats-text")
-    //     .each(function(d,i) {
-    //       d3.select(this)
-    //         .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
-    //     })
-    //   d3.select(".description")
-    //     .text(function() {
-    //       return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
-    //     })
-    //   d3.selectAll(".node, .link")
-    //     .classed("hover", false)
-    // });
+
   link.append("title")
     .text(function(d) {
       return d.source.name + " → " + d.target.name + "\n" + format(d.value); })
@@ -276,34 +260,11 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     // })  
     .attr("transform", function(d) { 
       return "translate(" + d.x + "," + d.y + ")"; })
-    // .call(d3.behavior.drag()
-    // .origin(function(d) { return d; })
-    // .on("dragstart", function() { 
-    // this.parentNode.appendChild(this); })
-    // .on("drag", dragmove))
-    // .on("mouseover", showStats)
-    // .on("mouseout", function(d) { 
-    //   d3.selectAll(".stats-text")
-    //     .each(function(d,i) {
-    //       d3.select(this)
-    //         .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
-    //     })      
-    //   d3.select(".description")
-    //     .text(function() {
-    //       return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
-    //     })
-    //   d3.selectAll(".node, .link")
-    //     .classed("hover", false)
-    // });
 
 // add the rectangles for the nodes
   node.append("rect")
       .attr("height", function(d) { return d.dy; })
       .attr("width", sankey.nodeWidth())
-      // .style("fill", function(d) { 
-      // return d.color = color(d.name.replace(/ .*/, "")); })
-      // .style("stroke", function(d) { 
-      // return d3.rgb(d.color).darker(2); })
       .append("title")
       .text(function(d) { 
       return d.name + "\n" + format(d.value); })
@@ -325,10 +286,17 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           return ""
         }
       })
-    .filter(function(d) { return d.x < width / 2; })
+      .filter(function(d) { return d.x < width / 2; })
       .attr("x", 6 + sankey.nodeWidth())
-      .attr("text-anchor", "start");
-
+      .attr("text-anchor", "start")
+    var Bach = (dataCategory == 'all') ? "" : "-Bach"
+  for (i=0; i<=4; i++){
+    if(i !== 4){
+    d3.selectAll(".node-" + HEADERS2[i] + Bach)
+      .classed("hover", true)
+    }
+  }
+          
   var xLabels = svg.append("g")
       .attr("width", width + margin.left + margin.right)
       .attr("height", 50)
@@ -354,22 +322,25 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
   .style("opacity", "0")
   .on('mousemove', showStats)
   .on("mouseout", function() {
+    var Bach = (dataCategory == 'all') ? "" : "-Bach"
+    d3.selectAll(".node, .link")
+      .classed("hover", false)
     d3.selectAll(".stats-text")
       .each(function(d,i) {
         d3.select(this)
           .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
+        d3.selectAll(".node-" + HEADERS2[i] + Bach)
+          .classed("hover", true)
       })
     d3.select(".description")
       .text(function() {
         return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
       })
-    d3.selectAll(".node, .link")
-      .classed("hover", false)
   });
 
   function showStats(d) { 
     d3.select(".description")
-      .text(function() {console.log(width*.22)
+      .text(function() {
         if (event.clientX >= rectBreaks[0] ) {
           return "Teacher"
         }else if (event.clientX > rectBreaks[1] ) {
