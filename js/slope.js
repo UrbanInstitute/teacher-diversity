@@ -40,7 +40,9 @@
         var cityData_white= data.filter(function(d) { 
           return d.white == 1 && d.black == 0 && d.hispanic == 0 && d.asian == 0 && d.american_indian == 0 && d.alaskan_native == 0 && d.native_hawaiian == 0 && d.city != "";
         })
-        console.log(cityData_white)
+        var stateData_white= data.filter(function(d) { 
+          return d.white == 1 && d.black == 0 && d.hispanic == 0 && d.asian == 0 && d.american_indian == 0 && d.alaskan_native == 0 && d.native_hawaiian == 0;
+        })
     
     //CITIES GRAPH
       var lines = gCity.selectAll("line")
@@ -91,7 +93,7 @@
       // //STATE GRAPH
       
       var lines2 = gState.selectAll("line")
-        .data(cityData_white);
+        .data(stateData_white);
         
       lines2.enter()
         .append("line")
@@ -107,7 +109,7 @@
         .attr("stroke-width", 1);
 
       var rightLabels2 = gState.selectAll(".labels")
-        .data(cityData_white);
+        .data(stateData_white);
         
       rightLabels2.enter()
         .append("text")
@@ -121,7 +123,7 @@
         });
       
       var leftLabels2 = gState.selectAll(".left-labels")
-        .data(cityData_white);
+        .data(stateData_white);
         
       leftLabels2.enter()
         .append("text")
@@ -142,9 +144,9 @@
         .text("Share of Students vs. Teachers by Race");
 
       d3.selectAll(".button_toggle")
-        .on("click", updateData)
+        .on("click", updateDataOn)
 
-      function updateData(){
+      function updateDataOn(){
         var race = this.id
         var index = raceOff.indexOf(race);
         if (index > -1) {
@@ -155,17 +157,57 @@
           return d[race] == 1;
         });  
         console.log(newData)
-        updateData2(newData)
+        updateDataOff(newData)
       }
 
-      function updateData2(newData) {
+      function updateDataOff(newData) {
         for (i=0; i<raceOff.length; i++){   
         console.log(raceOff[i])         
-          newData2 = newData.filter(function(d){
+          newDataFiltered = newData.filter(function(d){
             return d[raceOff[i]] == 0
           })
+          newData = newDataFiltered;
         }
-        console.log(newData2)
+          var dataCity = newDataFiltered.filter(function(d) {
+            return d.city != ""
+          })
+          var dataState = newDataFiltered
+          updateLines(dataCity, dataState)
+      }
+
+      function updateLines(dataCity, dataState) {
+        console.log(dataCity)
+        console.log(dataState)
+        console.log(raceOff)
+        console.log(raceOn)
+        gCity.selectAll("line")
+          .data(dataCity)
+          .transition()
+          .duration(2000)
+          .attr("x1", margin.left)
+          .attr("x2", width - margin.right)
+          .attr("y1", function(d) {
+            return leftScale(d['city_k12']);
+          })
+          .attr("y2", function(d) {
+            return rightScale(d['city_teacher']);
+          })
+          .attr("stroke", "black")
+          .attr("stroke-width", 1);
+        gState.selectAll("line")
+          .data(dataState)
+          .transition()
+          .duration(2000)
+          .attr("x1", margin.left)
+          .attr("x2", width - margin.right)
+          .attr("y1", function(d) {
+            return leftScale(d['state_k12']);
+          })
+          .attr("y2", function(d) {
+            return rightScale(d['state_teacher']);
+          })
+          .attr("stroke", "black")
+          .attr("stroke-width", 1);
       }
 
 
