@@ -61,10 +61,10 @@
         .attr("stroke", "black")
         .attr("stroke-width", 1);
 
-      var rightLabels = gCity.selectAll(".labels")
+      var rightLabelsCity = gCity.selectAll(".labels")
         .data(cityData_white);
         
-      rightLabels.enter()
+      rightLabelsCity.enter()
         .append("text")
         .attr("class","labels")
         .attr("x", width - margin.right + 3)
@@ -75,10 +75,10 @@
           return d['city'] //+ " " + currencyFormatter(d['2010']);
         });
       
-      var leftLabels = gCity.selectAll(".left-labels")
+      var leftLabelsCity = gCity.selectAll(".left-labels")
         .data(cityData_white);
         
-      leftLabels.enter()
+      leftLabelsCity.enter()
         .append("text")
         .attr("class","left-labels")
         .attr("x", margin.left - 65)
@@ -108,10 +108,10 @@
         .attr("stroke", "black")
         .attr("stroke-width", 1);
 
-      var rightLabels2 = gState.selectAll(".labels")
+      var rightLabelsState = gState.selectAll(".labels")
         .data(stateData_white);
         
-      rightLabels2.enter()
+      rightLabelsState.enter()
         .append("text")
         .attr("class","labels")
         .attr("x", width - margin.right + 3)
@@ -122,10 +122,10 @@
           return d['state'] //+ " " + currencyFormatter(d['2010']);
         });
       
-      var leftLabels2 = gState.selectAll(".left-labels")
+      var leftLabelsState = gState.selectAll(".left-labels")
         .data(stateData_white);
         
-      leftLabels2.enter()
+      leftLabelsState.enter()
         .append("text")
         .attr("class","left-labels")
         .attr("x", margin.left - 65)
@@ -198,6 +198,7 @@
         console.log(dataState)
         console.log("raceOff: " + raceOff)
         console.log("raceOn: " + raceOn)
+
         gCity.selectAll("line")
           .data(dataCity)
           .transition()
@@ -212,6 +213,32 @@
           })
           .attr("stroke", "black")
           .attr("stroke-width", 1);
+        //CITY LABELS
+        var rightLabelsCity = gCity.selectAll(".labels")
+          .data(dataCity)
+          .transition()
+          .duration(2000)
+          .attr("x", width - margin.right + 3)
+          .attr("y", function(d) {
+            return rightScale(d['city_teacher']) + 4;
+          })
+          .text(function (d) {
+            return d['city'] //+ " " + currencyFormatter(d['2010']);
+          });
+      
+        var leftLabelsCity = gCity.selectAll(".left-labels")
+          .data(dataCity)
+          .transition()
+          .duration(2000)
+          .attr("x", margin.left - 65)
+          .attr("y", function(d) {
+            return leftScale(d['city_k12']) + 4;
+          })
+          .text(function (d) {
+            return d['city']// + " " + currencyFormatter(d['1980']);
+          })
+          .style("text-anchor","begin");
+        
         gState.selectAll("line")
           .data(dataState)
           .transition()
@@ -226,6 +253,32 @@
           })
           .attr("stroke", "black")
           .attr("stroke-width", 1);
+        //STATE LABELS
+        var rightLabelsState = gState.selectAll(".labels")
+          .data(dataState)
+          .transition()
+          .duration(2000)
+          .attr("x", width - margin.right + 3)
+          .attr("y", function(d) {
+            return rightScale(d['state_teacher']) + 4;
+          })
+          .text(function (d) {
+            return d['state'] //+ " " + currencyFormatter(d['2010']);
+          });
+        
+        var leftLabelsState = gState.selectAll(".left-labels")
+          .data(dataState)
+          .transition()
+          .duration(2000)
+          .attr("x", margin.left - 65)
+          .attr("y", function(d) {
+            return leftScale(d['state_k12']) + 4;
+          })
+          .text(function (d) {
+            return d['state']// + " " + currencyFormatter(d['1980']);
+          })
+          .style("text-anchor","begin");
+
       }
 
 
