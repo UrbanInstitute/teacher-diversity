@@ -4,8 +4,8 @@
     var graphHeight = 700;
     var width = 340;
     var height = 600;
-    var raceOn = [];
-    var raceOff = ["white", "black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"]
+    var raceOn = ["white"];
+    var raceOff = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"]
     
     var margin = {top: 20, bottom: 20, left: 100, right:100};
     
@@ -144,25 +144,43 @@
         .text("Share of Students vs. Teachers by Race");
 
       d3.selectAll(".button_toggle")
-        .on("click", updateDataOn)
+        .on("click", function() {
+          if (d3.select(this).classed("on")){
+            d3.select(this).classed("off", true)
+            d3.select(this).classed("on", false)
+            updateDataOn("off", this.id)
+          }else {
+            d3.select(this).classed("on", true)
+            d3.select(this).classed("off", false)
+            updateDataOn("on", this.id)
+          }
+        })
 
-      function updateDataOn(){
-        var race = this.id
-        var index = raceOff.indexOf(race);
-        if (index > -1) {
-          raceOff.splice(index,1)
+      function updateDataOn(buttonState, race){
+        if (buttonState == "on") {
+          var index = raceOff.indexOf(race);
+          if (index > -1) {
+            raceOff.splice(index,1)
+          }
+          raceOn.push(race)
+          newData = data.filter(function(d,i){ 
+            return d[race] == 1;
+          });  
+        }else{
+          var index = raceOn.indexOf(race);
+          if (index > -1) {
+            raceOn.splice(index,1)
+          }
+          raceOff.push(race)
+          newData = data.filter(function(d,i){ 
+            return d[race] == 0;
+          }); 
         }
-       raceOn.push(race)
-        newData = data.filter(function(d,i){ 
-          return d[race] == 1;
-        });  
-        console.log(newData)
         updateDataOff(newData)
       }
 
       function updateDataOff(newData) {
         for (i=0; i<raceOff.length; i++){   
-        console.log(raceOff[i])         
           newDataFiltered = newData.filter(function(d){
             return d[raceOff[i]] == 0
           })
@@ -178,8 +196,8 @@
       function updateLines(dataCity, dataState) {
         console.log(dataCity)
         console.log(dataState)
-        console.log(raceOff)
-        console.log(raceOn)
+        console.log("raceOff: " + raceOff)
+        console.log("raceOn: " + raceOn)
         gCity.selectAll("line")
           .data(dataCity)
           .transition()
