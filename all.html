@@ -21,6 +21,10 @@
   shape-rendering: crispEdges;
   cursor: pointer;
 }
+
+.x-label, .node text {
+  fill: #231f20;
+}
 .node-White-All, .node-Asian-All, .node-Hispanic-All, .node-Black-All {
   opacity: 0;
 }
@@ -28,24 +32,59 @@
 .link-White-All, .link-Asian-All, .link-Hispanic-All, .link-Black-All{
   opacity: 0;
 }
-.node text {
-  pointer-events: none;
-  text-shadow: 0 1px 0 #fff;
-  fill: #000;
+
+.link-White, .link-Black, .link-Asian, .link-Hispanic {
+  stroke: #a2d3eb;
+  stroke-opacity: .77;
+  fill: none;
 }
 
-.node {
-  fill: #1696d2;
+.link-White-HS, .link-Black-HS, .link-Asian-HS, .link-Hispanic-HS {
+  stroke: #46abd9;
+  stroke-opacity: .77;
+  fill: none;
 }
+
+.link-White-Bach, .link-Black-Bach, .link-Asian-Bach, .link-Hispanic-Bach, .link-White-Bach.no-TD, .link-Black-Bach.no-TD, .link-Asian-Bach.no-TD, .link-Hispanic-Bach.no-TD{
+  stroke: #1896d2;
+  stroke-opacity: .77;
+  fill: none;
+}
+
+.link-White-Teaching, .link-Black-Teaching, .link-Asian-Teaching, .link-Hispanic-Teaching {
+  stroke: #11719f;
+  stroke-opacity: .77;
+  fill: none;
+}
+
+
+
+.node-White, .node-Black, .node-Asian, .node-Hispanic {
+  fill: #a2d3eb;
+}
+.node-White-HS, .node-Black-HS, .node-Asian-HS, .node-Hispanic-HS {
+  fill: #46abd9;
+}
+.node-White-Bach, .node-Black-Bach, .node-Asian-Bach, .node-Hispanic-Bach {
+  fill: #1896d2;
+}
+
+.node-White-Teaching, .node-Black-Teaching, .node-Asian-Teaching, .node-Hispanic-Teaching {
+  fill: #11719f;
+}
+.node-White-Teacher, .node-Black-Teacher, .node-Asian-Teacher, .node-Hispanic-Teacher {
+  fill: #062635;
+}
+
 
 .node.hover {
   fill: #0a4c6a;
 }
-.link {
+/*.link {
   fill: none;
   stroke: #696969;
   stroke-opacity: .4;
-}
+}*/
 
 .stats-text, #source-div {
   font-weight: 700;
@@ -57,7 +96,7 @@
  
 
 #toggles {
-  width: 100%;
+  width: 38%;
   padding-top: 10px;
   float: left;
 }
@@ -93,30 +132,42 @@
     border:solid 1px #e1e1e1;
 }
 
-#source-div {
+hr {
+  width: 100%;
+  border: 1px solid #dad9d9;
+  margin-bottom: 30px;
+}
+
+/*#source-div {
+  float: left;
+}*/
+
+/*.description {
+  font-size: 16px;
+  fill:  #1696d2;
+}*/
+
+#stats-div {
   float: left;
 }
 
-.description {
-  font-size: 16px;
-  fill:  #1696d2;
-}
-
-#stats-div {
-  text-transform: uppercase;
+#title {
+  margin-bottom: 30px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 </style>
 <body>
 <div id="chart" class="all">
+  <div id="title">Teacher Breakdown by Race- All Degrees</div>
   <div id="toggles">
     <div id="percent_button" class="toggle_button active"><span>Percentage</span></div>
     <div id="numbers_button" class="toggle_button"><span>Numbers</span></div>
   </div>
-  <div id="source-div">
-  </div>
   <div id="stats-div">
   </div>
+  <hr>
 </div>
  
 <script src="http://d3js.org/d3.v3.js"></script>
