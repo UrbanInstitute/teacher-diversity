@@ -22,8 +22,42 @@
   cursor: pointer;
 }
 
-.x-label, .node text {
+.label, .node text {
   fill: #231f20;
+  font-size: 14px;
+}
+
+.label-div {
+  width: 100%;
+}
+
+.label {
+  float: left;
+  margin-left: 55px;
+}
+
+.label p {
+    padding: 5px 10px 5px 10px;
+
+}
+
+.linkText {
+  font-size: 13px;
+}
+
+.label-HS {
+  margin-left: 35px;
+}
+
+.label-Bach {
+ margin-left: 45px;
+}
+.label-Teaching {
+  margin-left: 25px;
+}
+
+.label-Teacher {
+  margin-left: 40px;
 }
 .node-White-All, .node-Asian-All, .node-Hispanic-All, .node-Black-All {
   opacity: 0;
@@ -138,6 +172,10 @@ hr {
   margin-bottom: 30px;
 }
 
+.label.highlight p{
+  background-color: #fbbe15;
+}
+
 /*#source-div {
   float: left;
 }*/
@@ -146,6 +184,7 @@ hr {
   font-size: 16px;
   fill:  #1696d2;
 }*/
+
 
 #stats-div {
   float: left;
@@ -169,7 +208,24 @@ hr {
   </div>
   <hr>
 </div>
- 
+<div class="label-div">
+  <div class= "label label">
+    <p>All Students</p>
+  </div>
+  <div class= "label label-HS">
+    <p>High School</p>
+  </div>
+  <div class= "label label-Bach">
+    <p>Bachelor's</p>
+  </div>
+  <div class= "label label-Teaching">
+    <p>Teaching Degree</p>
+  </div>
+  <div class= "label label-Teacher">
+    <p>Teacher</p>
+  </div>
+</div>
+
 <script src="http://d3js.org/d3.v3.js"></script>
 <script src="js/teacher-diversity_sankey.js"></script>
 <script src="js/main.js"></script>

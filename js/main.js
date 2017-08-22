@@ -178,76 +178,6 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .links(graph_percent)
       .layout(32);
 
-//gradient help from: https://codepen.io/bencarmichael/pen/pJKgyr
-// define utility functions
-  // function getGradID(d) {
-  //   return "linkGrad-" + d.source.name + "-" + d.target.name;
-  // }
-
-  // function nodeColor(d) {
-  //   return d.color = color(d.name.replace(/ .*/, ""));
-  // }
-
-  // create gradients for the links
-
-  // var grads = defs.selectAll("linearGradient")
-  //   .data(graph_percent, getGradID);
-  // grads.enter().append("linearGradient")
-  //   .attr("id", getGradID)
-  //   .attr("gradientUnits", "userSpaceOnUse");
-
-  // function positionGrads() {
-  //   grads.attr("x1", function(d) {
-  //       return d.source.x;
-  //     })
-  //     .attr("y1", function(d) {
-  //       return d.source.y;
-  //     })
-  //     .attr("x2", function(d) {
-  //       return d.target.x;
-  //     })
-  //     .attr("y2", function(d) {
-  //       return d.target.y;
-  //     });
-  // }
-  // positionGrads();
-
-  // grads.html("") //erase any existing <stop> elements on update
-  // .append("stop")
-  // .attr("offset", "0%")
-  // .attr("stop-color", function(d) {
-  //   return nodeColor((+d.source.x <= +d.target.x) ?
-  //     d.source : d.target);
-  // });
-
-  // grads.append("stop")
-  //   .attr("offset", "100%")
-  //   .attr("stop-color", function(d) {
-  //     return nodeColor((+d.source.x > +d.target.x) ?
-  //       d.source : d.target)
-  //   });
-// add in the links
-  var link = svg.append("g").selectAll(".link")
-    .data(graph_percent, function(d) {return d.id})
-    .enter().append("path")
-    .attr("class", function(d) {
-      if ((d.id).search("Teaching") > 0 && (d.id).search("Bach") > 0) {
-        return "link" + " link-" + d.source.name + " TD"
-      }else if ((d.id).search("Teacher") > 0 && (d.id).search("Bach") > 0) {
-        return "link" + " link-" + d.source.name + " no-TD"
-      }else{
-      return "link" + " link-" + d.source.name;
-      }
-    })      
-    .attr("d", path)
-    .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-    .sort(function(a, b) {return b.dy - a.dy; })
-
-  link.append("title")
-    .text(function(d) {
-      return d.source.name + " → " + d.target.name + "\n" + format(d.value); })
-    .attr("class", "link-text");
-
 // add in the nodes
   var node = svg.append("g").selectAll(".node")
     .data(graph.nodes)
@@ -290,23 +220,149 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .attr("x", 6 + sankey.nodeWidth())
       .attr("text-anchor", "start")
 
+
+// add in the links
+  var link = svg.append("g").selectAll(".link")
+    .data(graph_percent, function(d) {return d.id})
+    .enter().append("path")
+    .attr("class", function(d) {
+      if ((d.id).search("Teaching") > 0 && (d.id).search("Bach") > 0) {
+        return "link" + " link-" + d.source.name + " TD"
+      }else if ((d.id).search("Teacher") > 0 && (d.id).search("Bach") > 0) {
+        return "link" + " link-" + d.source.name + " no-TD"
+      }else{
+      return "link" + " link-" + d.source.name;
+      }
+    })      
+    .attr("d", path)
+    .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+    .sort(function(a, b) {return b.dy - a.dy; })
+
+  link.append("title")
+    .text(function(d) {
+      return d.source.name + " → " + d.target.name + "\n" + format(d.value); })
+    .attr("class", "link-text");
+
+  var linkG = svg.append("g")
+    .attr("class", "g-text")
+  var linktext = linkG.selectAll(".link")
+    .data(graph_percent)
+    .enter()
+    .append("text").attr('class','linkText')
+    //.attr("x", 25)
+    //.attr("y", function(d) { console.log(d); return d.dy / 2; })
+    .attr("x", function(d) { 
+      if (d.value == 1) {
+        return d.source.x + (d.target.x - d.source.x) / 1; 
+      }else{
+      return d.source.x + (d.target.x - d.source.x) / 2; 
+      }
+    })
+    .attr("y", function(d) { return d.source.y + (d.target.y - d.source.y) / 4; })
+    .attr("dy", function(d) {
+      if ((d.target.name).search("Teacher") > 0 || (d.target.name).search("Teaching") > 0) {
+        return ".45em"
+      }else if ((d.target.name).search("Bach") > 0){
+       return "3em"
+      }else{
+       return "4.3em"
+      }
+    })
+    .attr("text-anchor", "end")
+    .attr("transform", null)
+    .text(function(d) { 
+      if (d.value == 1) {
+        return "100%"
+      }else {
+        return percentFormat(d.value); 
+      }
+    })
+    .attr("text-anchor", "start")
+    .style('fill','#094c6a')
+  linktext
+    .call(getBB)
+  function getBB(selection) {
+    selection.each(function(d){
+      d.bbox = this.getBBox();
+      console.log(d.bbox)
+    })
+  }
+
+  linkG.selectAll(".link")
+    .data(graph_percent)
+    .enter()
+    .insert("rect",".linkText")
+    .attr("width", function(d){
+      console.log(d.bbox); 
+      return d.bbox.width
+    })
+    .attr("height", function(d){
+      return d.bbox.height
+    })
+    .attr('x', function(d) { 
+      return d.bbox.x
+    })
+    .attr('y', function(d) {
+      return d.bbox.y
+    })
+    .style("fill", "#fff")
+    .style("opacity", function(d){
+      if ((d.target.name).search("Teacher") > 0 || (d.target.name).search("Teaching") > 0){
+        return .77
+      }else {
+        return 0
+      }
+    });
+
+    // linktext.insert("rect", "text")
+    //   .attr("width", function(d){return d.bbox.width})
+    //   .attr("height", function(d){return d.bbox.height})
+    //   .style("fill", "yellow");
+      // .data(graph_percent)
+      // .enter()
+      // .append("rect").attr('class','linkTextRect')
+      // //.attr("x", 25)
+      // //.attr("y", function(d) { console.log(d); return d.dy / 2; })
+      // .attr("x", function(d) { 
+      //   if (d.value == 1) {
+      //     return d.source.x + (d.target.x - d.source.x) / 1; 
+      //   }else{
+      //   return d.source.x + (d.target.x - d.source.x) / 2; 
+      //   }
+      // })
+      // .attr("y", function(d) { return d.source.y + (d.target.y - d.source.y) / 4; })
+      // .attr("width", "20px")
+      // .attr("height", "20px")
+      // .attr("dy", function(d) { console.log(d)
+      //   if ((d.target.name).search("Teacher") > 0 || (d.target.name).search("Teaching") > 0) {
+      //     return ".45em"
+      //   }else if ((d.target.name).search("Bach") > 0){
+      //    return "3em"
+      //   }else{
+      //    return "4.3em"
+      //   }
+      // })
+      // .style('fill','#fff')
+
           
   var xLabels = svg.append("g")
       .attr("width", width + margin.left + margin.right)
       .attr("height", 50)
       .attr("class", "g-xLabel")
 
-  for (i=0; i<=numberSteps; i++){
-    if(i !== numberSteps){
-      xLabels.append("text")
-        .attr("class", "x-label")
-        .attr("x", function() { 
-          return (numberSteps > 3) ? (width/5 + (width/5.4)*i) : (width/3.5 + (width/3.1)*i)
-        })
-        .attr("y", height)
-        .text(steps[i])
-    }
-  }
+  // for (i=0; i<=numberSteps; i++){
+  //   if(i !== numberSteps){
+  //     xLabels.append("text")
+  //       .attr("class", function(){
+  //         return "x-label label" + nodeNames[i]
+  //       })
+  //       .attr("x", function() { 
+  //         return (numberSteps > 3) ? (width/5 + (width/5.4)*i) : (width/3.5 + (width/3.1)*i)
+  //       })
+  //       .attr("y", height)
+  //       .text(steps[i])
+  //   }
+  // }
 
   var mouseoverRect = svg.append("g")
   .append("rect")
@@ -335,6 +391,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
   });
 
   function showStats(d) { 
+    d3.select(".label-Bach")
+      .classed("highlight", true)
     // d3.select(".description")
     //   .text(function() {
     //     if (event.clientX >= rectBreaks[0] ) {
@@ -353,41 +411,49 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     var format = (category == "numbers") ? numberFormat : percentFormat;
     d3.selectAll(".node, .link")
       .classed("hover", false)
-    // for (i=0; i<=4; i++){
-    //   if(i !== 4){
-    //     d3.select(".text" + i)
-    //       .text(function() {
-    //       if (event.clientX >= rectBreaks[0] ){
-    //         d3.selectAll(".node-" + HEADERS2[i] + "-Teacher, .link-" + HEADERS2[i]+ "-Bach.no-TD, .link-" + HEADERS2[i] + "-Teaching")
-    //           .classed("hover", true)
-    //         var text = d3.select(".node-" + HEADERS2[i] + "-Teacher").datum().value
-    //         return format(text)
-    //       }else if (event.clientX > rectBreaks[1]){
-    //         d3.selectAll(".node-" + HEADERS2[i] + "-Teaching, .link-" + HEADERS2[i] + "-Bach.TD")
-    //           .classed("hover", true)
-    //         var text = d3.select(".node-" + HEADERS2[i] + "-Teaching").datum().targetLinks[0].value
-    //           return format(text)
-    //         // var text = d3.select(".node-" + HEADERS2[i] + "-Teaching").datum().targetLinks[0].value
-    //         // return format(text)
-    //       }else if (event.clientX > rectBreaks[2]){
-    //           d3.selectAll(".node-" + HEADERS2[i] + "-Bach, .link-" + HEADERS2[i] + "-HS")
-    //             .classed("hover", true)
-    //           var text = d3.select(".node-" + HEADERS2[i] + "-Bach").datum().targetLinks[0].value
-    //           return format(text)
-    //       }else if (event.clientX > rectBreaks[3]){
-    //           d3.selectAll(".node-" + HEADERS2[i] + "-HS, .link-" + HEADERS2[i])
-    //             .classed("hover", true)
-    //           var text = d3.select(".node-" + HEADERS2[i] + "-HS").datum().targetLinks[0].value
-    //           return format(text)          
-    //       }else if (event.clientX < rectBreaks[3]) {
-    //           d3.selectAll(".node-" + HEADERS2[i])
-    //             .classed("hover", true)
-    //             var text = (d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i])  
-    //               return text;
-    //       }
-    //     })
-    //   }
-    // }
+    for (i=0; i<=4; i++){
+      if(i !== 4){
+        // d3.select(".text" + i)
+        //   .text(function() {
+          if (event.clientX >= rectBreaks[0] ){
+            // d3.selectAll(".node-" + HEADERS2[i] + "-Teacher, .link-" + HEADERS2[i]+ "-Bach.no-TD, .link-" + HEADERS2[i] + "-Teaching")
+            //   .classed("hover", true)
+            // var text = d3.select(".node-" + HEADERS2[i] + "-Teacher").datum().value
+            // return format(text)
+
+              // .attr("transform", function(d) {
+              //   return "translate(" + width/2 + "," + 50*i+ ")";
+              // });
+          }else if (event.clientX > rectBreaks[1]){
+            // d3.selectAll(".node-" + HEADERS2[i] + "-Teaching, .link-" + HEADERS2[i] + "-Bach.TD")
+            //   .classed("hover", true)
+            // var text = d3.select(".node-" + HEADERS2[i] + "-Teaching").datum().targetLinks[0].value
+            //   return format(text)
+
+              // .attr("transform", function(d) {
+              //   return "translate(" + width/2 + "," + 50*i+ ")";
+              // });
+          }else if (event.clientX > rectBreaks[2]){
+              // d3.selectAll(".node-" + HEADERS2[i] + "-Bach, .link-" + HEADERS2[i] + "-HS")
+              //   .classed("hover", true)
+              // var text = d3.select(".node-" + HEADERS2[i] + "-Bach").datum().targetLinks[0].value
+              // return format(text)
+
+          }else if (event.clientX > rectBreaks[3]){
+              // d3.selectAll(".node-" + HEADERS2[i] + "-HS, .link-" + HEADERS2[i])
+              //   .classed("hover", true)
+              // var text = d3.select(".node-" + HEADERS2[i] + "-HS").datum().targetLinks[0].value
+              // return format(text)  
+
+          }else if (event.clientX < rectBreaks[3]) {
+              // d3.selectAll(".node-" + HEADERS2[i])
+              //   .classed("hover", true)
+                // var text = (d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i])  
+                //   return text;
+          }
+        // })
+      }
+    }
   }
 
   d3.selectAll(".toggle_button")
