@@ -6,7 +6,9 @@ var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = (dataCategory == 'all') ? 710 - margin.left - margin.right : 800 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 var numberFormat = d3.format(",");
+var numberShortFormat = d3.format(".2s");
 var percentFormat = d3.format(".2%");
+var FIRSTNODE= ["White-All", "Black-All", "Hispanic-All", "Asian-All"];
 var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
     HEADERS1= ["SOURCE", "TARGET"],
     nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
@@ -26,12 +28,12 @@ var format = function(d) {
   }
 };
 
-var headerFormat = function(d) { 
+var linkTextFormat = function(d) { 
   var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
   if (category == "percent") {
     return percentFormat(d) 
   }else {
-    return numberFormat(d)
+    return numberShortFormat(d)
   }
 };
   // format = function(d) { return formatNumber(d) },
@@ -274,8 +276,6 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .attr('class', function(d) { console.log(d)
       return 'linkText linkText-' + d.target.name
     })
-    //.attr("x", 25)
-    //.attr("y", function(d) { console.log(d); return d.dy / 2; })
     .attr("x", function(d) { 
       if (d.value == 1) {
         return d.source.x + (d.target.x - d.source.x) / 1; 
@@ -283,7 +283,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       return d.source.x + (d.target.x - d.source.x) / 2; 
       }
     })
-    .attr("y", function(d) { return d.source.y + (d.target.y - d.source.y) / 4; })
+    .attr("y", function(d) { return d.source.y + (d.target.y - d.source.y) / 2; })
     .attr("dy", function(d) {
       if ((d.target.name).search("Teacher") > 0 || (d.target.name).search("Teaching") > 0) {
         return "1.2em"
@@ -502,11 +502,11 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
   
   function update(nodeData, linkData) {
-    d3.selectAll(".stats-text")
-      .each(function(d,i) {
-        d3.select(this)
-          .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
-      })  
+    // d3.selectAll(".stats-text")
+    //   .each(function(d,i) {
+    //     d3.select(this)
+    //       .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
+    //   })  
     // d3.select(".description")
     // .text(function() {
     //   return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
@@ -516,8 +516,6 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .links(linkData)
       .layout(32);
 
-    // sankey.relayout();
-    // fontScale.domain(d3.extent(nodeData, function(d) { return d.value }));
     svg.selectAll(".link")
       .data(linkData, function(x) { return x.id })
       .sort(function(a, b) { 
@@ -552,6 +550,69 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .text(function(d) { 
         return d.source.name + " → " + d.target.name + "\n" + format(d.value); 
       })
+    linkG.selectAll(".linkText")
+      .data(linkData)
+      .transition()
+      .duration(1300)
+       .attr("x", function(d) { 
+          if (FIRSTNODE.indexOf(d.source.name) > -1) { console.log(d.source.x + (d.target.x - d.source.x))
+            return width*.19
+          }else{
+          return d.source.x + (d.target.x - d.source.x) / 2; 
+          }
+        })
+      .attr("y", function(d) { return d.source.y + (d.target.y - d.source.y) / 4; })
+      .attr("dy", function(d) {
+        if ((d.target.name).search("Teacher") > 0 || (d.target.name).search("Teaching") > 0) {
+          return "1.2em"
+        }else if ((d.target.name).search("Bach") > 0){
+         return "3em"
+        }else{
+         return "2em"
+        }
+      })
+      .text(function(d) { 
+        if (d.value == 1) {
+          return "100%"
+        }else if ((d.target.name).search("Teacher") > 0){
+         return ""
+        }else{
+          return linkTextFormat(d.value); 
+        }
+      })
+    linktext
+      .call(getBB)
+
+    linkG.selectAll(".linkTextRect")
+      .data(linkData)
+      .transition()
+      .duration(1300)
+      .attr("width", function(d){
+        console.log(d.bbox); 
+        return d.bbox.width
+      })
+      .attr("height", function(d){
+        return d.bbox.height
+      })
+      .attr('x', function(d) { 
+        return d.bbox.x
+      })
+      .attr('y', function(d) {
+        return d.bbox.y
+      })
+    for (i=0; i<4; i++){
+      d3.select(".node-" + HEADERS2[i] + "-Teacher .linkText")
+      //   .attr("x", function(d) { 
+      //     return 0
+      // })
+      // .attr("y", function(d) { return -10 })
+      // .attr("dy", function(d) {
+      //     return ".45em"
+      // })
+      .text(function(d){
+        return linkTextFormat(d.value);
+      })
+    }
   };
 });
  
