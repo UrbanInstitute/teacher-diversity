@@ -8,7 +8,7 @@ var margin = {top: 10, right: 10, bottom: 10, left: 10},
 var numberFormat = d3.format(",");
 var numberShortFormat = d3.format(".2s");
 var percentFormat = d3.format(".2%");
-var FIRSTNODE= ["White-All", "Black-All", "Hispanic-All", "Asian-All"];
+var FIRSTNODE= (dataCategory == 'all') ? ["White-All", "Black-All", "Hispanic-All", "Asian-All"] : ["White diploma", "Black diploma", "Hispanic diploma", "Asian diploma"];
 var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
     HEADERS1= ["SOURCE", "TARGET"],
     nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
@@ -37,37 +37,7 @@ var linkTextFormat = function(d) {
     return numberShortFormat(d)
   }
 };
-  // format = function(d) { return formatNumber(d) },
 
-
-// var descriptionSvg = d3.select("#source-div")
-//   .append("svg")
-//   .attr("width", function() {
-//     return (dataCategory == 'all') ? width/3 : width/3.2
-//   })
-//   .attr("height", height/12 + margin.top)
-//   .append("text")
-//   .attr("class", "description")
-//   .attr("x", function() {
-//     // if (container_width < 400) {
-//     //     return (.02*width);
-//     //  }
-//         return (.01*width);
-//   })
-//   .attr("y", function(){
-//     if (dataCategory == 'all') {
-//       return width*.07
-//     }else{
-//       return .063*width;
-//       }          
-//   })
-  // .text(function() { 
-  //   if (dataCategory == 'all'){ 
-  //     return 'All Students'
-  //   }else {
-  //     return 'Bachelor\'s Degree'
-  //   }
-  // })
 
 var statsSvg = d3.select("#stats-div")
   .append("svg")
@@ -458,7 +428,10 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         heightDiff = chartHeight - rectHeight,
         category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0],
         format = (category == "numbers") ? numberFormat : percentFormat,
-        rectBreaksY = (category == 'percent') ? [rectHeight*.33, rectHeight*.55, rectHeight*.78] : [rectHeight*.59, rectHeight*.75, rectHeight*.93];
+        rectBreaksYAll = (category == 'percent') ? [rectHeight*.33, rectHeight*.55, rectHeight*.78] : [rectHeight*.59, rectHeight*.75, rectHeight*.93],
+        rectBreaksYBach = (category == 'percent') ? [rectHeight*.33, rectHeight*.55, rectHeight*.78] : [rectHeight*.68, rectHeight*.78, rectHeight*.88],
+        rectBreaksY = (dataCategory == 'all') ? rectBreaksYAll : rectBreaksYBach;
+
     if (event.clientY < (heightDiff + rectBreaksY[0])){
       d3.selectAll(highlightClass(node, link, 0))
         .classed("highlight", true)
@@ -484,8 +457,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
   d3.selectAll(".toggle_button")
     .on("click", function(){
-        // category = d3.select(".toggle_button.active").node().id.split("_")[0]
-        // var end = this.id.split("_")[0]
+        var category = d3.select(".toggle_button.active").node().id.split("_")[0]
         d3.selectAll(".toggle_button.active").classed("active",false)
         d3.select(this).classed("active",true)
         var category = this.id.split("_")[0]
@@ -495,15 +467,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
   
   function update(nodeData, linkData) {
-    // d3.selectAll(".stats-text")
-    //   .each(function(d,i) {
-    //     d3.select(this)
-    //       .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
-    //   })  
-    // d3.select(".description")
-    // .text(function() {
-    //   return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
-    // })
+    var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
+    console.log(category)
     sankey
       .nodes(nodeData)
       .links(linkData)
@@ -547,19 +512,19 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .data(linkData)
        .attr("x", function(d) { 
           if (FIRSTNODE.indexOf(d.source.name) > -1) { 
-            return width*.19
+            return (dataCategory == 'all') ? width*.195 : width * .322
           }else{
           return d.source.x + (d.target.x - d.source.x) / 2; 
           }
         })
-      .attr("y", function(d) { return d.source.y + (d.target.y - d.source.y) / 4; })
+      .attr("y", function(d) { return d.source.y + (d.target.y - d.source.y) / 2; })
       .attr("dy", function(d) {
         if ((d.target.name).search("Teacher") > 0 || (d.target.name).search("Teaching") > 0) {
           return "1.2em"
         }else if ((d.target.name).search("Bach") > 0){
-         return "3em"
-        }else{
-         return "2em"
+         return (dataCategory == 'all') ? "2em" : "2em"
+        }else{ 
+         return (category == 'numbers') ? "2em" : "4.3em";
         }
       })
       .text(function(d) { 
