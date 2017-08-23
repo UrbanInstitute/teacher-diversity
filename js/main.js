@@ -13,7 +13,8 @@ var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
     HEADERS1= ["SOURCE", "TARGET"],
     nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
     numberStats = (dataCategory == 'all') ? [92338890, 19560471, 25434140,10383460] : [92338890, 19560471, 25434140,10383460],
-    rectBreaks = (dataCategory == 'all') ? [width*.75, width*.6, width*.42, width*.22] :  [width*.53, width*.22, 0, 1000000],
+    rectBreaksX = (dataCategory == 'all') ? [width*.75, width*.6, width*.42, width*.22] :  [width*.53, width*.22, 0, 1000000],
+    
     // color = d3.scale.ordinal()
     //   .domain([""])
   // (["#a2d4ec", "#46abdb", "#1696d2", " #12719e"])
@@ -124,7 +125,8 @@ var statsSvg = d3.select("#stats-div")
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+    .attr("class", "main-svg")
+    .append("g")
     .attr("transform", function() {
       if (dataCategory == 'all') {
         return "translate(" + -50+ "," + margin.top + ")"
@@ -273,7 +275,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .data(graph_percent)
     .enter()
     .append("text")
-    .attr('class', function(d) { console.log(d)
+    .attr('class', function(d) { 
       return 'linkText linkText-' + d.target.name
     })
     .attr("x", function(d) { 
@@ -295,7 +297,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     })
     .attr("text-anchor", "end")
     .attr("transform", null)
-    .text(function(d) { console.log(d)
+    .text(function(d) { 
       if (d.value == 1) {
         return "100%"
       }else if ((d.target.name).search("Teacher") > 0){
@@ -319,7 +321,6 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .enter()
     .insert("rect",".linkText")
     .attr("width", function(d){
-      console.log(d.bbox); 
       return d.bbox.width
     })
     .attr("height", function(d){
@@ -391,31 +392,19 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
   });
 
   function showStats(d) { 
-    // d3.select(".description")
-    //   .text(function() {
-    //     if (event.clientX >= rectBreaks[0] ) {
-    //       return "Teacher"
-    //     }else if (event.clientX > rectBreaks[1] ) {
-    //       return "Teaching Degree"
-    //     }else if (event.clientX > rectBreaks[2] ) {
-    //       return "Bachelor's Degree"
-    //     }else if (event.clientX > rectBreaks[3] ) {
-    //       return "High School"
-    //     }else {
-    //       return "All students"
-    //     }
-    //   })
-    var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
-    var format = (category == "numbers") ? numberFormat : percentFormat;
+    var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0],
+        format = (category == "numbers") ? numberFormat : percentFormat;
     d3.selectAll(".linkText")
       .classed("showText", false)
     d3.selectAll(".linkTextRect")
       .classed("setTransparent", false)
+    d3.selectAll(".node, .link")
+      .classed("highlight", false)
     for (i=0; i<=4; i++){
       if(i !== 4){
         // d3.select(".text" + i)
         //   .text(function() {
-          if (event.clientX >= rectBreaks[0] ){
+          if (event.clientX >= rectBreaksX[0] ){
               d3.selectAll(".label")
                 .classed("highlight", false)
               d3.select(".label-Teacher")
@@ -430,7 +419,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
               // .attr("transform", function(d) {
               //   return "translate(" + width/2 + "," + 50*i+ ")";
               // });
-          }else if (event.clientX > rectBreaks[1]){
+          }else if (event.clientX > rectBreaksX[1]){
               d3.selectAll(".label")
                 .classed("highlight", false)
               d3.select(".label-Teaching")
@@ -439,46 +428,36 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
                 .classed("showText", true)
               d3.selectAll(".linkTextRect-" + HEADERS2[i] + "-Teaching")
                 .classed("setTransparent", true)
-            // d3.selectAll(".node-" + HEADERS2[i] + "-Teaching, .link-" + HEADERS2[i] + "-Bach.TD")
-            //   .classed("hover", true)
-            // var text = d3.select(".node-" + HEADERS2[i] + "-Teaching").datum().targetLinks[0].value
-            //   return format(text)
+              highlightSelected("-Teaching", "-Bach.TD")
 
-              // .attr("transform", function(d) {
-              //   return "translate(" + width/2 + "," + 50*i+ ")";
-              // });
-          }else if (event.clientX > rectBreaks[2]){
-            console.log('hello')
+          }else if (event.clientX > rectBreaksX[2]){
               d3.selectAll(".label")
                 .classed("highlight", false)
               d3.select(".label-Bach")
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i] + "-Bach")
                 .classed("showText", true)
-              // d3.selectAll(".node-" + HEADERS2[i] + "-Bach, .link-" + HEADERS2[i] + "-HS")
-              //   .classed("hover", true)
-              // var text = d3.select(".node-" + HEADERS2[i] + "-Bach").datum().targetLinks[0].value
-              // return format(text)
+              highlightSelected("-Bach", "-HS")
 
-          }else if (event.clientX > rectBreaks[3]){
+          }else if (event.clientX > rectBreaksX[3]){
               d3.selectAll(".label")
                 .classed("highlight", false)
               d3.select(".label-HS")
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i] + "-HS")
                 .classed("showText", true)
-              // d3.selectAll(".node-" + HEADERS2[i] + "-HS, .link-" + HEADERS2[i])
-              //   .classed("hover", true)
-              // var text = d3.select(".node-" + HEADERS2[i] + "-HS").datum().targetLinks[0].value
-              // return format(text)  
+               highlightSelected("-HS", "")
 
-          }else if (event.clientX < rectBreaks[3]) {
+          }else if (event.clientX < rectBreaksX[3]) {
               d3.selectAll(".label")
                 .classed("highlight", false)
               d3.select(".label")
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i])
                 .classed("showText", true)
+              highlightSelected("", "none")
+
+
               // d3.selectAll(".node-" + HEADERS2[i])
               //   .classed("hover", true)
                 // var text = (d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i])  
@@ -486,6 +465,27 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           }
         // })
       }
+    }
+  }
+
+  function highlightSelected(node, link) {
+    var chartHeight = $("#chart").height(),
+        rectHeight = d3.select(".mouseoverRect").attr("height"),
+        heightDiff = chartHeight - rectHeight,
+        rectBreaksY = (dataCategory == 'all') ? [rectHeight*.33, rectHeight*.55, rectHeight*.78] : [];
+    if (event.clientY < (heightDiff + rectBreaksY[0])){
+      console.log(heightDiff + rectBreaksY[0])
+      d3.selectAll(".node-" + HEADERS2[0] + node + ", .link-" + HEADERS2[0] + link)
+        .classed("highlight", true)
+    }else if (event.clientY < (heightDiff + rectBreaksY[1])){
+      d3.selectAll(".node-" + HEADERS2[1] + node + ", .link-" + HEADERS2[1] + link)
+        .classed("highlight", true)
+    } else if (event.clientY < (heightDiff + rectBreaksY[2])){
+      d3.selectAll(".node-" + HEADERS2[2] + node + ", .link-" + HEADERS2[2] + link)
+        .classed("highlight", true)
+    }else{ 
+      d3.selectAll(".node-" + HEADERS2[3] + node + ", .link-" + HEADERS2[3] + link)
+        .classed("highlight", true)
     }
   }
 
