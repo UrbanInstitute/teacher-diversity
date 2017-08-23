@@ -115,7 +115,7 @@ hr {
 }
 
 .link.highlight {
-  stroke: #fbbe15;
+  stroke: #fbbe15 !important;
   stroke-opacity: .77;
   fill: none;
 }

@@ -73,58 +73,14 @@ var statsSvg = d3.select("#stats-div")
   .append("svg")
   .attr("width", function() { 
    // return (dataCategory == 'all') ? width/1.8 : width/2
-   return width/1.7
+   return width/1.85
   })
   .attr("height", height/8 + margin.top)
   .append("text")
-  .attr("x", width*.05)
+  .attr("x", 0)
   .attr("y", height*.05)
   .attr("class", "description")
-// for (i=0; i<=4; i++){
-//   if(i !== 4){
-//     statsSvg.append("text")
-//       .attr("class", "stats-header")
-//       .attr("x", function() {
-//         // if (container_width < 400) {
-//         //     return (.25*width)*i;
-//         //  }
-//         if (dataCategory == 'all') {
-//           return (.15*width)*i
-//         }else{
-//           return (.12*width)*i;
-//           }
-//       })
-//       .attr("y", 20)
-//       .text(function(){ 
-//           return (HEADERS2[i])
-//       })
 
-//     statsSvg.append("text")
-//       .attr("class", function() {
-//         return "stats-text " + "text" + i})
-//       .attr("x", function() {
-//         // if (container_width < 400) {
-//         //     return (.25*width)*i;
-//         //  }
-//         if (dataCategory == 'all') {
-//           return (.15*width)*i
-//         }else{
-//           return (.12*width)*i;
-//           }      
-//       })
-//       .attr("y", function() {
-//         // if (container_width < 400){
-//         //   return height*.08
-//         // } 
-//         if (dataCategory == 'all') {
-//           return width*.07
-//         }else{
-//           return .063*width;
-//           }        
-//         })
-//      // .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
-//   }
-// }
 
 // append the svg canvas to the page
 var svg = d3.select("#chart").append("svg")
@@ -240,7 +196,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       }else if ((d.id).search("Teacher") > 0 && (d.id).search("Bach") > 0) {
         return "link" + " link-" + d.source.name + " no-TD"
       }else{
-      return "link" + " link-" + d.source.name;
+        return "link" + " link-" + d.source.name;
       }
     })      
     .attr("d", path)
@@ -491,7 +447,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     }
     var description = function(degree, i) {
       if (typeof(degree) == "undefined"){
-        return ""
+        return " of " + HEADERS2[i] + " students "
       }else{
       return " of " + HEADERS2[i] + " students " + degree
       }
@@ -506,22 +462,22 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     if (event.clientY < (heightDiff + rectBreaksY[0])){
       d3.selectAll(highlightClass(node, link, 0))
         .classed("highlight", true)
-      var text = (node == "") ? "" : d3.select(linkTextClass(node, 0)).text()
+      var text = d3.select(linkTextClass(node, 0)).text()
       statsSvg.text(text + description(degree, 0))
     }else if (event.clientY < (heightDiff + rectBreaksY[1])){
       d3.selectAll(highlightClass(node, link, 1))
         .classed("highlight", true)
-      var text = (node == "") ? "" : d3.select(linkTextClass(node, 1)).text()
+      var text = d3.select(linkTextClass(node, 1)).text()
       statsSvg.text(text + description(degree, 1))
     } else if (event.clientY < (heightDiff + rectBreaksY[2])){
       d3.selectAll(highlightClass(node, link, 2))
         .classed("highlight", true)
-      var text = (node == "") ? "" : d3.select(linkTextClass(node, 2)).text()
+      var text = d3.select(linkTextClass(node, 2)).text()
       statsSvg.text(text + description(degree, 2))
     }else{ 
       d3.selectAll(highlightClass(node, link, 3))
         .classed("highlight", true)
-      var text = (node == "") ? "" : d3.select(linkTextClass(node, 3)).text()
+      var text = d3.select(linkTextClass(node, 3)).text()
       statsSvg.text(text + description(degree, 3))
     }
   }
