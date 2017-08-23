@@ -72,9 +72,14 @@ var linkTextFormat = function(d) {
 var statsSvg = d3.select("#stats-div")
   .append("svg")
   .attr("width", function() { 
-    return (dataCategory == 'all') ? width/1.8 : width/2
+   // return (dataCategory == 'all') ? width/1.8 : width/2
+   return width/1.7
   })
   .attr("height", height/8 + margin.top)
+  .append("text")
+  .attr("x", width*.05)
+  .attr("y", height*.05)
+  .attr("class", "description")
 // for (i=0; i<=4; i++){
 //   if(i !== 4){
 //     statsSvg.append("text")
@@ -391,7 +396,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       // })
   });
 
-  function showStats(d) { 
+  function showStats() { 
     var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0],
         format = (category == "numbers") ? numberFormat : percentFormat;
     d3.selectAll(".linkText")
@@ -402,8 +407,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .classed("highlight", false)
     for (i=0; i<=4; i++){
       if(i !== 4){
-        // d3.select(".text" + i)
-        //   .text(function() {
+          
+          //SHOW ALL STATS BY DEGREE TYPE
           if (event.clientX >= rectBreaksX[0] ){
               d3.selectAll(".label")
                 .classed("highlight", false)
@@ -411,6 +416,9 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
                 .classed("highlight", true)
               d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher")
                 .classed("showText", true)
+              highlightSelected("-Teacher", "-Bach.no-TD", "became a teacher")
+              highlightSelected("-Teacher", "-Teaching", "became a teacher")
+
             // d3.selectAll(".node-" + HEADERS2[i] + "-Teacher, .link-" + HEADERS2[i]+ "-Bach.no-TD, .link-" + HEADERS2[i] + "-Teaching")
             //   .classed("hover", true)
             // var text = d3.select(".node-" + HEADERS2[i] + "-Teacher").datum().value
@@ -428,8 +436,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
                 .classed("showText", true)
               d3.selectAll(".linkTextRect-" + HEADERS2[i] + "-Teaching")
                 .classed("setTransparent", true)
-              highlightSelected("-Teaching", "-Bach.TD")
-
+              highlightSelected("-Teaching", "-Bach.TD", "received a Teaching Degree")
+              statsSvg.text()
           }else if (event.clientX > rectBreaksX[2]){
               d3.selectAll(".label")
                 .classed("highlight", false)
@@ -437,7 +445,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i] + "-Bach")
                 .classed("showText", true)
-              highlightSelected("-Bach", "-HS")
+              highlightSelected("-Bach", "-HS", "received a Bachelor's degree")
 
           }else if (event.clientX > rectBreaksX[3]){
               d3.selectAll(".label")
@@ -446,7 +454,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i] + "-HS")
                 .classed("showText", true)
-               highlightSelected("-HS", "")
+               highlightSelected("-HS", "", "received a high school degree")
 
           }else if (event.clientX < rectBreaksX[3]) {
               d3.selectAll(".label")
@@ -455,7 +463,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i])
                 .classed("showText", true)
-              highlightSelected("", "none")
+              highlightSelected("")
 
 
               // d3.selectAll(".node-" + HEADERS2[i])
@@ -468,24 +476,54 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     }
   }
 
-  function highlightSelected(node, link) {
+  function highlightSelected(node, link, degree) {
+    var highlightClass = function(node, link, i) {
+      if (typeof(link) == "undefined"){ 
+        return ".node-" + HEADERS2[i] + node
+      }else{
+        return ".node-" + HEADERS2[i] + node + ", .link-" + HEADERS2[i] + link      }
+    }
+    var linkTextClass = function(node, i) {
+      // if (typeof(link) == "undefined"){ 
+      //   return null
+      // }else{
+        return ".linkText-" + HEADERS2[i] + node     
+     // }
+    }
+    var description = function(degree, i) {
+      if (typeof(degree) == "undefined"){
+        return ""
+      }else{
+      return " of " + HEADERS2[i] + " students " + degree
+      }
+    }
+
     var chartHeight = $("#chart").height(),
         rectHeight = d3.select(".mouseoverRect").attr("height"),
         heightDiff = chartHeight - rectHeight,
-        rectBreaksY = (dataCategory == 'all') ? [rectHeight*.33, rectHeight*.55, rectHeight*.78] : [];
+        category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0],
+        format = (category == "numbers") ? numberFormat : percentFormat,
+        rectBreaksY = (category == 'percent') ? [rectHeight*.33, rectHeight*.55, rectHeight*.78] : [rectHeight*.59, rectHeight*.75, rectHeight*.93];
     if (event.clientY < (heightDiff + rectBreaksY[0])){
-      console.log(heightDiff + rectBreaksY[0])
-      d3.selectAll(".node-" + HEADERS2[0] + node + ", .link-" + HEADERS2[0] + link)
+      d3.selectAll(highlightClass(node, link, 0))
         .classed("highlight", true)
+      var text = (node == "") ? "" : d3.select(linkTextClass(node, 0)).text()
+      statsSvg.text(text + description(degree, 0))
     }else if (event.clientY < (heightDiff + rectBreaksY[1])){
-      d3.selectAll(".node-" + HEADERS2[1] + node + ", .link-" + HEADERS2[1] + link)
+      d3.selectAll(highlightClass(node, link, 1))
         .classed("highlight", true)
+      var text = (node == "") ? "" : d3.select(linkTextClass(node, 1)).text()
+      statsSvg.text(text + description(degree, 1))
     } else if (event.clientY < (heightDiff + rectBreaksY[2])){
-      d3.selectAll(".node-" + HEADERS2[2] + node + ", .link-" + HEADERS2[2] + link)
+      d3.selectAll(highlightClass(node, link, 2))
         .classed("highlight", true)
+      var text = (node == "") ? "" : d3.select(linkTextClass(node, 2)).text()
+      statsSvg.text(text + description(degree, 2))
     }else{ 
-      d3.selectAll(".node-" + HEADERS2[3] + node + ", .link-" + HEADERS2[3] + link)
+      d3.selectAll(highlightClass(node, link, 3))
         .classed("highlight", true)
+      var text = (node == "") ? "" : d3.select(linkTextClass(node, 3)).text()
+      statsSvg.text(text + description(degree, 3))
     }
   }
 
