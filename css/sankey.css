@@ -32,6 +32,14 @@
 .linkTextRect{
   opacity: 0;
 }
+.teacherText {
+  font-size: 13px;
+  font-style: italic;
+  opacity: 0;
+}
+.teacherText.highlight {
+  opacity: 1;
+}
 .setTransparent{
   opacity: .77;
 }
