@@ -315,11 +315,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
   linktext
     .call(getBB)
-  function getBB(selection) {
-    selection.each(function(d){
-      d.bbox = this.getBBox();
-    })
-  }
+
 
   linkG.selectAll(".link")
     .data(graph_percent)
@@ -335,6 +331,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       return d.bbox.x
     })
     .attr('y', function(d) {
+              console.log(d.bbox.y); 
+
       return d.bbox.y
     })
     .style("fill", "#fff")
@@ -384,16 +382,17 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     d3.selectAll(".stats-text")
       .each(function(d,i) {
         d3.select(this)
-    //       .text((d3.selectAll(".toggle_button.active").attr("id")== "percent_button") ? "100%" : numberFormat(numberStats[i]))
           .text("")
-    //     d3.selectAll(".node-" + HEADERS2[i] + Bach)
-    //       .classed("hover", true)
       })
-    // d3.select(".description")
-    // .text("")
-      // .text(function() {
-      //   return (dataCategory == 'all') ? "All Students" : "Bachelor's Degree"
-      // })
+    statsSvg
+      .text("")
+    d3.selectAll(".linkText")
+      .classed("showText", false)
+    d3.selectAll(".linkTextRect")
+      .classed("setTransparent", false)
+    d3.selectAll(".node, .link")
+      .classed("highlight", false)
+
   });
 
   function showStats() { 
@@ -590,10 +589,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       })
     linkG.selectAll(".linkText")
       .data(linkData)
-      .transition()
-      .duration(1300)
        .attr("x", function(d) { 
-          if (FIRSTNODE.indexOf(d.source.name) > -1) { console.log(d.source.x + (d.target.x - d.source.x))
+          if (FIRSTNODE.indexOf(d.source.name) > -1) { 
             return width*.19
           }else{
           return d.source.x + (d.target.x - d.source.x) / 2; 
@@ -618,15 +615,14 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           return linkTextFormat(d.value); 
         }
       })
-    linktext
-      .call(getBB)
+     .call(getBB)
+
 
     linkG.selectAll(".linkTextRect")
       .data(linkData)
       .transition()
       .duration(1300)
       .attr("width", function(d){
-        console.log(d.bbox); 
         return d.bbox.width
       })
       .attr("height", function(d){
@@ -652,5 +648,10 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       })
     }
   };
+  function getBB(selection) { console.log(selection)
+    selection.each(function(d){
+      d.bbox = this.getBBox();
+    })
+  }
 });
  
