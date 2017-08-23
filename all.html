@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>SANKEY Experiment</title>
+<link rel="stylesheet" type="text/css" href="css/sankey.css"/>
 <style>
 
  
@@ -9,51 +10,6 @@
   margin: 20px;
  }
 
-.mouseoverRect {
-  cursor: pointer;
-}
-#chart {
-  max-width: 680px;
-}
-.node rect {
-  cursor: move;
-  fill-opacity: .9;
-  shape-rendering: crispEdges;
-  cursor: pointer;
-}
-
-.label, .node text {
-  fill: #231f20;
-  font-size: 14px;
-}
-
-.label-div {
-  width: 100%;
-}
-
-.label {
-  float: left;
-  margin-left: 55px;
-}
-
-.label p {
-    padding: 5px 10px 5px 10px;
-
-}
-.linkTextRect{
-  opacity: 0;
-}
-.setTransparent{
-  opacity: .77;
-}
-.linkText {
-  font-size: 13px;
-  fill: #094c6a;
-  opacity: 0;
-}
-.showText{
-  opacity: 1;
-}
 .label-HS {
   margin-left: 35px;
 }
@@ -120,101 +76,7 @@
 }
 
 
-.node.hover {
-  fill: #0a4c6a;
-}
-/*.link {
-  fill: none;
-  stroke: #696969;
-  stroke-opacity: .4;
-}*/
 
-.stats-text, #source-div {
-  font-weight: 700;
-  text-transform: uppercase;
-}
-.hover {
-  stroke-opacity: 1;
-}
- 
-
-#toggles {
-  width: 38%;
-  padding-top: 10px;
-  float: left;
-}
-
-.link {
-  cursor: pointer
-}
-.toggle_button{
-    margin-bottom: 30px;
-    padding: 5 10 5 10px;
-    float: left;
-    margin-right: 10px;
-    color: #404041;
-    cursor: pointer;
-}
-
-.toggle_button.active span{
-  background-color: #1696d2;
-  color: white;
-}
-.toggle_button span:hover{
-  background-color: #231f20;
-  color: white;
-}
-
-.toggle_button span{
-    color:#333;
-    background-color: #f2f2f2;
-    padding: 12px;
-    text-align: center;
-    text-transform: uppercase;
-    font-size:15px;
-    border:solid 1px #e1e1e1;
-}
-
-hr {
-  width: 100%;
-  border: 1px solid #dad9d9;
-  margin-bottom: 30px;
-}
-
-.label.highlight p{
-  background-color: #fbbe15;
-}
-
-.node.highlight {
-  fill: #fbbe15;
-}
-
-.link.highlight {
-  stroke: #fbbe15;
-  stroke-opacity: .77;
-  fill: none;
-}
-
-/*#source-div {
-  float: left;
-}*/
-
-.description {
-  font-size: 14px;
-  fill:  #231f20;
-  font-weight: 600;
-}
-
-
-#stats-div {
-  float: left;
-}
-
-#title {
-  margin-bottom: 30px;
-  font-size: 18px;
-  font-weight: 600;
-}
 
 </style>
 <body>
