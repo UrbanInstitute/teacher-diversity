@@ -185,6 +185,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
   node.append("rect")
       .attr("height", function(d) { return d.dy; })
       .attr("width", sankey.nodeWidth())
+      .attr("class", "node-rect")
       // .append("title")
       // .text(function(d) { 
       // return d.name + "\n" + format(d.value); })
@@ -551,7 +552,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         return Math.max(1, d.dy) + "px";
       });
 
-    nodeG.selectAll("*:not(.label")
+    nodeG.selectAll(".node")
       .data(nodeData, function(d) { return d.name; })
       .transition()
       .duration(1300)
@@ -559,7 +560,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         return "translate(" + d.x + "," + d.y + ")";
       });
 
-    svg.selectAll(".node rect")
+    svg.selectAll(".node-rect")
       .transition()
       .duration(1300)
       .attr("height", function(d) {
@@ -571,12 +572,16 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .attr("y", function(d) { return d.dy / 2; })
     for (i=0; i<xLabelNumber; i++){ 
       d3.select(".label" + nodeLabels[i])
+        .transition()
+        .duration(1300)
         .attr("y", function(d) { return d.dy + 30 })
         // .attr("dy", function(d) {
         //     return ".45em"
         // })
         .call(getBB)
       d3.select("rect.labelRect" + nodeLabels[i])
+        .transition()
+        .duration(1300)
         .attr("width", function(d){
         return d.bbox.width + 8
         })
