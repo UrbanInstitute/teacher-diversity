@@ -221,7 +221,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
   var nodeLabels = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
       xLabels = (dataCategory == 'all') ? ["All Students", "High School", "Bachelor's", "Teaching Degree", "Teacher"] : ["", "Bachelor's", "Teaching Degree", "Teacher"],
       xLabelNumber = (dataCategory == 'all') ? 5 : 4;
-  for (i=0; i<xLabelNumber; i++){ console.log(xLabels)
+  for (i=0; i<xLabelNumber; i++){ 
     d3.select(".node-Asian" + nodeLabels[i])
       .append("text")
       .attr('class', function(d) { 
@@ -559,7 +559,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .transition()
       .duration(1300)
       .attr("y", function(d) { return d.dy / 2; })
-    for (i=0; i<xLabelNumber; i++){ console.log(xLabels)
+    for (i=0; i<xLabelNumber; i++){ 
       d3.select(".label" + nodeLabels[i])
         .attr("y", function(d) { return d.dy + 30 })
         // .attr("dy", function(d) {
