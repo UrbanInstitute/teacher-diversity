@@ -113,11 +113,12 @@ hr {
 rect.labelRect {
   height: 24px;
 }
-.label.highlight p{
-  background-color: #fbbe15;
-}
+
 .labelRect {
   opacity: 0;
+}
+.label.highlight {
+  font-weight: 700;
 }
 .labelRect.highlight{
   opacity: 1;
@@ -130,6 +131,10 @@ rect.labelRect {
   stroke: #fbbe15 !important;
   stroke-opacity: .77;
   fill: none;
+}
+
+.linkText.highlight {
+  font-weight: 700;
 }
 
 /*#source-div {

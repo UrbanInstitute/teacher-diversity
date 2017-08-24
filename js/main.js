@@ -369,7 +369,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         .classed("showText", false)
       d3.selectAll(".linkTextRect")
         .classed("setTransparent", false)
-      d3.selectAll(".node, .link, .teacherText, .labelRect")
+      d3.selectAll(".node, .link, .teacherText, .labelRect, .linkText")
         .classed("highlight", false)
   });
 
@@ -396,7 +396,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .classed("showText", false)
     d3.selectAll(".linkTextRect")
       .classed("setTransparent", false)
-    d3.selectAll(".node, .link, .teacherText, .label")
+    d3.selectAll(".node, .link, .teacherText, .label, .linkText")
       .classed("highlight", false)
     d3.selectAll(".labelRect")
       .classed("highlight", false)
@@ -405,14 +405,14 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           
           //SHOW ALL STATS BY DEGREE TYPE
           if (event.clientX >= rectBreaksX[0] ){
-              d3.selectAll(".labelRect-Teacher")
+              d3.selectAll(".labelRect-Teacher, .label-Teacher")
                 .classed("highlight", true)
               d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher")
                 .classed("showText", true)
               highlightSelected("-Teacher", "-Bach.no-TD", "became a teacher.")
               highlightSelected("-Teacher", "-Teaching", "became a teacher.")
           }else if (event.clientX > rectBreaksX[1]){
-              d3.select(".labelRect-Teaching")
+              d3.selectAll(".labelRect-Teaching, .label-Teaching")
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i] + "-Teaching")
                 .classed("showText", true)
@@ -421,21 +421,23 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
               highlightSelected("-Teaching", "-Bach.TD", "received a teaching degree.")
               
           }else if (event.clientX > rectBreaksX[2]){
-              d3.select(".labelRect-Bach")
+              d3.selectAll(".labelRect-Bach, .label-Bach")
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i] + "-Bach")
                 .classed("showText", true)
               highlightSelected("-Bach", "-HS", "received a bachelor's degree.")
 
           }else if (event.clientX > rectBreaksX[3]){
-              d3.select(".labelRect-HS")
+              d3.selectAll(".labelRect-HS, .label-HS")
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i] + "-HS")
                 .classed("showText", true)
                highlightSelected("-HS", "", "received a high school degree.")
 
-          }else if (event.clientX < rectBreaksX[3]) {
+          }else if (event.clientX < rectBreaksX[3]) { 
               d3.select(".labelRect")
+                .classed("highlight", true)
+              d3.select(".node-Asian > .label")
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i])
                 .classed("showText", true)
@@ -486,11 +488,15 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     if (event.clientY < (heightDiff + rectBreaksY[0])){
       d3.selectAll(highlightClass(node, link, 0))
         .classed("highlight", true)
+      d3.select(".linkText-" + HEADERS2[0] + node)
+        .classed("highlight", true)
       var text  = d3.select(".node-" + HEADERS2[0] + node).datum().value
       statsSvg.text(format(text) + description(degree, 0))
       teacherText(node, 0)
     }else if (event.clientY < (heightDiff + rectBreaksY[1])){
       d3.selectAll(highlightClass(node, link, 1))
+        .classed("highlight", true)
+      d3.select(".linkText-" + HEADERS2[1] + node)
         .classed("highlight", true)
       var text  = d3.select(".node-" + HEADERS2[1] + node).datum().value
       statsSvg.text(format(text) + description(degree, 1))
@@ -498,11 +504,15 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     }else if (event.clientY < (heightDiff + rectBreaksY[2])){
       d3.selectAll(highlightClass(node, link, 2))
         .classed("highlight", true)
+      d3.select(".linkText-" + HEADERS2[2] + node)
+        .classed("highlight", true)
       var text  = d3.select(".node-" + HEADERS2[2] + node).datum().value
       statsSvg.text(format(text) + description(degree, 2))
       teacherText(node, 2)
     }else{ 
       d3.selectAll(highlightClass(node, link, 3))
+        .classed("highlight", true)
+      d3.select(".linkText-" + HEADERS2[3] + node)
         .classed("highlight", true)
       var text  = d3.select(".node-" + HEADERS2[3] + node).datum().value
       // var text = d3.select(linkTextClass(node, 3)).text()
