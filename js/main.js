@@ -138,7 +138,9 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .layout(32);
 
 // add in the nodes
-  var node = svg.append("g").selectAll(".node")
+  var nodeG = svg.append("g")
+    .attr("class", "g-node")
+  var node = nodeG.selectAll(".node")
     .data(graph.nodes)
     .enter().append("g")
     .attr("class", function(d) { 
@@ -539,7 +541,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         return Math.max(1, d.dy) + "px";
       });
 
-    svg.selectAll(".node")
+    nodeG.selectAll("*:not(.label")
       .data(nodeData, function(d) { return d.name; })
       .transition()
       .duration(1300)
