@@ -14,8 +14,8 @@ var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
     nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
     numberStats = (dataCategory == 'all') ? [92338890, 19560471, 25434140,10383460] : [92338890, 19560471, 25434140,10383460],
     rectBreaksX = (dataCategory == 'all') ? [width*.75, width*.6, width*.42, width*.22] :  [width*.53, width*.22, 0, 1000000],
-    teacherTextPercent = (dataCategory == 'all') ? ["This is comprised of 2.01% without and 2.47% with teaching degrees.", "This is comprised of 1.11% without and 0.71% with teaching degrees.", "This is comprised of 0.90% without and 0.61% with teaching degrees.", "This is comprised of 1.54% without and 0.53% with teaching degrees."] : ["This is comprised of 5.1% without and 6.26% with teaching degrees.", "This is comprised of 5.47% without and 3.48% with teaching degrees.", "This is comprised of 5.96% without and 4.09% with teaching degrees.", "This is comprised of 2.42% without and 0.83% with teaching degrees."] 
-    teacherTextNumber = (dataCategory == 'all') ? ["This is comprised of 1,970,062 without and 2,419,381 with teaching degrees.", "This is comprised of 247,003 without and 156,966 with teaching degrees.", "This is comprised of 312,676 without and 214,497 with teaching degrees.", "This is comprised of 168,835 without and 57,722 with teaching degrees."] : ["This is comprised of 1,970,062 without and 2,419,381 with teaching degrees.", "This is comprised of 247,003 without and 156,966 with teaching degrees.", "This is comprised of 312,676 without and 214,497 with teaching degrees.", "This is comprised of 168,835 without and 57,722 with teaching degrees.", ] 
+    teacherTextPercent = (dataCategory == 'all') ? ["This is comprised of 2.01% of students without and 2.47% with teaching degrees.", "This is comprised of 1.11% of students without and 0.71% with teaching degrees.", "This is comprised of 0.90% of students without and 0.61% with teaching degrees.", "This is comprised of 1.54% of students without and 0.53% with teaching degrees."] : ["This is comprised of 5.1% of students without and 6.26% with teaching degrees.", "This is comprised of 5.47% of students without and 3.48% with teaching degrees.", "This is comprised of 5.96% of students without and 4.09% with teaching degrees.", "This is comprised of 2.42% of students without and 0.83% with teaching degrees."] 
+    teacherTextNumber = (dataCategory == 'all') ? ["This is comprised of 1,970,062 students without and 2,419,381 with teaching degrees.", "This is comprised of 247,003 students without and 156,966 with teaching degrees.", "This is comprised of 312,676 students without and 214,497 with teaching degrees.", "This is comprised of 168,835 students without and 57,722 with teaching degrees."] : ["This is comprised of 1,970,062 students without and 2,419,381 with teaching degrees.", "This is comprised of 247,003 students without and 156,966 with teaching degrees.", "This is comprised of 312,676 students without and 214,497 with teaching degrees.", "This is comprised of 168,835 students without and 57,722 with teaching degrees.", ] 
     // color = d3.scale.ordinal()
     //   .domain([""])
   // (["#a2d4ec", "#46abdb", "#1696d2", " #12719e"])
@@ -24,9 +24,13 @@ var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
 var format = function(d) { 
   var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
   if (category == "percent") {
-    return percentFormat(d) + " of students"
+    if(d==1) {
+      return "100%"
+    }else{
+      return percentFormat(d)
+    }
   }else {
-    return numberFormat(d) + " students"
+    return numberFormat(d)
   }
 };
 
@@ -66,8 +70,8 @@ function wrapText(text, width) {
 var statsSvg = d3.select("#stats-div")
   .append("svg")
   .attr("width", function() { 
-   // return (dataCategory == 'all') ? width/1.8 : width/2
-   return width/2
+   return (dataCategory == 'all') ? width/1.635 : width/2
+   // return width/1.9
   })
   .attr("height", height/10)
   .append("text")
@@ -137,6 +141,31 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .links(graph_percent)
       .layout(32);
 
+
+// add in the links
+  var link = svg.append("g").selectAll(".link")
+    .data(graph_percent, function(d) {return d.id})
+    .enter().append("path")
+    .attr("class", function(d) {
+      if ((d.id).search("Teaching") > 0 && (d.id).search("Bach") > 0) {
+        return "link" + " link-" + d.source.name + " TD"
+      }else if ((d.id).search("Teacher") > 0 && (d.id).search("Bach") > 0) {
+        return "link" + " link-" + d.source.name + " no-TD"
+      }else{
+        return "link" + " link-" + d.source.name;
+      }
+    })      
+    .attr("d", path)
+    .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+    .sort(function(a, b) {return b.dy - a.dy; })
+
+  // link.append("title")
+  //   .text(function(d) {
+  //     return d.source.name + " → " + d.target.name + "\n" + format(d.value); })
+  //   .attr("class", "link-text");
+
+
+
 // add in the nodes
   var nodeG = svg.append("g")
     .attr("class", "g-node")
@@ -156,10 +185,10 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
   node.append("rect")
       .attr("height", function(d) { return d.dy; })
       .attr("width", sankey.nodeWidth())
-      .append("title")
-      .text(function(d) { 
-      return d.name + "\n" + format(d.value); })
-      .attr("class", "node-text");
+      // .append("title")
+      // .text(function(d) { 
+      // return d.name + "\n" + format(d.value); })
+      // .attr("class", "node-text");
 
 // add in the title for the nodes
   var xPos = (dataCategory == 'all') ? -width/8.5 : width/4.55;
@@ -232,30 +261,6 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         return "labelRect labelRect" + nodeLabels[i] 
       })
   }
-
-   
-// add in the links
-  var link = svg.append("g").selectAll(".link")
-    .data(graph_percent, function(d) {return d.id})
-    .enter().append("path")
-    .attr("class", function(d) {
-      if ((d.id).search("Teaching") > 0 && (d.id).search("Bach") > 0) {
-        return "link" + " link-" + d.source.name + " TD"
-      }else if ((d.id).search("Teacher") > 0 && (d.id).search("Bach") > 0) {
-        return "link" + " link-" + d.source.name + " no-TD"
-      }else{
-        return "link" + " link-" + d.source.name;
-      }
-    })      
-    .attr("d", path)
-    .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-    .sort(function(a, b) {return b.dy - a.dy; })
-
-  link.append("title")
-    .text(function(d) {
-      return d.source.name + " → " + d.target.name + "\n" + format(d.value); })
-    .attr("class", "link-text");
-
   var linkG = svg.append("g")
     .attr("class", "g-text")
   //ADD HIDDEN TEXT FOR TEACHER LINKS
@@ -280,7 +285,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .attr("text-anchor", "start")
   }
   //ADD HIDDEN TEXT FOR OTHER LINKS
-  var linktext = linkG.selectAll(".link")
+  var linktext = linkG.selectAll(".node")
     .data(graph_percent)
     .enter()
     .append("text")
@@ -288,21 +293,14 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       return 'linkText linkText-' + d.target.name
     })
     .attr("x", function(d) { 
-      if (d.value == 1) {
-        return d.source.x + (d.target.x - d.source.x) / 1; 
+      if (FIRSTNODE.indexOf(d.source.name) > -1){
+        return d.target.x
       }else{
-      return d.source.x + (d.target.x - d.source.x) / 2; 
+        return (dataCategory == "all") ? d.target.x - width*.1 :  d.target.x - width*.16
       }
     })
-    .attr("y", function(d) { return d.source.y + (d.target.y - d.source.y) / 2; })
-    .attr("dy", function(d) {
-      if ((d.target.name).search("Teacher") > 0 || (d.target.name).search("Teaching") > 0) {
-        return "1.2em"
-      }else if ((d.target.name).search("Bach") > 0){ 
-       return (dataCategory == 'all') ? "2.3em" : "4.2em"
-      }else{
-       return "4.3em"
-      }
+    .attr("y", function(d) {
+      return (dataCategory == "all") ? d.source.y + (d.source.dy/1.9) : d.source.y + (d.source.dy/1.8)
     })
     .attr("text-anchor", "end")
     .attr("transform", null)
@@ -341,6 +339,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .attr("class", function(d){
       return "linkTextRect linkTextRect-" + d.target.name
     })
+   
           
   var xLabels = svg.append("g")
       .attr("width", width + margin.left + margin.right)
@@ -349,29 +348,29 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
 
   var mouseoverRect = svg.append("g")
-  .append("rect")
-  .attr("width", width)
-  .attr("height", height)
-  .attr("class", "mouseoverRect")
-  .style("opacity", "0")
-  .on('mousemove', showStats)
-  .on("mouseout", function() {
-    var Bach = (dataCategory == 'all') ? "" : "-Bach"
-    d3.selectAll(".node, .link")
-      .classed("hover", false)
-    d3.selectAll(".stats-text")
-      .each(function(d,i) {
-        d3.select(this)
-          .text("")
-      })
-    statsSvg
-      .text("")
-    d3.selectAll(".linkText")
-      .classed("showText", false)
-    d3.selectAll(".linkTextRect")
-      .classed("setTransparent", false)
-    d3.selectAll(".node, .link, .teacherText, .labelRect")
-      .classed("highlight", false)
+    .append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("class", "mouseoverRect")
+    .style("opacity", "0")
+    .on('mousemove', showStats)
+    .on("mouseout", function() {
+      var Bach = (dataCategory == 'all') ? "" : "-Bach"
+      d3.selectAll(".node, .link")
+        .classed("hover", false)
+      d3.selectAll(".stats-text")
+        .each(function(d,i) {
+          d3.select(this)
+            .text("")
+        })
+      statsSvg
+        .text("")
+      d3.selectAll(".linkText")
+        .classed("showText", false)
+      d3.selectAll(".linkTextRect")
+        .classed("setTransparent", false)
+      d3.selectAll(".node, .link, .teacherText, .labelRect")
+        .classed("highlight", false)
   });
 
     for (i=0; i<4; i++){
@@ -391,8 +390,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
 
   function showStats() { 
-    var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0],
-        format = (category == "numbers") ? numberFormat : percentFormat;
+    var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
+        // format = (category == "numbers") ? numberFormat : percentFormat;
     d3.selectAll(".linkText")
       .classed("showText", false)
     d3.selectAll(".linkTextRect")
@@ -410,8 +409,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
                 .classed("highlight", true)
               d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher")
                 .classed("showText", true)
-              highlightSelected("-Teacher", "-Bach.no-TD", "became a teacher")
-              highlightSelected("-Teacher", "-Teaching", "became a teacher")
+              highlightSelected("-Teacher", "-Bach.no-TD", "became a teacher.")
+              highlightSelected("-Teacher", "-Teaching", "became a teacher.")
           }else if (event.clientX > rectBreaksX[1]){
               d3.select(".labelRect-Teaching")
                 .classed("highlight", true)
@@ -462,8 +461,9 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
      // }
     }
     var description = function(degree, i) {
+      var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
       if (typeof(degree) == "undefined"){
-        return " of " + HEADERS2[i] + " students "
+        return (category == 'percent') ? " of " + HEADERS2[i] + " students." : " " + HEADERS2[i] + " students.";
       }else{
       return " of " + HEADERS2[i] + " students " + degree
       }
@@ -478,7 +478,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         rectHeight = d3.select(".mouseoverRect").attr("height"),
         heightDiff = chartHeight - rectHeight,
         category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0],
-        format = (category == "numbers") ? numberFormat : percentFormat,
+        // format = (category == "numbers") ? numberFormat : percentFormat,
         rectBreaksYAll = (category == 'percent') ? [rectHeight*.33, rectHeight*.55, rectHeight*.78] : [rectHeight*.59, rectHeight*.75, rectHeight*.93],
         rectBreaksYBach = (category == 'percent') ? [rectHeight*.33, rectHeight*.55, rectHeight*.78] : [rectHeight*.68, rectHeight*.78, rectHeight*.88],
         rectBreaksY = (dataCategory == 'all') ? rectBreaksYAll : rectBreaksYBach;
@@ -578,36 +578,17 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         })
     }
 
-    node.selectAll(".node-text")
-      .text(function(d) { 
-        return d.name + "\n" + format(d.value); })
-    link.selectAll(".link-text")
-      .data(linkData, function(x) { return x.id})
-      .text(function(d) { 
-        return d.source.name + " → " + d.target.name + "\n" + format(d.value); 
-      })
     linkG.selectAll(".linkText")
       .data(linkData)
-       .attr("x", function(d) { 
-          if (FIRSTNODE.indexOf(d.source.name) > -1) { console.log('hi')
-            return (dataCategory == 'all') ? width*.19 : width * .319
-          }else{
-          return d.source.x + (d.target.x - d.source.x) / 2; 
-          }
-        })
-      .attr("y", function(d) { return d.source.y + (d.target.y - d.source.y) / 2; })
-      .attr("dy", function(d) {
-        if ((d.target.name).search("Teacher") > 0 || (d.target.name).search("Teaching") > 0) {
-          return "1.2em"
-        }else if ((d.target.name).search("Bach") > 0){ 
-          if (dataCategory == 'all') {
-            return (category == 'numbers') ? "1em" : "2.3em"
-          }else{
-            return (category == 'numbers') ? "2em" : "4.2em"
-          }
-        }else{ 
-         return (category == 'numbers') ? "2em" : "4.3em";
+      .attr("x", function(d) { 
+        if (FIRSTNODE.indexOf(d.source.name) > -1){
+          return d.target.x
+        }else{
+          return (dataCategory == "all") ? d.target.x - width*.1 :  d.target.x - width*.16
         }
+      })
+      .attr("y", function(d) {
+        return (dataCategory == "all") ? d.source.y + (d.source.dy/1.9) : d.source.y + (d.source.dy/1.8)
       })
       .text(function(d) { 
         if (d.value == 1) {
