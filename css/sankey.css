@@ -110,11 +110,18 @@ hr {
   border: 1px solid #dad9d9;
   margin-bottom: 30px;
 }
-
+rect.labelRect {
+  height: 24px;
+}
 .label.highlight p{
   background-color: #fbbe15;
 }
-
+.labelRect {
+  opacity: 0;
+}
+.labelRect.highlight{
+  opacity: 1;
+}
 .node.highlight {
   fill: #fbbe15;
 }
