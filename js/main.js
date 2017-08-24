@@ -369,7 +369,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         .classed("showText", false)
       d3.selectAll(".linkTextRect")
         .classed("setTransparent", false)
-      d3.selectAll(".node, .link, .teacherText, .labelRect, .linkText")
+      d3.selectAll(".node, .link, .teacherText, .labelRect, .linkText, .label")
         .classed("highlight", false)
   });
 
