@@ -435,7 +435,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           }else if (event.clientX < rectBreaksX[3]) { 
               d3.select(".labelRect")
                 .classed("highlight", true)
-              d3.select(".node-Asian > .label")
+              d3.select(".label")
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i])
                 .classed("showText", true)
