@@ -253,8 +253,9 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .text(function(d, i) {
       return xLabels[i]
     })
-    .attr("class", "label")
-    .call(getBB)
+    .attr("class", function(d,i){
+      return "label label" + nodeLabels[i]
+    })
 
 
 
