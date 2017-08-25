@@ -116,6 +116,7 @@ rect.labelRect {
 
 .labelRect {
   opacity: 0;
+  fill: #fbbe15;
 }
 .label.highlight {
   font-weight: 700;

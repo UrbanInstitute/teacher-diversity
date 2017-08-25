@@ -11,6 +11,8 @@ var percentFormat = d3.format(".2%");
 var FIRSTNODE= (dataCategory == 'all') ? ["White-All", "Black-All", "Hispanic-All", "Asian-All"] : ["White diploma", "Black diploma", "Hispanic diploma", "Asian diploma"];
 var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
     HEADERS1= ["SOURCE", "TARGET"],
+    xLabelTranslate = (dataCategory == 'all') ? [width/5, width/5, width/5.1, width/5.4, width/5.1]: [0, width/6, width/4.3, width/3.7, width/2] ,
+    xLabelsRect = (dataCategory == 'all') ? [85, 85, 75, 112, 60,] : [0, 76, 112, 62, 0,]
     nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
     numberStats = (dataCategory == 'all') ? [92338890, 19560471, 25434140,10383460] : [92338890, 19560471, 25434140,10383460],
     rectBreaksX = (dataCategory == 'all') ? [width*.75, width*.6, width*.42, width*.22] :  [width*.53, width*.22, 0, 1000000],
@@ -222,46 +224,40 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
   var nodeLabels = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
       xLabels = (dataCategory == 'all') ? ["All Students", "High School", "Bachelor's", "Teaching Degree", "Teacher"] : ["", "Bachelor's", "Teaching Degree", "Teacher"],
       xLabelNumber = (dataCategory == 'all') ? 5 : 4;
-  for (i=0; i<xLabelNumber; i++){ 
-    d3.select(".node-Asian" + nodeLabels[i])
-      .append("text")
-      .attr('class', function(d) { 
-        return 'label label' + nodeLabels[i]
-      })
-      .attr("x", function(d) {
-        if (nodeLabels[i] == "-Teaching"){
-          return -width*.04
-        }else{
-          return -width * .015
-        }
-      })
-      .attr("y", function(d) { return d.dy + 30 })
-      // .attr("dy", function(d) {
-      //     return ".45em"
-      // })
-      .attr("text-anchor", "end")
-      .attr("transform", null)
-      .text(function(){
-        return xLabels[i]
-      })
-      .attr("text-anchor", "start")
-      .call(getBB)
-    d3.select(".node-Asian" + nodeLabels[i])
-      .insert("rect",".label" + nodeLabels[i])
-      .attr("width", function(d){
-      return d.bbox.width + 10
-      })
-      .attr('x', function(d) { 
-        return d.bbox.x - 5
-      })
-      .attr('y', function(d) {
-        return d.bbox.y
-      })
-      .style("fill", "#fbbe15")
-      .attr("class", function(d){
-        return "labelRect labelRect" + nodeLabels[i] 
-      })
-  }
+  var labelG = svg.append("g") 
+    .attr("class", "g-x-labels")
+    .selectAll(".label-g")
+    .data(nodeLabels)
+    .enter()
+    .append("g")
+    .attr("class", "label-g")
+    .attr("transform", function(d, i) {
+      return "translate(" + (120 + (xLabelTranslate[i])*i)+ "," + height+ ")";
+    })
+  labelG
+    .append("rect")
+    .attr("x", -5)
+    .attr("y", -18)
+    .attr("width", function(d, i) {
+      return xLabelsRect[i]
+    })
+    .attr("height", 25)
+    // .attr("transform", function(d, i) {
+    //   return "translate(" + (120 + (xLabelTranslate[i])*i)+ "," + height+ ")";
+    // })
+    .attr("class", function(d, i) {
+      return "labelRect labelRect" + nodeLabels[i] 
+    })
+  labelG
+    .append("text")
+    .text(function(d, i) {
+      return xLabels[i]
+    })
+    .attr("class", "label")
+    .call(getBB)
+
+
+
   var linkG = svg.append("g")
     .attr("class", "g-text")
   //ADD HIDDEN TEXT FOR TEACHER LINKS
@@ -570,28 +566,26 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .transition()
       .duration(1300)
       .attr("y", function(d) { return d.dy / 2; })
-    for (i=0; i<xLabelNumber; i++){ 
-      d3.select(".label" + nodeLabels[i])
-        .transition()
-        .duration(1300)
-        .attr("y", function(d) { return d.dy + 30 })
-        // .attr("dy", function(d) {
-        //     return ".45em"
-        // })
-        .call(getBB)
-      d3.select("rect.labelRect" + nodeLabels[i])
-        .transition()
-        .duration(1300)
-        .attr("width", function(d){
-        return d.bbox.width + 8
-        })
-        .attr('x', function(d) { 
-          return d.bbox.x - 4
-        })
-        .attr('y', function(d) {
-          return d.bbox.y
-        })
-    }
+    // for (i=0; i<xLabelNumber; i++){ 
+    //   d3.select(".label" + nodeLabels[i])
+    //     .transition()
+    //     .duration(1300)
+    //     .attr("y", function(d) { return d.dy + 30 })
+    //     .call(getBB)
+    //   // d3.select("rect.labelRect" + nodeLabels[i])
+    //   //   .transition()
+    //   //   .duration(1300)
+    //   //   .attr("width", function(d){
+    //   //   return d.bbox.width + 8
+    //   //   })
+    //   //   .attr('x', function(d) { 
+    //   //     return d.bbox.x - 4
+    //   //   })
+    //   //   .attr("y", function(d) { 
+    //   //     return d.bbox.y 
+    //   //   })
+
+    // }
 
     linkG.selectAll(".linkText")
       .data(linkData)
