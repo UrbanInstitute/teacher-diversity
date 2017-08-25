@@ -32,7 +32,7 @@
 .teacherText {
   font-size: 13px;
   font-style: italic;
-  opacity: 1;
+  opacity: 0;
 }
 .teacherText.highlight {
   opacity: 1;
@@ -43,7 +43,7 @@
 .linkText {
   font-size: 13px !important;
   fill: #094c6a;
-  opacity: 1;
+  opacity: 0;
 }
 .showText{
   opacity: 1;
