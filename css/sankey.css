@@ -4,7 +4,7 @@
 #chart {
   max-width: 680px;
 }
-.node rect {
+.node {
   fill: #46abdb;
   cursor: pointer;
 }
@@ -43,7 +43,7 @@
 }
 .linkText {
   font-size: 13px !important;
-  fill: #000;
+  fill: #fff;
   opacity: 0;
 }
 .showText{
@@ -117,6 +117,9 @@ rect.labelRect {
   height: 24px;
 }
 
+.raceLabels.highlight {
+  font-weight: 700;
+}
 .labelRect {
   opacity: 0;
   fill: #fdbf11;
@@ -128,9 +131,11 @@ rect.labelRect {
   opacity: 1;
 }
 .node.highlight {
-  fill: #fdbf11;
+  fill: #fdbf11 !important;
 }
-
+.node.highlight text {
+  fill: #000 !important;
+}
 .link.highlight {
   stroke: #fdd870 !important;
   fill: none;
@@ -138,6 +143,7 @@ rect.labelRect {
 
 .linkText.highlight {
   font-weight: 700;
+  fill: #000;
 }
 
 /*#source-div {

@@ -2,12 +2,12 @@ var dataCategory = document.getElementById('chart').className
 var units = "of students";
 var steps = (dataCategory == 'all') ? ["All Students", "High School", "Bachelor's", "Teaching Degree", "Teacher"] : ["Bachelor's", "Teaching Degree", "Teacher"]
 var numberSteps = (dataCategory == 'all') ? 5 : 3
-var margin = {top: 10, right: 10, bottom: 10, left: 10},
+var margin = {top: 30, right: 10, bottom: 30, left: 10},
     width = (dataCategory == 'all') ? 770 - margin.left - margin.right : 900 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height = 540 - margin.top - margin.bottom;
 var numberFormat = d3.format(",");
 var numberShortFormat = d3.format(".3s");
-var percentFormat = d3.format(".2%");
+var percentFormat = d3.format(".1%");
 var FIRSTNODE= (dataCategory == 'all') ? ["White-All", "Black-All", "Hispanic-All", "Asian-All"] : ["White diploma", "Black diploma", "Hispanic diploma", "Asian diploma"];
 var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
     HEADERS1= ["SOURCE", "TARGET"],
@@ -90,9 +90,9 @@ var svg = d3.select("#chart").append("svg")
     .append("g")
     .attr("transform", function() {
       if (dataCategory == 'all') {
-        return "translate(" + -width*.1+ "," + margin.top + ")"
+        return "translate(" + -width*.1+ "," + margin.top/2 + ")"
       }else {
-        return "translate(" + -width*.24+ "," + margin.top + ")"
+        return "translate(" + -width*.24+ "," + margin.top/2 + ")"
 
       }
     })
@@ -102,7 +102,7 @@ var svg = d3.select("#chart").append("svg")
 
 // Set the sankey diagram properties
 var sankey = d3.sankey()
-    .nodeWidth(36)
+    .nodeWidth(45)
     .nodePadding(10)
     .dataCategory(dataCategory)
     .size([width, height*.95]);
@@ -194,8 +194,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       // .attr("class", "node-text");
 
 // add in the title for the nodes
-  var xPos = (dataCategory == 'all') ? -width/8.5 : width/4.55;
-  var xPos2 = (dataCategory == 'all') ? -width/7.2 : width/5.1;
+  var xPos = (dataCategory == 'all') ? -width/7.5 : width/4.55;
+  var xPos2 = (dataCategory == 'all') ? -width/6.4 : width/5.1;
   //ADD Y-AXIS RACE LABELS
   node.append("text")
       .attr("y", function(d) { return d.dy / 2; })
@@ -219,7 +219,9 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .filter(function(d) { return d.x < width / 2; })
       .attr("x", 6 + sankey.nodeWidth())
       .attr("text-anchor", "start")
-      .attr("class", "raceLabels")
+      .attr("class", function(d) {
+          return "raceLabels raceLabels-" + d.name.split(" ")[0] 
+      })
   //ADD X-AXIS CATEGORY LABELS
   var nodeLabels = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
       xLabels = (dataCategory == 'all') ? ["All Students", "High School", "Bachelor's", "Teaching Degree", "Teacher"] : ["", "Bachelor's", "Teaching Degree", "Teacher"],
@@ -232,7 +234,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .append("g")
     .attr("class", "label-g")
     .attr("transform", function(d, i) {
-      return "translate(" + (120 + (xLabelTranslate[i])*i)+ "," + height+ ")";
+      return "translate(" + (120 + (xLabelTranslate[i])*i)+ "," + height*1.07+ ")";
     })
   labelG
     .append("rect")
@@ -291,14 +293,16 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       return 'linkText linkText-' + d.target.name
     })
     .attr("x", function(d) { 
-      if (FIRSTNODE.indexOf(d.source.name) > -1){
-        return d.target.x
-      }else{
-        return (dataCategory == "all") ? d.target.x - width*.1 :  d.target.x - width*.16
-      }
+      // if (FIRSTNODE.indexOf(d.source.name) > -1){
+      //   return d.target.x
+      // }else{
+        return d.target.x + 3
+       // return (dataCategory == "all") ? d.target.x - width*.1 :  d.target.x - width*.16
+      // }
     })
     .attr("y", function(d) {
-      return (dataCategory == "all") ? d.source.y + (d.source.dy/1.9) : d.source.y + (d.source.dy/1.8)
+      return d.target.y + (d.target.dy/2) + 5
+    //  return (dataCategory == "all") ? d.source.y + (d.source.dy/1.9) : d.source.y + (d.source.dy/1.8)
     })
     .attr("text-anchor", "end")
     .attr("transform", null)
@@ -317,26 +321,26 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .call(getBB)
 
 
-  linkG.selectAll(".link")
-    .data(graph_percent)
-    .enter()
-    .insert("rect",".linkText")
-    .attr("width", function(d){
-      return d.bbox.width
-    })
-    .attr("height", function(d){
-      return d.bbox.height
-    })
-    .attr('x', function(d) { 
-      return d.bbox.x
-    })
-    .attr('y', function(d) {
-      return d.bbox.y
-    })
-    .style("fill", "#fff")
-    .attr("class", function(d){
-      return "linkTextRect linkTextRect-" + d.target.name
-    })
+  // linkG.selectAll(".link")
+  //   .data(graph_percent)
+  //   .enter()
+  //   .insert("rect",".linkText")
+  //   .attr("width", function(d){
+  //     return d.bbox.width
+  //   })
+  //   .attr("height", function(d){
+  //     return d.bbox.height
+  //   })
+  //   .attr('x', function(d) { 
+  //     return d.bbox.x
+  //   })
+  //   .attr('y', function(d) {
+  //     return d.bbox.y
+  //   })
+  //   .style("fill", "#fff")
+  //   .attr("class", function(d){
+  //     return "linkTextRect linkTextRect-" + d.target.name
+  //   })
    
           
   var xLabels = svg.append("g")
@@ -382,9 +386,9 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         .text("")
       d3.selectAll(".linkText")
         .classed("showText", false)
-      d3.selectAll(".linkTextRect")
-        .classed("setTransparent", false)
-      d3.selectAll(".node, .link, .teacherText, .labelRect, .linkText, .label")
+      // d3.selectAll(".linkTextRect")
+      //   .classed("setTransparent", false)
+      d3.selectAll(".node, .link, .teacherText, .labelRect, .linkText, .label, .raceLabels")
         .classed("highlight", false)
   }
 
@@ -403,9 +407,9 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         // format = (category == "numbers") ? numberFormat : percentFormat;
     d3.selectAll(".linkText")
       .classed("showText", false)
-    d3.selectAll(".linkTextRect")
-      .classed("setTransparent", false)
-    d3.selectAll(".node, .link, .teacherText, .label, .linkText")
+    // d3.selectAll(".linkTextRect")
+    //   .classed("setTransparent", false)
+    d3.selectAll(".node, .link, .teacherText, .label, .linkText, .raceLabels")
       .classed("highlight", false)
     d3.selectAll(".labelRect")
       .classed("highlight", false)
@@ -438,8 +442,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i] + "-Teaching")
                 .classed("showText", true)
-              d3.selectAll(".linkTextRect-" + HEADERS2[i] + "-Teaching")
-                .classed("setTransparent", true)
+              // d3.selectAll(".linkTextRect-" + HEADERS2[i] + "-Teaching")
+              //   .classed("setTransparent", true)
               highlightSelected("-Teaching", "-Bach.TD", "received a teaching degree.")
               
           }else if (event.clientX > rectBreaksX[2]){
@@ -489,7 +493,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       if (typeof(degree) == "undefined"){
         return (category == 'percent') ? " of " + HEADERS2[i] + " students." : " " + HEADERS2[i] + " students.";
       }else{
-      return " of " + HEADERS2[i] + " students " + degree
+      return (category == 'percent') ? " of " + HEADERS2[i] + " students " + degree : " " + HEADERS2[i] + " students " + degree;
       }
     }
     var teacherText = function(node, i) {
@@ -522,7 +526,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     if (event.clientY < (d3.select(".node-" + HEADERS2[0] + suffix).node().getBoundingClientRect().bottom + 5) ){
       d3.selectAll(highlightClass(node, link, 0))
         .classed("highlight", true)
-      d3.select(".linkText-" + HEADERS2[0] + node)
+      d3.selectAll(".linkText-" + HEADERS2[0] + node + ", .raceLabels-" + HEADERS2[0])
         .classed("highlight", true)
       var text  = d3.select(".node-" + HEADERS2[0] + node).datum().value
       statsSvg.text(format(text) + description(degree, 0))
@@ -530,7 +534,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     }else if (event.clientY < (d3.select(".node-" + HEADERS2[1] + suffix).node().getBoundingClientRect().bottom + 5)){
       d3.selectAll(highlightClass(node, link, 1))
         .classed("highlight", true)
-      d3.select(".linkText-" + HEADERS2[1] + node)
+      d3.selectAll(".linkText-" + HEADERS2[1] + node + ", .raceLabels-" + HEADERS2[1])
         .classed("highlight", true)
       var text  = d3.select(".node-" + HEADERS2[1] + node).datum().value
       statsSvg.text(format(text) + description(degree, 1))
@@ -538,7 +542,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     }else if (event.clientY < (d3.select(".node-" + HEADERS2[2] + suffix).node().getBoundingClientRect().bottom + 5)){
       d3.selectAll(highlightClass(node, link, 2))
         .classed("highlight", true)
-      d3.select(".linkText-" + HEADERS2[2] + node)
+      d3.selectAll(".linkText-" + HEADERS2[2] + node + ", .raceLabels-" + HEADERS2[2])
         .classed("highlight", true)
       var text  = d3.select(".node-" + HEADERS2[2] + node).datum().value
       statsSvg.text(format(text) + description(degree, 2))
@@ -546,7 +550,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     }else{ 
       d3.selectAll(highlightClass(node, link, 3))
         .classed("highlight", true)
-      d3.select(".linkText-" + HEADERS2[3] + node)
+      d3.selectAll(".linkText-" + HEADERS2[3] + node + ", .raceLabels-" + HEADERS2[3])
         .classed("highlight", true)
       var text  = d3.select(".node-" + HEADERS2[3] + node).datum().value
       // var text = d3.select(linkTextClass(node, 3)).text()
@@ -627,14 +631,14 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     linkG.selectAll(".linkText")
       .data(linkData)
       .attr("x", function(d) { 
-        if (FIRSTNODE.indexOf(d.source.name) > -1){
-          return d.target.x
-        }else{
-          return (dataCategory == "all") ? d.target.x - width*.1 :  d.target.x - width*.16
-        }
+        // if (FIRSTNODE.indexOf(d.source.name) > -1){
+        //   return d.target.x
+        // }else{
+          return d.target.x + 3;
+        // }
       })
       .attr("y", function(d) {
-        return (dataCategory == "all") ? d.source.y + (d.source.dy/1.9) : d.source.y + (d.source.dy/1.8)
+        return d.target.y + (d.target.dy/2) + 5
       })
       .text(function(d) { 
         if (d.value == 1) {
@@ -648,22 +652,22 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
      .call(getBB)
 
 
-    linkG.selectAll(".linkTextRect")
-      .data(linkData)
-      .transition()
-      .duration(1300)
-      .attr("width", function(d){
-        return d.bbox.width
-      })
-      .attr("height", function(d){
-        return d.bbox.height
-      })
-      .attr('x', function(d) { 
-        return d.bbox.x
-      })
-      .attr('y', function(d) {
-        return d.bbox.y
-      })
+    // linkG.selectAll(".linkTextRect")
+    //   .data(linkData)
+    //   .transition()
+    //   .duration(1300)
+    //   .attr("width", function(d){
+    //     return d.bbox.width
+    //   })
+    //   .attr("height", function(d){
+    //     return d.bbox.height
+    //   })
+    //   .attr('x', function(d) { 
+    //     return d.bbox.x
+    //   })
+    //   .attr('y', function(d) {
+    //     return d.bbox.y
+    //   })
     for (i=0; i<4; i++){
       d3.select(".node-" + HEADERS2[i] + "-Teacher .linkText")
         .text(function(d){
