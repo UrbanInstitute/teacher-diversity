@@ -120,6 +120,12 @@ rect.labelRect {
 .raceLabels.highlight {
   font-weight: 700;
 }
+
+.teacherSubText {
+  fill: #46abdb;
+  font-size: 13px;
+  font-style: italic;
+}
 .labelRect {
   opacity: 0;
   fill: #fdbf11;
