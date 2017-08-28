@@ -394,6 +394,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     var line = function(x){
       return m*x + b;
     }
+    console.log(line)
     return line;
   }
 
@@ -420,8 +421,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           var top = first.getBoundingClientRect().top;
           
           var line = getLine(bach.getBoundingClientRect().right, bach.getBoundingClientRect().top, teaching.getBoundingClientRect().right, teaching.getBoundingClientRect().top)
-          
-          if(line(event.clientX) < event.clientY  && event.clientY <= bottom + 5 && event.clientY >= top -5){
+          if(line(event.clientX) < event.clientY  && event.clientY <= bottom + 5 && event.clientY >= top -5){          console.log(line(event.clientX))
+
             belowLine = true;
           }
           //SHOW ALL STATS BY DEGREE TYPE

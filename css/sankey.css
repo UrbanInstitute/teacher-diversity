@@ -5,11 +5,12 @@
   max-width: 680px;
 }
 .node rect {
+  fill: #46abdb;
   cursor: pointer;
 }
 
 .label, .node text {
-  fill: #231f20;
+  fill: #000;
   font-size: 14px;
 }
 
@@ -42,7 +43,7 @@
 }
 .linkText {
   font-size: 13px !important;
-  fill: #094c6a;
+  fill: #000;
   opacity: 0;
 }
 .showText{
@@ -75,6 +76,8 @@
 }
 
 .link {
+  stroke: #a2d4ec;
+  fill: none;
   cursor: pointer
 }
 .toggle_button{
@@ -116,7 +119,7 @@ rect.labelRect {
 
 .labelRect {
   opacity: 0;
-  fill: #fbbe15;
+  fill: #fdbf11;
 }
 .label.highlight {
   font-weight: 700;
@@ -125,12 +128,11 @@ rect.labelRect {
   opacity: 1;
 }
 .node.highlight {
-  fill: #fbbe15;
+  fill: #fdbf11;
 }
 
 .link.highlight {
-  stroke: #fbbe15 !important;
-  stroke-opacity: .77;
+  stroke: #fdd870 !important;
   fill: none;
 }
 
