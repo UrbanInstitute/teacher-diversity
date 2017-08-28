@@ -207,12 +207,11 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         return "translate(" + (xPos2) +",0)"
         }
       })
-      .text(function(d) { console.log(d)
+      .text(function(d) { 
         var name = d.name.split("-")[0] 
         var type = d.name.split("-")[1]
-        console.log()
         var typeName = (dataCategory == 'all') ? "All" : "Bach"
-        if  (type == typeName) { console.log(name)
+        if  (type == typeName) { 
           return name
         }else {
           return ""
@@ -422,41 +421,43 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           var rectBreaksX = (dataCategory == 'all') ? [all.getBoundingClientRect().right, hs.getBoundingClientRect().right, bach.getBoundingClientRect().right, teaching.getBoundingClientRect().right] : [all.getBoundingClientRect().right, all.getBoundingClientRect().right, bach.getBoundingClientRect().right, teaching.getBoundingClientRect().right]
           var line = getLine(bach.getBoundingClientRect().right, bach.getBoundingClientRect().top, teaching.getBoundingClientRect().right, teaching.getBoundingClientRect().top)
           if(line(event.clientX) < event.clientY  && event.clientY <= bottom + 5 && event.clientY >= top -5){   
-
             belowLine = true;
           }
           //SHOW ALL STATS BY DEGREE TYPE
-          if (event.clientX >= rectBreaksX[3] || ( !belowLine && event.clientX > rectBreaksX[2])){ console.log('1')
+          if (event.clientX >= rectBreaksX[3] || ( !belowLine && event.clientX > rectBreaksX[2])){ 
               d3.selectAll(".labelRect-Teacher, .label-Teacher")
                 .classed("highlight", true)
               d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher")
                 .classed("showText", true)
               highlightSelected("-Teacher", "-Bach.no-TD", "became a teacher.")
               highlightSelected("-Teacher", "-Teaching", "became a teacher.")
-          }else if (event.clientX > rectBreaksX[2] && belowLine){console.log('2')
+          }else 
+          if (event.clientX > rectBreaksX[2] && belowLine){
               d3.selectAll(".labelRect-Teaching, .label-Teaching")
                 .classed("highlight", true)
+              d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher")
+                .classed("showText", false)
               d3.select(".linkText-" + HEADERS2[i] + "-Teaching")
                 .classed("showText", true)
               // d3.selectAll(".linkTextRect-" + HEADERS2[i] + "-Teaching")
               //   .classed("setTransparent", true)
               highlightSelected("-Teaching", "-Bach.TD", "received a teaching degree.")
               
-          }else if (event.clientX > rectBreaksX[1]){console.log('3')
+          }else if (event.clientX > rectBreaksX[1]){
               d3.selectAll(".labelRect-Bach, .label-Bach")
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i] + "-Bach")
                 .classed("showText", true)
               highlightSelected("-Bach", "-HS", "received a bachelor's degree.")
 
-          }else if (event.clientX > rectBreaksX[0]){ console.log('4')
+          }else if (event.clientX > rectBreaksX[0]){ 
               d3.selectAll(".labelRect-HS, .label-HS")
                 .classed("highlight", true)
               d3.select(".linkText-" + HEADERS2[i] + "-HS")
                 .classed("showText", true)
                highlightSelected("-HS", "", "received a high school degree.")
 
-          }else if (event.clientX <= rectBreaksX[0] && event.clientX > all.getBoundingClientRect().left) {console.log('5')
+          }else if (event.clientX <= rectBreaksX[0] && event.clientX > all.getBoundingClientRect().left) {
               d3.select(".labelRect")
                 .classed("highlight", true)
               d3.select(".label")
