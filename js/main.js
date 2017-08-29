@@ -274,13 +274,19 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .attr('class', function(d) { 
         return 'linkText linkText-' + d.name
       })
-      .attr("x", function(d) { 
-        return 10
+     .attr("x", function(d) { 
+      if (i == 0) {
+        return 5
+        }else{
+          return 10
+        }
       })
-      .attr("y", function(d) { return -5 })
+      .attr("y", function(d) { 
+          return (d.dy/2) + 5
+      })
       .attr("text-anchor", "end")
       .attr("transform", null)
-      .text(function(d){
+      .text(function(d){ console.log(d)
         return percentFormat(d.value);
       })
       .attr("text-anchor", "start")
@@ -700,6 +706,16 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       d3.select(".node-" + HEADERS2[i] + "-Teacher .linkText")
         .text(function(d){
           return linkTextFormat(d.value);
+        })
+       .attr("x", function(d) { 
+        if (i == 0) {
+          return 5
+          }else{
+            return 10
+          }
+        })
+        .attr("y", function(d) { 
+          return (d.dy/2) + 5
         })
     }
     for (i=0; i<4; i++){
