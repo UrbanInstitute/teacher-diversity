@@ -125,6 +125,16 @@ rect.labelRect {
   fill: #46abdb;
   font-size: 13px;
   font-style: italic;
+  opacity: 0;
+}
+
+.teacherSubText.showText {
+  opacity: 1;
+}
+
+.teacherSubText.highlight {
+  fill: #000;
+  font-weight: 700;
 }
 .labelRect {
   opacity: 0;
