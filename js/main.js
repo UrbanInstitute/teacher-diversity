@@ -633,14 +633,14 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .attr("height", function(d) {
         return d.dy;
       })
-      // .on('end', function() {
-      //   for (i=0; i<4; i++){
-      //     var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node()
-      //     var x = teacherNode.getBoundingClientRect().left;
-      //     var y = teacherNode.getBoundingClientRect().top
-      //     transitionTeacherText(x,y)
-      //   }
-      // })
+      .on('end', function() {
+        for (i=0; i<4; i++){
+          var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node()
+          var x = teacherNode.getBoundingClientRect().left;
+          var y = teacherNode.getBoundingClientRect().top
+          transitionTeacherText(x,y)
+        }
+      })
 
     node.selectAll(".raceLabels")
       .transition()
