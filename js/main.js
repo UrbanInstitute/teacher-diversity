@@ -555,6 +555,14 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         .classed("highlight", false)
       d3.selectAll(".link")
         .classed("highlight", false)
+      d3.selectAll(".linkText")
+        .classed("showText", false)
+      d3.selectAll(".teacherSubText")
+        .classed("showText", false)
+      for(var i = 0; i < 4; i++){
+        d3.select(".linkText-" + HEADERS2[i] + "-Teaching")
+            .classed("showText", true)
+      }
     }
     var suffix = (dataCategory == "bachelor") ? "-Bach" : "";
     var type = (dataCategory == "all" ? "-All" : "-Bach")
