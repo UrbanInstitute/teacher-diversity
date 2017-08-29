@@ -3,6 +3,7 @@
 }
 #chart {
   max-width: 680px;
+  width: 100%;
 }
 .node {
   fill: #46abdb;
@@ -43,7 +44,6 @@
 }
 .linkText {
   font-size: 13px !important;
-  fill: #fff;
   opacity: 0;
 }
 .showText{
