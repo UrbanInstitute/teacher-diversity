@@ -358,7 +358,6 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
    linktext
     .attr("x", function(d) { 
       var textWidth = this.getBoundingClientRect().width
-      console.log(textWidth)
           // return (nodeWidth -textWidth)/2
           return d.target.x + ((d.target.x + nodeWidth) - (d.target.x + textWidth))/2
       })   
@@ -403,7 +402,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .attr("class", "teacherText teacherText-" +i )
     var teacherSubTextG1 = teacherSubTextG.append("g")
       .attr("class", "teacherSubG1-" + i)
-      .attr("transform", function() {console.log()
+      .attr("transform", function() {
         return "translate(" + (teacherNode.getBoundingClientRect().left + translateX) + "," + (teacherNode.getBoundingClientRect().top + translateY)+ ")";
       })
     teacherSubTextG1
@@ -479,7 +478,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           var top = first.getBoundingClientRect().top;
           var rectBreaksX = (dataCategory == 'all') ? [all.getBoundingClientRect().right, hs.getBoundingClientRect().right, bach.getBoundingClientRect().right, teaching.getBoundingClientRect().right] : [all.getBoundingClientRect().right, all.getBoundingClientRect().right, bach.getBoundingClientRect().right, teaching.getBoundingClientRect().right]
           var line = getLine(bach.getBoundingClientRect().right, bach.getBoundingClientRect().top, teaching.getBoundingClientRect().right, teaching.getBoundingClientRect().top)
-          if(line(event.clientX) < event.clientY  && event.clientY <= bottom + nodePadding/2 && event.clientY >= top -nodePadding/2){  console.log('true') 
+          if(line(event.clientX) < event.clientY  && event.clientY <= bottom + nodePadding/2 && event.clientY >= top -nodePadding/2){ 
             belowLine = true;
           }
           //SHOW ALL STATS BY DEGREE TYPE
@@ -738,7 +737,6 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     linkG.selectAll(".linkText")
       .attr("x", function(d) { 
         var textWidth = this.getBoundingClientRect().width
-        console.log(textWidth)
             // return (nodeWidth -textWidth)/2
             return d.target.x + ((d.target.x + nodeWidth) - (d.target.x + textWidth))/2
       })   
@@ -812,7 +810,11 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .transition()
       .duration(0)
       .attr("transform", function() {
-        return (dataCategory == 'all') ? "translate(" + (left + translateX) + "," + (bottom +translateY + 20)+ ")" : "translate(" + (left + translateX) + "," + (bottom +translateY + 25)+ ")";
+        if (dataCategory == 'all') { console.log()
+          return "translate(" + (left + translateX) + "," + (bottom +translateY + 20) + ")"
+        }else {
+          return (category == 'percent') ? "translate(" + (left + translateX) + "," + (bottom +translateY + 25)+ ")" : "translate(" + (left + translateX) + "," + (bottom +translateY + 20)+ ")";
+        }
       })
     teacherSubTextG.select("text.teacherSubTextG1-" + i)
       .text(function() {
