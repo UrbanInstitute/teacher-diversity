@@ -213,7 +213,7 @@ d3.sankey = function() {
           node = nodes[i];
           dy = y0 - node.y;
           if (dy > 0) node.y += dy;
-          y0 = node.y + node.dy + nodePadding;
+          y0 = node.y + node.dy + nodePadding + 20;
         }
  
         // If the bottommost node goes outside the bounds, push it back up.

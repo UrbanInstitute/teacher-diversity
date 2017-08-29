@@ -91,9 +91,9 @@ var svg = d3.select("#chart").append("svg")
     .append("g")
     .attr("transform", function() {
       if (dataCategory == 'all') {
-        return "translate(" + -width*.1+ "," + margin.top/2 + ")"
+        return "translate(" + -width*.1+ "," + margin.top + ")"
       }else {
-        return "translate(" + -width*.24+ "," + margin.top/2 + ")"
+        return "translate(" + -width*.24+ "," + margin.top + ")"
 
       }
     })
@@ -104,7 +104,7 @@ var svg = d3.select("#chart").append("svg")
 // Set the sankey diagram properties
 var sankey = d3.sankey()
     .nodeWidth(45)
-    .nodePadding(10)
+    .nodePadding(45)
     .dataCategory(dataCategory)
     .size([width, height*.95]);
  
@@ -182,7 +182,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     //   return d.color = color(d.name.replace(/ .*/, ""));
     // })  
     .attr("transform", function(d) { 
-      return "translate(" + d.x + "," + d.y + ")"; })
+      return "translate(" + d.x + "," +  d.y + ")"; })
 
 // add the rectangles for the nodes
   node.append("rect")
@@ -238,7 +238,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .append("g")
     .attr("class", "label-g")
     .attr("transform", function(d, i) {
-      return "translate(" + (120 + (xLabelTranslate[i])*i)+ "," + height*1.07+ ")";
+      return "translate(" + (120 + (xLabelTranslate[i])*i)+ "," + height*1.03+ ")";
     })
   labelG
     .append("rect")
@@ -282,7 +282,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         }
       })
       .attr("y", function(d) { 
-          return (d.dy/2) + 5
+          return (d.dy) - 5
       })
       .attr("text-anchor", "end")
       .attr("transform", null)
@@ -303,7 +303,11 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         return d.target.x + 3
     })
     .attr("y", function(d) {
-      return d.target.y + (d.target.dy/2) + 5
+      if ((d.target.name).search("Teaching") > 0) {
+        return d.target.y + (d.target.dy) - 5
+      }else{
+        return d.target.y + (d.target.dy/2) + 5
+      }
     //  return (dataCategory == "all") ? d.source.y + (d.source.dy/1.9) : d.source.y + (d.source.dy/1.8)
     })
     .attr("text-anchor", "end")
@@ -318,31 +322,6 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       }
     })
     .attr("text-anchor", "start")
-
-  linktext
-    .call(getBB)
-
-
-  // linkG.selectAll(".link")
-  //   .data(graph_percent)
-  //   .enter()
-  //   .insert("rect",".linkText")
-  //   .attr("width", function(d){
-  //     return d.bbox.width
-  //   })
-  //   .attr("height", function(d){
-  //     return d.bbox.height
-  //   })
-  //   .attr('x', function(d) { 
-  //     return d.bbox.x
-  //   })
-  //   .attr('y', function(d) {
-  //     return d.bbox.y
-  //   })
-  //   .style("fill", "#fff")
-  //   .attr("class", function(d){
-  //     return "linkTextRect linkTextRect-" + d.target.name
-  //   })
    
           
   var xLabels = svg.append("g")
@@ -368,8 +347,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     var translateXPercent = (dataCategory == 'all') ? -10 : 40
     var translateXNumber = (dataCategory == 'all') ? -10 : 120
     var translateX = (category == 'percent') ? translateXPercent : translateXNumber;
-    var translateYPercent = (dataCategory == 'all') ? -width * .272 : -width*.24
-    var translateYNumber = (dataCategory == 'all') ? -width * .272 : -width*.24
+    var translateYPercent = (dataCategory == 'all') ? -width * .292 : -width*.257
+    var translateYNumber = (dataCategory == 'all') ? -width * .292 : -width*.25
     var translateY = (category == 'percent') ? translateYPercent : translateYNumber;
     var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node()
     var teacherTextSvg = d3.select("#stats-div svg").append("g")
@@ -700,7 +679,6 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           return linkTextFormat(d.value); 
         }
       })
-     .call(getBB)
 
     for (i=0; i<4; i++){
       d3.select(".node-" + HEADERS2[i] + "-Teacher .linkText")
@@ -715,7 +693,7 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
           }
         })
         .attr("y", function(d) { 
-          return (d.dy/2) + 5
+            return (d.dy) - 5
         })
     }
     for (i=0; i<4; i++){
@@ -734,8 +712,8 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     var translateXPercent = (dataCategory == 'all') ? -10 : 40
     var translateXNumber = (dataCategory == 'all') ? -10 : 40
     var translateX = (category == 'percent') ? translateXPercent : translateXNumber;
-    var translateYPercent = (dataCategory == 'all') ? -width * .272 : -width*.24
-    var translateYNumber = (dataCategory == 'all') ? -width * .272 : -width*.235
+    var translateYPercent = (dataCategory == 'all') ? -width * .292 : -width*.257
+    var translateYNumber = (dataCategory == 'all') ? -width * .292 : -width*.25
     var translateY = (category == 'percent') ? translateYPercent : translateYNumber;
 
     teacherSubTextG.select(".teacherSubG1-" + i)
@@ -769,10 +747,12 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
         return (category == 'percent') ? teacherSubTextPercent2[i] : teacherSubTextNumber2[i]
       })  
     }
-  function getBB(selection) { 
-    selection.each(function(d){
-      d.bbox = this.getBBox();
-    })
-  }
+
 });
+
+$(window).on('resize', function () {
+        
+});
+
+
  
