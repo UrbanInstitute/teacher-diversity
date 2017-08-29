@@ -358,55 +358,49 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
     .on('mousemove', showStats)
     .on("mouseout", hideStats);
 
+  //TEACHER STATS
   var teacherSubTextG = svg.append("g")
     .attr("class", "teacherSubTextG")
-    for (i=0; i<4; i++){
-      var teacherTextSvg = d3.select("#stats-div svg").append("g")
-        .attr("transform", function() {
-          return "translate(" + 0 + "," + height*.085+ ")";
-        })
-        .attr("class", "teacherTextG")
-      teacherTextSvg
-        .append("text")
-        .text(function() {
-          var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
-          return (category == 'percent') ? teacherTextPercent[i] : teacherTextNumber[i]
-        })
-        .attr("class", "teacherText teacherText-" +i )
+  for (i=0; i<4; i++){
+    var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node()
+    console.log(teacherNode.getBoundingClientRect().top)
+    var teacherTextSvg = d3.select("#stats-div svg").append("g")
+      .attr("transform", function() {
+        return "translate(" + 0 + "," + height*.085+ ")";
+      })
+      .attr("class", "teacherTextG")
+    teacherTextSvg
+      .append("text")
+      .text(function() {
+        var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
+        return (category == 'percent') ? teacherTextPercent[i] : teacherTextNumber[i]
+      })
+      .attr("class", "teacherText teacherText-" +i )
     var teacherSubTextG1 = teacherSubTextG.append("g")
-      .attr("class", "teacherSubTextG1")
+      .attr("class", "teacherSubG1-" + i)
       .attr("transform", function() {console.log()
-        var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node()
-        console.log(teacherNode.getBoundingClientRect())
         return "translate(" + teacherNode.getBoundingClientRect().left + "," + (teacherNode.getBoundingClientRect().top - 180)+ ")";
       })
-      teacherSubTextG1
-        .append("text")
-        .text(function() {
-          var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
-          return (category == 'percent') ? teacherSubTextPercent1[i] : teacherSubTextNumber1[i]
-        })
-        .attr("class", "teacherSubText teacherSubText-" +i )
+    teacherSubTextG1
+      .append("text")
+      .text(function() {
+        var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
+        return (category == 'percent') ? teacherSubTextPercent1[i] : teacherSubTextNumber1[i]
+      })
+      .attr("class", "teacherSubText teacherSubTextG1-" +i )
     var teacherSubTextG2 = teacherSubTextG.append("g")
-      .attr("class", "teacherSubTextG2")
+      .attr("class", "teacherSubG2-" + i)
       .attr("transform", function() {console.log()
-        var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node()
-        console.log(teacherNode.getBoundingClientRect())
         return "translate(" + (teacherNode.getBoundingClientRect().left + 40) + "," + (teacherNode.getBoundingClientRect().top - 180)+ ")";
       })
-      teacherSubTextG2
-        .append("text")
-        .text(function() {
-          var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
-          return (category == 'percent') ? teacherSubTextPercent2[i] : teacherSubTextNumber2[i]
-        })
-        .attr("class", "teacherSubText teacherSubText-" +i )
-        // .attr("transform", function() {console.log()
-        //   var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node()
-        //   console.log(teacherNode.getBoundingClientRect())
-        //   return "translate(" + teacherNode.getBoundingClientRect().left + "," + teacherNode.getBoundingClientRect().top+ ")";
-        // })
-    }
+    teacherSubTextG2
+      .append("text")
+      .text(function() {
+        var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
+        return (category == 'percent') ? teacherSubTextPercent2[i] : teacherSubTextNumber2[i]
+      })
+      .attr("class", "teacherSubText teacherSubTextG2-" +i )
+  }
 
   function hideStats() {
       var Bach = (dataCategory == 'all') ? "" : "-Bach"
@@ -638,31 +632,20 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
       .duration(1300)
       .attr("height", function(d) {
         return d.dy;
-      });
+      })
+      // .on('end', function() {
+      //   for (i=0; i<4; i++){
+      //     var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node()
+      //     var x = teacherNode.getBoundingClientRect().left;
+      //     var y = teacherNode.getBoundingClientRect().top
+      //     transitionTeacherText(x,y)
+      //   }
+      // })
+
     node.selectAll(".raceLabels")
       .transition()
       .duration(1300)
       .attr("y", function(d) { return d.dy / 2; })
-    // for (i=0; i<xLabelNumber; i++){ 
-    //   d3.select(".label" + nodeLabels[i])
-    //     .transition()
-    //     .duration(1300)
-    //     .attr("y", function(d) { return d.dy + 30 })
-    //     .call(getBB)
-    //   // d3.select("rect.labelRect" + nodeLabels[i])
-    //   //   .transition()
-    //   //   .duration(1300)
-    //   //   .attr("width", function(d){
-    //   //   return d.bbox.width + 8
-    //   //   })
-    //   //   .attr('x', function(d) { 
-    //   //     return d.bbox.x - 4
-    //   //   })
-    //   //   .attr("y", function(d) { 
-    //   //     return d.bbox.y 
-    //   //   })
-
-    // }
 
     linkG.selectAll(".linkText")
       .data(linkData)
@@ -684,20 +667,6 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
      .call(getBB)
 
     for (i=0; i<4; i++){
-
-    teacherSubTextG.select("teacherSubText-" + i)
-      .text(function() {
-        var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
-        return (category == 'percent') ? teacherSubTextPercent1[i] : teacherSubTextNumber1[i]
-      })
-    teacherSubTextG2.select("teacherSubText-" + i)
-      .text(function() {
-        var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
-        return (category == 'percent') ? teacherSubTextPercent2[i] : teacherSubTextNumber2[i]
-      })  
-    }
-
-    for (i=0; i<4; i++){
       d3.select(".node-" + HEADERS2[i] + "-Teacher .linkText")
         .text(function(d){
           return linkTextFormat(d.value);
@@ -713,6 +682,28 @@ d3.json("data/" + dataCategory + "-data.json", function(error, graph) {
 
 
   };
+
+  function transitionTeacherText(x, y) {
+    teacherSubTextG.select(".teacherSubG1-" + i)
+      .attr("transform", function() {
+        return "translate(" + x + "," + (y - 180)+ ")";
+      })
+    teacherSubTextG.select(".teacherSubG2-" + i)
+      .attr("transform", function() {console.log("x: " + x + " y: " + y)
+        return "translate(" + (x + 40) + "," + (y - 180)+ ")";
+      })
+    teacherSubTextG.select("text.teacherSubTextG1-" + i)
+      .text(function() {
+        var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
+        console.log((category == 'percent') ? teacherSubTextPercent1[i] : teacherSubTextNumber1[i])
+        return (category == 'percent') ? teacherSubTextPercent1[i] : teacherSubTextNumber1[i]
+      })
+    teacherSubTextG.select("text.teacherSubTextG2-" + i)
+      .text(function() {
+        var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
+        return (category == 'percent') ? teacherSubTextPercent2[i] : teacherSubTextNumber2[i]
+      })  
+    }
   function getBB(selection) { 
     selection.each(function(d){
       d.bbox = this.getBBox();
