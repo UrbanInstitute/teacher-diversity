@@ -4,13 +4,17 @@ var numberShortFormat = d3.format(".3s");
 var percentFormat = d3.format(".1%");
 
 function drawGraph(container_width, category) {
+  var isMobile = (container_width <= 500) ? true : false;
+  var isPhone = (container_width <= 400) ? true : false;
   var dataCategory = document.getElementById('chart').className
   var units = "of students";
   var steps = (dataCategory == 'all') ? ["All Students", "High School", "Bachelor's", "Teaching Degree", "Teacher"] : ["Bachelor's", "Teaching Degree", "Teacher"]
   var numberSteps = (dataCategory == 'all') ? 5 : 3;
   var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
       HEADERS1= ["SOURCE", "TARGET"],
-      xLabelsRect = (dataCategory == 'all') ? [85, 85, 75, 112, 60,] : [0, 76, 112, 62, 0,]
+      xRectHeightMobile = (dataCategory == 'all') ? [50, 50, 25, 50, 25,] : [0, 25, 50, 25, 0,]
+      xLabelsRect = (dataCategory == 'all') ? [85, 85, 75, 112, 60,] : [0, 76, 112, 62, 0,],
+      xLabelsRectMobile = (dataCategory == 'all') ? [65, 55, 75, 62, 60,] : [0, 76, 62, 62, 0,],
       nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
       numberStats = (dataCategory == 'all') ? [92338890, 19560471, 25434140,10383460] : [92338890, 19560471, 25434140,10383460],
       teacherTextPercent = (dataCategory == 'all') ? ["This is comprised of 2.0% of students without and 2.5% with teaching degrees.", "This is comprised of 1.1% of students without and 0.7% with teaching degrees.", "This is comprised of 0.9% of students without and 0.6% with teaching degrees.", "This is comprised of 1.5% of students without and 0.5% with teaching degrees."] : ["This is comprised of 5.1% of students without and 6.3% with teaching degrees.", "This is comprised of 5.5% of students without and 3.5% with teaching degrees.", "This is comprised of 6.0% of students without and 4.1% with teaching degrees.", "This is comprised of 2.4% of students without and 0.8% with teaching degrees."] 
@@ -18,20 +22,32 @@ function drawGraph(container_width, category) {
       teacherSubTextPercent1 = (dataCategory == 'all') ? ["2.5%", "0.7%", "0.6%", "0.5%"] : ["6.3%", "3.5%", "4.1%", "0.8%"], 
       teacherSubTextPercent2 = (dataCategory == 'all') ? ["2.0%", "1.1%", "0.9%", "1.5%"] : ["5.1%", "5.5%", "6.0%", "2.4%"], 
       teacherSubTextNumber2 = (dataCategory == 'all') ? ["2.42M", "157k", "215k", "57.7k"] : ["2.42M", "157k", "215k", "57.7k", ],
-      teacherSubTextNumber1 = (dataCategory == 'all') ? ["1.97M", "247k", "313k", "169k"] : ["1.97M", "247k", "312k", "169k", ] 
+      teacherSubTextNumber1 = (dataCategory == 'all') ? ["1.97M", "247k", "313k", "169k"] : ["1.97M", "247k", "312k", "169k", ],
+      wrapWidth = (isMobile) ? 60 : 200;
       // color = d3.scale.ordinal()
     //   .domain([""])
   // (["#a2d4ec", "#46abdb", "#1696d2", " #12719e"])
-
+console.log(isPhone)
   d3.selectAll(".toggle_button").classed("active", false)
   d3.selectAll("#percent_button").classed("active",true)
-  console.log(category)
-  var isMobile = (container_width <= 500) ? true : false;
-  var nodeWidth = (container_width < 600) ? 24.8 : 45;
+  var nodeWidth = (function(){
+        if (isPhone) {
+          return 17
+        }
+        else if (isMobile) { 
+          return 32
+          // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
+        }else {
+          return 45
+        }
+      })
+      ();
   var nodePadding = 45;
   var margin = {top: 30, right: 10, bottom: 30, left: 10},
       width = (function(){
-        if (container_width > 500) { 
+        if (isPhone) {
+          return (dataCategory == 'all') ? container_width*1.2 : container_width*1.35
+        } else if (isMobile) { 
           return (dataCategory == 'all') ? container_width*1.06 : container_width*1.25
           // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
         }else {
@@ -40,9 +56,23 @@ function drawGraph(container_width, category) {
       })
       ();
   var aspect_width = 35,
-      heightMobile = (dataCategory == 'all') ? 38.5 : 32,
+      heightPhone = (dataCategory == 'all') ? 54 : 46,
+      heightMobile = (dataCategory == 'all') ? 43 : 35,
       heightNormal = (dataCategory == 'all') ? 32 : 27,
-      aspect_height = (container_width < 500) ? heightMobile : heightNormal,
+      aspect_height = (function(){
+        if (isPhone) {
+          return heightPhone
+        }
+        else if (isMobile) { 
+          return heightMobile
+          // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
+        }else {
+          return heightNormal
+        }
+      })
+      ();
+
+      //(container_width < 500) ? heightMobile : heightNormal,
       height = Math.ceil((width * aspect_height) / aspect_width) - margin.top - margin.bottom,
       xLabelTranslate = (dataCategory == 'all') ? [container_width/5, container_width/5, container_width/4.85, container_width/5.1, container_width/4.9]: [0, width/6.5, width/4.3, width/3.85, width/2]
 
@@ -86,7 +116,7 @@ function drawGraph(container_width, category) {
           line.pop();
           tspan.text(line.join(" "));
           line = [word];
-          tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+          tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
         }
       }
     });
@@ -102,11 +132,15 @@ function drawGraph(container_width, category) {
       }
      // return width/1.9
     })
-    .attr("height", height/10)
+    .attr("height", function() {
+      return (isPhone) ? 0 : height/10})
     .append("text")
     .attr("x", 0)
     .attr("y", height*.05)
     .attr("class", "description")
+    .style("opacity", function() {
+      return (isPhone) ? 0 : 1;
+    })
 
   // append the svg canvas to the page
   d3.select(".main-svg").remove()
@@ -116,7 +150,9 @@ function drawGraph(container_width, category) {
       .attr("class", "main-svg")
       .append("g")
       .attr("transform", function() {
-        if (isMobile) {
+        if (isPhone) {
+          return (dataCategory == 'all') ? "translate("+ -width*.19 +"," + margin.top + ")" : "translate(" + -width*.31+ "," + margin.top + ")"
+        }else if (isMobile) {
           return (dataCategory == 'all') ? "translate("+ -width*.03 +"," + margin.top + ")" : "translate(" + -width*.19+ "," + margin.top + ")"
         }else {
           return (dataCategory == 'all') ? "translate("+ -width*.07 +"," + margin.top + ")" : "translate(" + -width*.21+ "," + margin.top + ")"
@@ -274,16 +310,18 @@ function drawGraph(container_width, category) {
       .append("g")
       .attr("class", "label-g")
       .attr("transform", function(d, i) {
-        return "translate(" + (120 + (xLabelTranslate[i])*i)+ "," + height*1.03+ ")";
+        return "translate(" + (120 + (xLabelTranslate[i])*i)+ "," + height*1.02+ ")";
       })
     labelG
       .append("rect")
       .attr("x", -5)
       .attr("y", -18)
       .attr("width", function(d, i) {
-        return xLabelsRect[i]
+        return (isMobile) ? xLabelsRectMobile[i] : xLabelsRect[i]
       })
-      .attr("height", 25)
+      .attr("height", function(d, i){console.log((isMobile) ? 50 : 25)
+        return (isMobile) ? xRectHeightMobile[i] : 25;
+      })
       // .attr("transform", function(d, i) {
       //   return "translate(" + (120 + (xLabelTranslate[i])*i)+ "," + height+ ")";
       // })
@@ -298,6 +336,9 @@ function drawGraph(container_width, category) {
       .attr("class", function(d,i){
         return "label label" + nodeLabels[i]
       })
+      .attr("dy", 0)
+      .call(wrapText, wrapWidth)
+      console.log(wrapWidth)
     d3.select(".g-x-labels")
       .attr("transform", function(d, i) {
         return "translate(" + (-width*.01) + ",0)";
@@ -428,7 +469,6 @@ function drawGraph(container_width, category) {
       var teachingNodeData = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").data()[0]
       var teacherNodeY = teacherNodeData.y;
       var teacherNodeX = (dataCategory == 'all') ? (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left)/2 + teachingNode.getBoundingClientRect().right : (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left) + teachingNode.getBoundingClientRect().right
-console.log((teacherNodeX ))
       var teacherTextSvg = d3.select("#stats-div svg").append("g")
         .attr("transform", function() {
           return "translate(" + 0 + "," + height*.085+ ")";
@@ -443,7 +483,11 @@ console.log((teacherNodeX ))
       var teacherSubTextG1 = teacherSubTextG.append("g")
         .attr("class", "teacherSubG1-" + i)
         .attr("transform", function() {
-          return "translate(" + (teacherNodeX) + "," + (teacherNodeY + translateY + 5)+ ")";
+          if (isMobile) {
+            return "translate(" + (teacherNodeX-20) + "," + (teacherNodeY + translateY + 5)+ ")";
+          }else {
+            return "translate(" + (teacherNodeX) + "," + (teacherNodeY + translateY + 5)+ ")";
+          }
         })
       teacherSubTextG1
         .append("text")
@@ -454,7 +498,11 @@ console.log((teacherNodeX ))
       var teacherSubTextG2 = teacherSubTextG.append("g")
         .attr("class", "teacherSubG2-" + i)
         .attr("transform", function() {
-          return (dataCategory == 'all') ? "translate(" + (teacherNodeX) + "," + (teacherNodeY - translateY)+ ")" : "translate(" + (teacherNodeX) + "," + (teacherNodeY - translateY)+ ")";
+           if (isMobile) {
+            return (dataCategory == 'all') ? "translate(" + (teacherNodeX - 20) + "," + (teacherNodeY - translateY)+ ")" : "translate(" + (teacherNodeX - 20) + "," + (teacherNodeY - translateY)+ ")";
+          }else {
+            return (dataCategory == 'all') ? "translate(" + (teacherNodeX) + "," + (teacherNodeY - translateY)+ ")" : "translate(" + (teacherNodeX) + "," + (teacherNodeY - translateY)+ ")";
+          }
          
         })
       teacherSubTextG2

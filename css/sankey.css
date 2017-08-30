@@ -112,10 +112,9 @@ hr {
   width: 100%;
   border: 1px solid #dad9d9;
   margin-bottom: 30px;
+  display: block;
 }
-rect.labelRect {
-  height: 24px;
-}
+
 
 .raceLabels.highlight {
   font-weight: 700;
@@ -191,4 +190,14 @@ rect.labelRect {
     font-size: 11px !important;
   }
 
+}
+
+@media screen and (max-width: 416px) {
+  hr {
+    display: none;
+  }
+
+  .teacherSubText.showText, .teacherSubText.highlight {
+    opacity: 0;
+  }
 }
