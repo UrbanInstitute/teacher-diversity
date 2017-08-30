@@ -182,3 +182,13 @@ rect.labelRect {
   font-size: 18px;
   font-weight: 600;
 }
+
+@media screen and (max-width: 550px) {
+  .label, .node text{
+    font-size: 13px;
+  }
+  .linkText, .teacherSubText {
+    font-size: 11px !important;
+  }
+
+}

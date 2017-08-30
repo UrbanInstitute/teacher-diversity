@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<title>Teacher Diversity</title>
-<link rel="stylesheet" type="text/css" href="css/sankey.css"/>
-<style>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
+  <title>Teacher Diversity</title>
+  <link rel="stylesheet" type="text/css" href="css/sankey.css"/>
+  <style>
 
  
- body, html {
+body, html {
   font-family: "Lato", sans-serif;
-  margin: 20px;
  }
 
 .label-HS {
@@ -36,53 +40,11 @@
   fill: #000;
 }
 
-/*.link-White, .link-Black, .link-Asian, .link-Hispanic {
-  stroke: #a2d3eb;
-  stroke-opacity: .77;
-  fill: none;
-}
-
-.link-White-HS, .link-Black-HS, .link-Asian-HS, .link-Hispanic-HS {
-  stroke: #46abd9;
-  stroke-opacity: .77;
-  fill: none;
-}
-
-.link-White-Bach, .link-Black-Bach, .link-Asian-Bach, .link-Hispanic-Bach, .link-White-Bach.no-TD, .link-Black-Bach.no-TD, .link-Asian-Bach.no-TD, .link-Hispanic-Bach.no-TD{
-  stroke: #1896d2;
-  stroke-opacity: .77;
-  fill: none;
-}
-
-.link-White-Teaching, .link-Black-Teaching, .link-Asian-Teaching, .link-Hispanic-Teaching {
-  stroke: #11719f;
-  stroke-opacity: .77;
-  fill: none;
-}
-*/
-
-
-/*.node-White, .node-Black, .node-Asian, .node-Hispanic {
-  fill: #a2d3eb;
-}
-.node-White-HS, .node-Black-HS, .node-Asian-HS, .node-Hispanic-HS {
-  fill: #46abd9;
-}
-.node-White-Bach, .node-Black-Bach, .node-Asian-Bach, .node-Hispanic-Bach {
-  fill: #1896d2;
-}
-
-.node-White-Teaching, .node-Black-Teaching, .node-Asian-Teaching, .node-Hispanic-Teaching {
-  fill: #11719f;
-}
-.node-White-Teacher, .node-Black-Teacher, .node-Asian-Teacher, .node-Hispanic-Teacher {
-  fill: #062635;
-}*/
 
 
 
-
-</style>
+  </style>
+  </head>
 <body>
 <div id="chart" class="all">
   <div id="title">Teacher Breakdown by Race- All Degrees</div>
@@ -94,29 +56,20 @@
   </div>
   <hr>
 </div>
-<!-- <div class="label-div">
-  <div class= "label label">
-    <p>All Students</p>
-  </div>
-  <div class= "label label-HS">
-    <p>High School</p>
-  </div>
-  <div class= "label label-Bach">
-    <p>Bachelor's</p>
-  </div>
-  <div class= "label label-Teaching">
-    <p>Teaching Degree</p>
-  </div>
-  <div class= "label label-Teacher">
-    <p>Teacher</p>
-  </div>
-</div> -->
 
+<script type="text/javascript" src="js/vendor/pym.min.js"></script>
 <script src="js/vendor/jquery-1.12.4.min.js"></script>
 <script src="js/vendor/jquery-ui.min.js"></script>
 <script src="http://d3js.org/d3.v4.js"></script>
 <script src="js/teacher-diversity_sankey.js"></script>
 <script src="js/main.js"></script>
- 
+<script>
+    $(window).load(function () {
+      pymChild = new pym.Child({});
+        
+    });
+
+    var pymChild = new pym.Child();
+</script>
 </body>
 </html>
