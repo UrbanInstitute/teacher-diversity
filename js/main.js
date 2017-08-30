@@ -260,28 +260,30 @@ console.log(isPhone)
 
     //ADD Y-AXIS RACE LABELS
     node.append("text")
-        .attr("y", function(d) { return d.dy / 2; })
+        .attr("y", function(d) { 
+          return (isPhone) ? -2 : d.dy / 2; 
+        })
         .attr("dy", ".35em")
         .attr("text-anchor", "end")
-        .attr("transform", function(d) { 
-          if (d.name == "Hispanic-All" || d.name == "Hispanic-Bach") {
-            if (isMobile) {
-              return (dataCategory == 'all') ? "translate(-12,0)" : "translate(-87,0)"
-            } else if (container_width < 600) {
-              return (dataCategory == 'all') ? "translate(15,0)" : "translate(-95,0)"
-            }else {
-              return (dataCategory == 'all') ? "translate(15,0)" : "translate(-115,0)"
-            }
-          }else{
-            if (isMobile) {
-              return (dataCategory == 'all') ? "translate(5,0)" : "translate(-75,0)"
-            }else if (container_width < 600) {
-              return (dataCategory == 'all') ? "translate(33,0)" : "translate(-80,0)"
-            }else {
-              return (dataCategory == 'all') ? "translate(33,0)" : "translate(-98,0)"
-            }
-          }
-        })
+        // .attr("transform", function(d) { 
+        //   if (d.name == "Hispanic-All" || d.name == "Hispanic-Bach") {
+        //     if (isMobile) {
+        //       return (dataCategory == 'all') ? "translate(-12,0)" : "translate(-87,0)"
+        //     } else if (container_width < 600) {
+        //       return (dataCategory == 'all') ? "translate(15,0)" : "translate(-95,0)"
+        //     }else {
+        //       return (dataCategory == 'all') ? "translate(15,0)" : "translate(-115,0)"
+        //     }
+        //   }else{
+        //     if (isMobile) {
+        //       return (dataCategory == 'all') ? "translate(5,0)" : "translate(-75,0)"
+        //     }else if (container_width < 600) {
+        //       return (dataCategory == 'all') ? "translate(33,0)" : "translate(-80,0)"
+        //     }else {
+        //       return (dataCategory == 'all') ? "translate(33,0)" : "translate(-98,0)"
+        //     }
+        //   }
+        // })
         .text(function(d) { 
           var name = d.name.split("-")[0] 
           var type = d.name.split("-")[1]
@@ -293,7 +295,17 @@ console.log(isPhone)
           }
         })
         .filter(function(d) { return d.x < width / 2; })
-        .attr("x", 6 + sankey.nodeWidth())
+        .attr("x", function(d) {
+          if ((d.name).search("Hispanic") == 0) {
+            if (isPhone) {
+              return (dataCategory == 'all') ? 75 + sankey.nodeWidth() : sankey.nodeWidth() - 20
+            } return (dataCategory == 'all') ? 5 + sankey.nodeWidth() : -55
+          }else {
+            if (isPhone) {
+              return (dataCategory == 'all') ? 75 + sankey.nodeWidth() : sankey.nodeWidth() - 20
+            } return (dataCategory == 'all') ? 5 + sankey.nodeWidth() : -55
+          }
+        })
         .attr("text-anchor", "start")
         .attr("class", function(d) {
             return "raceLabels raceLabels-" + d.name.split(" ")[0] 
