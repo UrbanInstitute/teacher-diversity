@@ -1,13 +1,13 @@
 var container_width = parseFloat(d3.select("#chart").style("width"))
+var numberFormat = d3.format(",");
+var numberShortFormat = d3.format(".3s");
+var percentFormat = d3.format(".1%");
 
 function drawGraph(container_width, category) {
   var dataCategory = document.getElementById('chart').className
   var units = "of students";
   var steps = (dataCategory == 'all') ? ["All Students", "High School", "Bachelor's", "Teaching Degree", "Teacher"] : ["Bachelor's", "Teaching Degree", "Teacher"]
   var numberSteps = (dataCategory == 'all') ? 5 : 3;
-  var numberFormat = d3.format(",");
-  var numberShortFormat = d3.format(".3s");
-  var percentFormat = d3.format(".1%");
   var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
       HEADERS1= ["SOURCE", "TARGET"],
       xLabelsRect = (dataCategory == 'all') ? [85, 85, 75, 112, 60,] : [0, 76, 112, 62, 0,]
@@ -47,7 +47,7 @@ function drawGraph(container_width, category) {
       xLabelTranslate = (dataCategory == 'all') ? [container_width/5, container_width/5, container_width/4.85, container_width/5.1, container_width/4.9]: [0, width/6.5, width/4.3, width/3.85, width/2]
 
   var format = function(d) { 
-    // var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
+    var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
     if (category == "percent") {
       if(d==1) {
         return "100%"
@@ -60,7 +60,7 @@ function drawGraph(container_width, category) {
   };
 
   var linkTextFormat = function(d) { 
-    // var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
+    var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
     if (category == "percent") {
       return percentFormat(d) 
     }else {
