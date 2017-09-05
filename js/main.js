@@ -12,8 +12,8 @@ function drawGraph(container_width, category) {
   var numberSteps = (dataCategory == 'all') ? 5 : 3;
   var HEADERS2= ["white", "black", "Hispanic", "Asian"],
       HEADERS1= ["SOURCE", "TARGET"],
-      xRectHeight = (dataCategory == 'all') ? [60, 60, 60, 60, 25,] : [0, 60, 60, 25, 0,]
-      xLabelsRect = (dataCategory == 'all') ? [85, 85, 75, 70, 60,] : [0, 76, 70, 62, 0,],
+      xRectHeight = (dataCategory == 'all') ? [65, 65, 65, 65, 25,] : [0, 65, 65, 25, 0,]
+      xLabelsRect = (dataCategory == 'all') ? [95, 85, 75, 70, 60,] : [0, 76, 70, 62, 0,],
       xLabelsRectMobile = (dataCategory == 'all') ? [65, 55, 75, 62, 60,] : [0, 76, 62, 62, 0,],
       nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
       numberStats = (dataCategory == 'all') ? [92338890, 19560471, 25434140,10383460] : [92338890, 19560471, 25434140,10383460],
@@ -471,7 +471,7 @@ console.log(isPhone)
     var teacherSubTextG = svg.append("g")
       .attr("class", "teacherSubTextG")
     for (i=0; i<4; i++){ 
-      // var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
+      var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
       var translateYPercent = (dataCategory == 'all') ? 7 :18 //-width * .3 : -width*.26
       var translateYNumber = (dataCategory == 'all') ? -width * .292 : -width*.25
       var translateY = (category == 'percent') ? translateYPercent : translateYNumber
