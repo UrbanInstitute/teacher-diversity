@@ -1,22 +1,22 @@
 {
 "links": [
 
-{"source":"white diploma","target":"white-Bach","value":"1", "value2": 38644110},
-{"source":"black diploma","target":"black-Bach","value":"1", "value2": 4513414},
-{"source":"Hispanic diploma","target":"Hispanic-Bach","value":"1", "value2": 5243982},
-{"source":"Asian diploma","target":"Asian-Bach","value":"1", "value2": 6990305},
-{"source":"white-Bach","target":"white-Teacher","value":".0510", "value2": 1970062},
-{"source":"black-Bach","target":"black-Teacher","value":".0547", "value2": 247003},
-{"source":"Hispanic-Bach","target":"Hispanic-Teacher","value":".0596", "value2": 312676},
-{"source":"Asian-Bach","target":"Asian-Teacher","value":".0242", "value2": 168835},
-{"source":"white-Bach","target":"white-Teaching degree","value":".0983", "value2": 3797340},
-{"source":"white-Teaching degree","target":"white-Teacher","value":".0626", "value2": 2419381},
-{"source":"black-Bach","target":"black-Teaching degree","value":".0668", "value2": 301539},
-{"source":"black-Teaching degree","target":"black-Teacher","value":".0348", "value2": 156966},
-{"source":"Hispanic-Bach","target":"Hispanic-Teaching degree","value":".0756", "value2": 396273},
-{"source":"Hispanic-Teaching degree","target":"Hispanic-Teacher","value":".0409", "value2": 214497},
-{"source":"Asian-Bach","target":"Asian-Teaching degree","value":".0244", "value2": 170676},
-{"source":"Asian-Teaching degree","target":"Asian-Teacher","value":".0083", "value2": 57722}
+{"source":"white diploma","target":"white-Bach","value":"1", "value2": 10010319},
+{"source":"black diploma","target":"black-Bach","value":"1", "value2": 1203903},
+{"source":"Hispanic diploma","target":"Hispanic-Bach","value":"1", "value2": 1431034},
+{"source":"Asian diploma","target":"Asian-Bach","value":"1", "value2": 1890112},
+{"source":"white-Bach","target":"white-Teacher","value":".0505", "value2": 505537},
+{"source":"black-Bach","target":"black-Teacher","value":".0533", "value2": 64188},
+{"source":"Hispanic-Bach","target":"Hispanic-Teacher","value":".0544", "value2": 77780},
+{"source":"Asian-Bach","target":"Asian-Teacher","value":".0249", "value2": 47070},
+{"source":"white-Bach","target":"white-Teaching degree","value":".0913", "value2": 913874},
+{"source":"white-Teaching degree","target":"white-Teacher","value":".0575", "value2": 575757},
+{"source":"black-Bach","target":"black-Teaching degree","value":".0639", "value2": 76977},
+{"source":"black-Teaching degree","target":"black-Teacher","value":".0331", "value2": 39844},
+{"source":"Hispanic-Bach","target":"Hispanic-Teaching degree","value":".0713", "value2": 101986},
+{"source":"Hispanic-Teaching degree","target":"Hispanic-Teacher","value":".0396", "value2": 56613},
+{"source":"Asian-Bach","target":"Asian-Teaching degree","value":".0230", "value2": 43511},
+{"source":"Asian-Teaching degree","target":"Asian-Teacher","value":".0082", "value2": 15472}
 
 
 
