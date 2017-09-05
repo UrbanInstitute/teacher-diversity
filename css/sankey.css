@@ -197,6 +197,10 @@ hr {
     display: none;
   }
 
+  .label, .node text {
+    font-size: 12px;
+  }
+
   .teacherSubText.showText, .teacherSubText.highlight {
     opacity: 0;
   }

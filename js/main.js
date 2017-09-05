@@ -24,7 +24,7 @@ function drawGraph(container_width, category) {
       teacherSubTextNumber2 = (dataCategory == 'all') ? ["2.42M", "157k", "215k", "57.7k"] : ["2.42M", "157k", "215k", "57.7k", ],
       teacherSubTextNumber1 = (dataCategory == 'all') ? ["1.97M", "247k", "313k", "169k"] : ["1.97M", "247k", "312k", "169k", ],
       wrapWidthDescription = (isMobile) ? container_width*.99 : container_width*.65; 
-      wrapWidth = (isMobile) ? 60 : 100
+      wrapWidth = (isMobile) ? 60 : 90
 
       // color = d3.scale.ordinal()
     //   .domain([""])
@@ -50,7 +50,7 @@ console.log(isPhone)
         if (isPhone) {
           return (dataCategory == 'all') ? container_width*1.2 : container_width*1.35
         } else if (isMobile) { 
-          return (dataCategory == 'all') ? container_width*1.06 : container_width*1.25
+          return (dataCategory == 'all') ? container_width*1.08 : container_width*1.25
           // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
         }else {
           return (dataCategory == 'all') ? container_width*1.02 : container_width*1.23
@@ -75,9 +75,7 @@ console.log(isPhone)
       ();
 
       //(container_width < 500) ? heightMobile : heightNormal,
-      height = Math.ceil((width * aspect_height) / aspect_width) - margin.top - margin.bottom,
-      xLabelTranslate = (dataCategory == 'all') ? [container_width/5, container_width/5, container_width/5.1, container_width/5.15, container_width/5.2]: [0, width/6.2, width/4.15, width/3.75, width/2]
-
+      height = Math.ceil((width * aspect_height) / aspect_width) - margin.top - margin.bottom
   var format = function(d) { 
     var category = d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
     if (category == "percent") {
@@ -315,7 +313,8 @@ console.log(isPhone)
     //ADD X-AXIS CATEGORY LABELS
     var nodeLabels = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
         xLabels = (dataCategory == 'all') ? ["25-to- 34-year-olds", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["", "Bachelor's Degree", "Teaching Degree", "Teacher"],
-        xLabelNumber = (dataCategory == 'all') ? 5 : 4;
+        xLabelNumber = (dataCategory == 'all') ? 5 : 4,
+        teacher = (dataCategory == 'all') ? 4 : 3;
     var labelG = svg.append("g") 
       .attr("class", "g-x-labels")
       .selectAll(".label-g")
@@ -324,7 +323,18 @@ console.log(isPhone)
       .append("g")
       .attr("class", "label-g")
       .attr("transform", function(d, i) {
-        return "translate(" + (120 + (xLabelTranslate[i])*i)+ "," + height*1.02+ ")";
+        xLabelTranslate = (dataCategory == 'all') ? [d3.select(".node-white").node().getBoundingClientRect().left, d3.select(".node-white-HS").node().getBoundingClientRect().left, d3.select(".node-white-Bach").node().getBoundingClientRect().left, d3.select(".node-white-Teaching").node().getBoundingClientRect().left, d3.select(".node-white-Teacher").node().getBoundingClientRect().left]: [0, d3.select(".node-white-Bach").node().getBoundingClientRect().left, d3.select(".node-white-Teaching").node().getBoundingClientRect().left, d3.select(".node-white-Teacher").node().getBoundingClientRect().left, 0]
+        if (isPhone) { console.log('phone')
+          return (dataCategory == 'all') ? "translate(" + ((xLabelTranslate[i]) + (width*.17) - (7*i))+"," + height*1.02+ ")" : "translate(" + ((xLabelTranslate[i]) + (width*.31) - i*10 )+"," + height*1.02+ ")";
+        } else if (isMobile) { console.log('mobile') 
+          if (i == teacher) {
+            return (dataCategory == 'all') ? "translate(" + ((xLabelTranslate[i]) - (30)) + "," + height*1.02+ ")" :  "translate(" + ((xLabelTranslate[i]) + 75 ) + "," + height*1.02+ ")" ;
+          }else { 
+            return (dataCategory == 'all') ? "translate(" + ((xLabelTranslate[i]) + 10 - (5*i)) + "," + height*1.02+ ")" : "translate(" + ((xLabelTranslate[i]) + (width*.35) - i*50) + "," + height*1.02+ ")";
+          }
+        }else {
+          return (dataCategory == 'all') ? "translate(" + ((xLabelTranslate[i]) + width*.055)+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate[i]) + width*.31 - 45*i)+ "," + height*1.02+ ")";
+        }
       })
     labelG
       .append("rect")
