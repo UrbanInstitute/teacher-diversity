@@ -8,9 +8,9 @@ function drawGraph(container_width, category) {
   var isPhone = (container_width <= 400) ? true : false;
   var dataCategory = document.getElementById('chart').className
   var units = "of students";
-  var steps = (dataCategory == 'all') ? ["All Students", "High School", "Bachelor's", "Teaching Degree", "Teacher"] : ["Bachelor's", "Teaching Degree", "Teacher"]
+  var steps = (dataCategory == 'all') ? ["25-to-34-year-olds", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["Bachelor's Degree", "Teaching Degree", "Teacher"]
   var numberSteps = (dataCategory == 'all') ? 5 : 3;
-  var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
+  var HEADERS2= ["white", "black", "Hispanic", "Asian"],
       HEADERS1= ["SOURCE", "TARGET"],
       xRectHeightMobile = (dataCategory == 'all') ? [50, 50, 25, 50, 25,] : [0, 25, 50, 25, 0,]
       xLabelsRect = (dataCategory == 'all') ? [85, 85, 75, 112, 60,] : [0, 76, 112, 62, 0,],
@@ -23,7 +23,7 @@ function drawGraph(container_width, category) {
       teacherSubTextPercent2 = (dataCategory == 'all') ? ["2.0%", "1.1%", "0.9%", "1.5%"] : ["5.1%", "5.5%", "6.0%", "2.4%"], 
       teacherSubTextNumber2 = (dataCategory == 'all') ? ["2.42M", "157k", "215k", "57.7k"] : ["2.42M", "157k", "215k", "57.7k", ],
       teacherSubTextNumber1 = (dataCategory == 'all') ? ["1.97M", "247k", "313k", "169k"] : ["1.97M", "247k", "312k", "169k", ],
-      wrapWidth = (isMobile) ? 60 : 200;
+      wrapWidth = (isMobile) ? 60 : 100;
       // color = d3.scale.ordinal()
     //   .domain([""])
   // (["#a2d4ec", "#46abdb", "#1696d2", " #12719e"])
@@ -312,7 +312,7 @@ console.log(isPhone)
         })
     //ADD X-AXIS CATEGORY LABELS
     var nodeLabels = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
-        xLabels = (dataCategory == 'all') ? ["All Students", "High School", "Bachelor's", "Teaching Degree", "Teacher"] : ["", "Bachelor's", "Teaching Degree", "Teacher"],
+        xLabels = (dataCategory == 'all') ? ["25-to-34-year-olds", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["", "Bachelor's Degree", "Teaching Degree", "Teacher"],
         xLabelNumber = (dataCategory == 'all') ? 5 : 4;
     var labelG = svg.append("g") 
       .attr("class", "g-x-labels")
@@ -420,7 +420,7 @@ console.log(isPhone)
         }
         else{
           if ((d.target.name).search("Teaching") > 0) {
-            if ((d.target.name).search("White") == 0) {
+            if ((d.target.name).search("white") == 0) {
               return d.target.y + (d.target.dy) -10
             }
             else if ((d.target.name).search("Asian") < 0) {
@@ -554,6 +554,18 @@ console.log(isPhone)
     }
 
     function showStats() { 
+     var bachRace = (function() {
+      if (d3.select(".link.highlight").node() != undefined) {
+      var className = $(".link.highlight").attr("class").split(" ")[1]
+        return className.split("-")[1]
+      // console.log(race)
+     }else {
+      return "white"
+     }
+      })
+     ();
+
+
       // var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
           // format = (category == "numbers") ? numberFormat : percentFormat;
       d3.selectAll(".linkText, .teacherSubText")
@@ -565,30 +577,32 @@ console.log(isPhone)
       d3.selectAll(".labelRect")
         .classed("highlight", false)
       var belowLine = false;
-      for (i=0; i<=4; i++){
-        if(i !== 4){
-            var bach = d3.select(".node-" + HEADERS2[i] + "-Bach").node()
+      for (i=0; i<=4; i++){ 
+        if(i !== 4){console.log(bachRace)
+            var bach = d3.select(".node-" + bachRace + "-Bach").node()
             var hs = d3.select(".node-" + HEADERS2[i] + "-HS").node()
             var teaching = d3.select(".node-" + HEADERS2[i] + "-Teaching").node()
             var all = d3.select(".node-" + HEADERS2[i] + " rect").node()
             var first = (dataCategory == "all") ? all : bach;
-            var bottom = first.getBoundingClientRect().bottom;
-            var top = first.getBoundingClientRect().top;
+            // var bottom = first.getBoundingClientRect().bottom;
+            var bottom = bach.getBoundingClientRect().bottom;
+            // var top = first.getBoundingClientRect().top;
+            var top = bach.getBoundingClientRect().top
             var rectBreaksX = (dataCategory == 'all') ? [all.getBoundingClientRect().right, hs.getBoundingClientRect().right, bach.getBoundingClientRect().right, teaching.getBoundingClientRect().right] : [all.getBoundingClientRect().right, all.getBoundingClientRect().right, bach.getBoundingClientRect().right, teaching.getBoundingClientRect().right]
             var line = getLine(bach.getBoundingClientRect().right, bach.getBoundingClientRect().top, teaching.getBoundingClientRect().right, teaching.getBoundingClientRect().top)
             if(line(event.clientX) < event.clientY  && event.clientY <= bottom + nodePadding/2 && event.clientY >= top -nodePadding/2){ 
               belowLine = true;
             }
             //SHOW ALL STATS BY DEGREE TYPE
-            if (event.clientX >= rectBreaksX[3] ||  ( !belowLine && event.clientX > rectBreaksX[2])){ 
+            if (event.clientX >= rectBreaksX[3] ||  ( !belowLine && event.clientX > rectBreaksX[2])){ console.log(belowLine)
                 d3.selectAll(".labelRect-Teacher, .label-Teacher")
                   .classed("highlight", true)
                 d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher, .teacherSubTextG1-" + i + ",.teacherSubTextG2-" + i)
                   .classed("showText", true)
-                highlightSelected("-Teacher", "-Bach.no-TD", "became a teacher.")
-                highlightSelected("-Teacher", "-Teaching", "became a teacher.")
+                highlightSelected("-Teacher", "-Bach.no-TD", "become teachers.")
+                highlightSelected("-Teacher", "-Teaching", "become teachers.")
             }else 
-            if (event.clientX > rectBreaksX[2] && belowLine){
+            if (event.clientX > rectBreaksX[2] && belowLine){ console.log(belowLine)
                 d3.selectAll(".labelRect-Teaching, .label-Teaching")
                   .classed("highlight", true)
                 d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher")
@@ -597,21 +611,21 @@ console.log(isPhone)
                   .classed("showText", true)
                 // d3.selectAll(".linkTextRect-" + HEADERS2[i] + "-Teaching")
                 //   .classed("setTransparent", true)
-                highlightSelected("-Teaching", "-Bach.TD", "received a teaching degree.")
+                highlightSelected("-Teaching", "-Bach.TD", "earn a teaching degree.")
                 
             }else if (event.clientX > rectBreaksX[1]){
                 d3.selectAll(".labelRect-Bach, .label-Bach")
                   .classed("highlight", true)
                 d3.select(".linkText-" + HEADERS2[i] + "-Bach")
                   .classed("showText", true)
-                highlightSelected("-Bach", "-HS", "received a bachelor's degree.")
+                highlightSelected("-Bach", "-HS", "earn a bachelor's degree.")
 
             }else if (event.clientX > rectBreaksX[0]){ 
                 d3.selectAll(".labelRect-HS, .label-HS")
                   .classed("highlight", true)
                 d3.select(".linkText-" + HEADERS2[i] + "-HS")
                   .classed("showText", true)
-                 highlightSelected("-HS", "", "received a high school degree.")
+                 highlightSelected("-HS", "", "earn a high school diploma.")
 
             }else if (event.clientX <= rectBreaksX[0] && event.clientX > all.getBoundingClientRect().left) {
                 d3.select(".labelRect")
@@ -627,7 +641,7 @@ console.log(isPhone)
       }
     }
 
-    function highlightSelected(node, link, degree) {
+    function highlightSelected(node, link, degree) { 
       var highlightClass = function(node, link, i) {
         if (typeof(link) == "undefined"){ 
           return ".node-" + HEADERS2[i] + node
@@ -642,15 +656,15 @@ console.log(isPhone)
        // }
       }
       var description = function(degree, i) {
-        // var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
+        var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
         if (typeof(degree) == "undefined"){
           return (category == 'percent') ? " of " + HEADERS2[i] + " students." : " " + HEADERS2[i] + " students.";
-        }else{
-        return (category == 'percent') ? " of " + HEADERS2[i] + " students " + degree : " " + HEADERS2[i] + " students " + degree;
+        }else{ 
+        return (category == 'percent') ? " of " + HEADERS2[i] + " adults " + degree : " " + HEADERS2[i] + " students " + degree;
         }
       }
-      var teacherText = function(node, i) {
-        if (node == "-Teacher") {
+      var teacherText = function(node, i) { 
+        if (node == "-Teacher") { 
           d3.select(".teacherText-" + i)
             .classed("highlight", true)
         }
@@ -690,7 +704,7 @@ console.log(isPhone)
         d3.selectAll(".linkText-" + HEADERS2[0] + node + ", .raceLabels-" + HEADERS2[0] + type)
           .classed("highlight", true)
         d3.selectAll(".teacherSubTextG1-0,.teacherSubTextG2-0")
-          .classed("highlight", function() {
+          .classed("highlight", function() { 
             return (node == "-Teacher") ? true : false
           })
         var text  = d3.select(".node-" + HEADERS2[0] + node).datum().value
@@ -803,7 +817,7 @@ var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node();
         .attr("y", function(d) {
           if (dataCategory == 'all') {
             if ((d.target.name).search("Teaching") > 0) {
-              if ((d.target.name).search("White") == 0) {
+              if ((d.target.name).search("white") == 0) {
                 return (category == 'percent') ? d.target.y + (d.target.dy) -4 :  d.target.y + (d.target.dy) -8
               }
               return (category == 'percent') ? d.target.y + (d.target.dy) -4 :  d.target.y + (d.target.dy) -2
@@ -813,7 +827,7 @@ var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node();
           }
           else{
             if ((d.target.name).search("Teaching") > 0) {
-              if ((d.target.name).search("White") == 0) {
+              if ((d.target.name).search("white") == 0) {
                 return (category == 'percent') ? d.target.y + (d.target.dy) -8 : d.target.y + (d.target.dy) -6 ;
               }
               else if ((d.target.name).search("Asian") < 0) {
