@@ -1,6 +1,6 @@
 var container_width = parseFloat(d3.select("#chart").style("width"))
 var numberFormat = d3.format(",");
-var numberShortFormat = d3.format(".3s");
+var numberShortFormat = d3.format(".2s");
 var percentFormat = d3.format(".1%");
 
 function drawGraph(container_width, category) {
@@ -17,19 +17,18 @@ function drawGraph(container_width, category) {
       xLabelsRectMobile = (dataCategory == 'all') ? [65, 55, 75, 62, 60,] : [0, 76, 62, 62, 0,],
       nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
       numberStats = (dataCategory == 'all') ? [92338890, 19560471, 25434140,10383460] : [92338890, 19560471, 25434140,10383460],
-      teacherTextPercent = (dataCategory == 'all') ? ["2.5% of white adults receive teaching degrees and become teachers. 2.0% become teachers without earning a teaching degree.", "0.7% of black adults receive teaching degrees and become teachers. 1.1% become teachers without earning a teaching degree.", "0.6% of Hispanic adults receive teaching degrees and become teachers. 0.9% become teachers without earning a teaching degree.", "0.5% of Asian adults receive teaching degrees and become teachers. 1.5% become teachers without earning a teaching degree."] : ["6.3% of white college graduates receive teaching degrees and become teachers. 5.1% become teachers without earning a teaching degree.", "3.5% of black college graduates receive teaching degrees and become teachers. 5.5% become teachers without earning a teaching degree.", "4.1% of Hispanic college graduates receive teaching degrees and become teachers. 6.0% become teachers without earning a teaching degree.", "0.8% of Asian college graduates receive teaching degrees and become teachers. 2.4% become teachers without earning a teaching degree."] 
-      teacherTextNumber = (dataCategory == 'all') ? ["2,419,381 white adults receive teaching degrees and become teachers. 1,970,062 million become teachers without earning a teaching degree.", "156,966 black adults receive teaching degrees and become teachers. 247,003 become teachers without earning a teaching degree.", "214,497 Hispanic adults receive teaching degrees and become teachers. 312,676 become teachers without earning a teaching degree.", "57,722 of Asian adults receive teaching degrees and become teachers. 168,835 become teachers without earning a teaching degree."] : ["2,419,381 white adults receive teaching degrees and become teachers. 1,970,062 million become teachers without earning a teaching degree.", "156,966 black adults receive teaching degrees and become teachers. 247,003 become teachers without earning a teaching degree.", "214,497 Hispanic adults receive teaching degrees and become teachers. 312,676 become teachers without earning a teaching degree.", "57,722 of Asian adults receive teaching degrees and become teachers. 168,835 become teachers without earning a teaching degree."] 
-      teacherSubTextPercent2 = (dataCategory == 'all') ? ["2.5%", "0.7%", "0.6%", "0.5%"] : ["6.3%", "3.5%", "4.1%", "0.8%"], 
-      teacherSubTextPercent1 = (dataCategory == 'all') ? ["2.0%", "1.1%", "0.9%", "1.5%"] : ["5.1%", "5.5%", "6.0%", "2.4%"], 
-      teacherSubTextNumber2 = (dataCategory == 'all') ? ["2.42M", "157k", "215k", "57.7k"] : ["2.42M", "157k", "215k", "57.7k", ],
-      teacherSubTextNumber1 = (dataCategory == 'all') ? ["1.97M", "247k", "313k", "169k"] : ["1.97M", "247k", "312k", "169k", ],
+      teacherTextPercent = (dataCategory == 'all') ? ["2.3% of white adults receive teaching degrees and become teachers. 2.0% become teachers without earning a teaching degree.", "0.7% of black adults receive teaching degrees and become teachers. 1.1% become teachers without earning a teaching degree.", "0.6% of Hispanic adults receive teaching degrees and become teachers. 0.9% become teachers without earning a teaching degree.", "0.5% of Asian adults receive teaching degrees and become teachers. 1.6% become teachers without earning a teaching degree."] : ["5.8% of white college graduates receive teaching degrees and become teachers. 5.1% become teachers without earning a teaching degree.", "3.3% of black college graduates receive teaching degrees and become teachers. 5.3% become teachers without earning a teaching degree.", "4.0% of Hispanic college graduates receive teaching degrees and become teachers. 5.4% become teachers without earning a teaching degree.", "0.8% of Asian college graduates receive teaching degrees and become teachers. 2.5% become teachers without earning a teaching degree."] 
+      teacherTextNumber = (dataCategory == 'all') ? ["580k white adults receive teaching degrees and become teachers. 505k become teachers without earning a teaching degree.", "40k black adults receive teaching degrees and become teachers. 64k become teachers without earning a teaching degree.", "57k Hispanic adults receive teaching degrees and become teachers. 78k become teachers without earning a teaching degree.", "15k of Asian adults receive teaching degrees and become teachers. 47k become teachers without earning a teaching degree."] : ["580k white adults receive teaching degrees and become teachers. 505k become teachers without earning a teaching degree.", "40k black adults receive teaching degrees and become teachers. 64k become teachers without earning a teaching degree.", "57k Hispanic adults receive teaching degrees and become teachers. 78k become teachers without earning a teaching degree.", "15k of Asian adults receive teaching degrees and become teachers. 47k become teachers without earning a teaching degree."]
+      teacherSubTextPercentBottom = (dataCategory == 'all') ? ["2.3%", "0.7%", "0.6%", "0.5%"] : ["5.8%", "3.3%", "4.0%", "0.8%"], 
+      teacherSubTextPercentTop = (dataCategory == 'all') ? ["2.0%", "1.1%", "0.9%", "1.6%"] : ["5.1%", "5.3%", "5.4%", "2.5%"], 
+      teacherSubTextNumberBottom = (dataCategory == 'all') ? ["580k", "40k", "57k", "15k"] : ["580k", "40k", "57k", "15k"],
+      teacherSubTextNumberTop = (dataCategory == 'all') ? ["505k", "64k", "78k", "47k"] : ["505k", "64k", "78k", "47k"],
       wrapWidthDescription = (isMobile) ? container_width*.99 : container_width*.65; 
       wrapWidth = (isMobile) ? 60 : 90
 
       // color = d3.scale.ordinal()
     //   .domain([""])
   // (["#a2d4ec", "#46abdb", "#1696d2", " #12719e"])
-console.log(isPhone)
   d3.selectAll(".toggle_button").classed("active", false)
   d3.selectAll("#percent_button").classed("active",true)
   var nodeWidth = (function(){
@@ -85,7 +84,7 @@ console.log(isPhone)
         return percentFormat(d)
       }
     }else {
-      return numberFormat(d)
+      return numberShortFormat(d)
     }
   };
 
@@ -324,9 +323,9 @@ console.log(isPhone)
       .attr("class", "label-g")
       .attr("transform", function(d, i) {
         xLabelTranslate = (dataCategory == 'all') ? [d3.select(".node-white").node().getBoundingClientRect().left, d3.select(".node-white-HS").node().getBoundingClientRect().left, d3.select(".node-white-Bach").node().getBoundingClientRect().left, d3.select(".node-white-Teaching").node().getBoundingClientRect().left, d3.select(".node-white-Teacher").node().getBoundingClientRect().left]: [0, d3.select(".node-white-Bach").node().getBoundingClientRect().left, d3.select(".node-white-Teaching").node().getBoundingClientRect().left, d3.select(".node-white-Teacher").node().getBoundingClientRect().left, 0]
-        if (isPhone) { console.log('phone')
+        if (isPhone) {
           return (dataCategory == 'all') ? "translate(" + ((xLabelTranslate[i]) + (width*.17) - (7*i))+"," + height*1.02+ ")" : "translate(" + ((xLabelTranslate[i]) + (width*.31) - i*10 )+"," + height*1.02+ ")";
-        } else if (isMobile) { console.log('mobile') 
+        } else if (isMobile) { 
           if (i == teacher) {
             return (dataCategory == 'all') ? "translate(" + ((xLabelTranslate[i]) - (30)) + "," + height*1.02+ ")" :  "translate(" + ((xLabelTranslate[i]) + 75 ) + "," + height*1.02+ ")" ;
           }else { 
@@ -354,7 +353,7 @@ console.log(isPhone)
       })
     labelG
       .append("text")
-      .text(function(d, i) { console.log(xLabels[i])
+      .text(function(d, i) { 
         return xLabels[i]
       })
       .attr("class", function(d,i){
@@ -519,7 +518,7 @@ console.log(isPhone)
       teacherSubTextG1
         .append("text")
         .text(function() {
-          return (category == 'percent') ? teacherSubTextPercent1[i] : teacherSubTextNumber1[i]
+          return (category == 'percent') ? teacherSubTextPercentTop[i] : teacherSubTextNumberTop[i]
         })
         .attr("class", "teacherSubText teacherSubTextG1-" +i )
       var teacherSubTextG2 = teacherSubTextG.append("g")
@@ -535,7 +534,7 @@ console.log(isPhone)
       teacherSubTextG2
         .append("text")
         .text(function() {
-          return (category == 'percent') ? teacherSubTextPercent2[i] : teacherSubTextNumber2[i]
+          return (category == 'percent') ? teacherSubTextPercentBottom[i] : teacherSubTextNumberBottom[i]
         })
         .attr("class", "teacherSubText teacherSubTextG2-" +i )
     }
@@ -909,7 +908,7 @@ var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node();
 
       for (i=0; i<4; i++){
         d3.select(".node-" + HEADERS2[i] + "-Teacher .linkText")
-          .text(function(d){
+          .text(function(d){ console.log(d)
             return linkTextFormat(d.value);
           })
           .attr("x", function(d) { 
@@ -983,12 +982,12 @@ var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node();
       teacherSubTextG.select("text.teacherSubTextG1-" + i)
         .text(function() {
           var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
-          return (category == 'percent') ? teacherSubTextPercent1[i] : teacherSubTextNumber1[i]
+          return (category == 'percent') ? teacherSubTextPercentTop[i] : teacherSubTextNumberTop[i]
         })
       teacherSubTextG.select("text.teacherSubTextG2-" + i)
         .text(function() {
           var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
-          return (category == 'percent') ? teacherSubTextPercent2[i] : teacherSubTextNumber2[i]
+          return (category == 'percent') ? teacherSubTextPercentBottom[i] : teacherSubTextNumberBottom[i]
         })  
       }
 
