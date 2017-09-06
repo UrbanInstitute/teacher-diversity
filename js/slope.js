@@ -7,7 +7,7 @@
     var raceOn = ["white"];
     var raceOff = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"]
     
-    var margin = {top: 20, bottom: 20, left: 40, right:40};
+    var margin = {top: 80, bottom: 20, left: 40, right:40};
     
     var leftScale = d3.scaleLinear()
       .domain([0.0, 1])
@@ -30,31 +30,41 @@
           return d.white == 1 && d.black == 0 && d.hispanic == 0 && d.asian == 0 && d.american_indian == 0 && d.alaskan_native == 0 && d.native_hawaiian == 0;
         })
 
-    var svg = d3.select("#graph-container")
-      .append("svg")
-      .attr("width", graphWidth)
-      .attr("height", graphHeight)
-    var gCity= svg.append("g")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("class", "state-graph")
-      .attr("transform","translate(0," + 40 + ")")
-      // .on("mouseout", removeLineInfo);
+      var svg = d3.select("#graph-container")
+        .append("svg")
+        .attr("width", graphWidth)
+        .attr("height", graphHeight)
+      var gCity= svg.append("g")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "state-graph")
+        .attr("transform","translate(0," + 40 + ")")
+        // .on("mouseout", removeLineInfo);
 
-    var gState= svg.append("g")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("class", "state-graph")
-      .attr("transform","translate("+width+ "," + 40 + ")")
-      // .on("mouseout", removeLineInfo);
+      var gState= svg.append("g")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "state-graph")
+        .attr("transform","translate("+width+ "," + 40 + ")")
+        // .on("mouseout", removeLineInfo);
 
-    //CITIES GRAPH
+      svg.append("text")
+        .attr("x", width/2-margin.left)
+        .attr("y", 15)
+        .text("CITIES")
+        .attr("class", "header")
+      svg.append("text")
+        .attr("x", width + width/2 - margin.right)
+        .attr("y", 15)
+        .text("STATES")
+        .attr("class", "header")
+      //CITIES GRAPH
 
       var cityText = gCity.append("g")
         .attr("width", width)
         .attr("height", 100)
         .append("text")
-        .attr("transform","translate("+width/3+",0)")
+        .attr("transform","translate("+width/3.2+",30)")
         .attr("class", "cityText")
 
       var lines = gCity.selectAll("line")
@@ -113,7 +123,7 @@
         .attr("r", 5)
         .attr("fill", "#fbbe15")
         .attr("class", function(d) {
-          return "city-circle-left city-circle-left-right" + d.abbr 
+          return "circle city-circle-left city-circle-left-" + d.abbr 
         })
       rightCircles.enter()
         .append("circle")
@@ -124,7 +134,7 @@
         .attr("r", 5)
         .attr("fill", "#fbbe15")
         .attr("class", function(d) {
-          return "city-circle-right city-circle-right-" + d.abbr 
+          return "circle city-circle-right city-circle-right-" + d.abbr 
         })
       // //STATE GRAPH
 
@@ -132,7 +142,7 @@
         .attr("width", width)
         .attr("height", 100)
         .append("text")
-        .attr("transform","translate("+width/3+",0)")
+        .attr("transform","translate("+width/3+",30)")
         .attr("class", "stateText")
 
       var lines2 = gState.selectAll("line")
@@ -192,7 +202,7 @@
         .attr("r", 5)
         .attr("fill", "#1896d2")
         .attr("class", function(d) {
-          return "state-circle-left state-circle-left-" + d.abbr 
+          return "circle state-circle-left state-circle-left-" + d.abbr 
         })
       rightCircles2.enter()
         .append("circle")
@@ -203,7 +213,7 @@
         .attr("r", 5)
         .attr("fill", "#1896d2")
         .attr("class", function(d) {
-          return "state-circle-right state-circle-right-" + d.abbr 
+          return "circle state-circle-right state-circle-right-" + d.abbr 
         })
 
       d3.selectAll(".button_toggle")
@@ -219,11 +229,11 @@
           }
         })
       function removeLineInfo() {
-        d3.selectAll(".stateText, .cityText")
+        d3.selectAll(".stateText, .cityText, .circle")
           .text("")
       }
       function showLineInfo(d) {
-        d3.selectAll(".city-line, .state-line")
+        d3.selectAll(".city-line, .state-line, .circle")
           .classed("highlight", false)
         d3.select(".stateText")
           .text(function() {
@@ -236,10 +246,10 @@
           .classed("no-city", function() {
             return (d.city== "") ? true: false
           })
-        d3.select(this)
+
+        d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr + ", .city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
           .classed("highlight", true)
-        d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr)
-          .classed("highlight", true)
+          .moveToFront()
       }
 
       function updateDataOn(buttonState, race){
@@ -264,6 +274,11 @@
         }
         updateDataOff(newData)
       }
+      d3.selection.prototype.moveToFront = function() {  
+        return this.each(function(){
+          this.parentNode.appendChild(this);
+        });
+      };
 
       function updateDataOff(newData) {
         for (i=0; i<raceOff.length; i++){   

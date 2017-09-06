@@ -21,15 +21,30 @@ body {
     margin-bottom: 32px;
     margin-top: 18px;
 }
+
+hr {
+  width: 100%;
+  border: 1px solid #dad9d9;
+  margin-bottom: 50px;
+  display: block;
+}
 .sideline {
     stroke: #000;
     stroke-width: .94;
+}
+
+.header {
+    font-size: 18px;
+    font-weight: 700;
 }
 
 .stateText, .cityText {
     font-size: 16px;
 }
 
+.circle.highlight {
+    stroke: #000;
+}
 .cityText.no-city {
     font-size: 16px;
     fill: #9c9c9c;
