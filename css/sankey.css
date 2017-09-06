@@ -125,6 +125,10 @@ hr {
   font-size: 13px;
 }
 
+.linkTextPhone-stats{
+  fill: #696969;
+}
+
 .linkTextPhone-race {
   font-size: 12px;
 }
@@ -132,7 +136,7 @@ hr {
 .teacherStatsPhoneG {
   font-size: 12px;
   font-style: italic;
-  opacity: 0;
+  display: none;
 }
 
 
@@ -217,9 +221,18 @@ hr {
     display: none;
   }
 
+  .teacherStatsPhoneG {
+    display: block;
+    opacity: 0;
+  }
+
 
   .linkTextPhone.showText, .teacherStatsPhoneG.showText {
     opacity: 1 !important;
+  }
+  .linkTextPhone.highlight * {
+    font-weight: 700;
+    fill: #000 !important;
   }
   .label, .node text {
     font-size: 12px;
