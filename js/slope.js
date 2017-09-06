@@ -1,13 +1,13 @@
 
   //credits to http://bl.ocks.org/benvandyke/8482820
     var graphWidth = 680;
-    var graphHeight = 700;
+    var graphHeight = 620;
     var width = 340;
     var height = 600;
     var raceOn = ["white"];
     var raceOff = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"]
     
-    var margin = {top: 20, bottom: 20, left: 100, right:100};
+    var margin = {top: 20, bottom: 20, left: 40, right:40};
     
     var leftScale = d3.scaleLinear()
       .domain([0.0, 1])
@@ -20,20 +20,6 @@
     var currencyFormatter = d3.format("0,.0f");
     
 
-    var svg = d3.select("#graph-container")
-      .append("svg")
-      .attr("width", graphWidth)
-      .attr("height", graphHeight)
-    var gCity= svg.append("g")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("class", "state-graph")
-      .attr("transform","translate(0," + 100 + ")")
-    var gState= svg.append("g")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("class", "state-graph")
-      .attr("transform","translate("+width+ "," + 100 + ")")
 
     d3.csv('data/slope_data.csv', function(error, data) {
      // data = d;
@@ -43,11 +29,37 @@
         var stateData_white= data.filter(function(d) { 
           return d.white == 1 && d.black == 0 && d.hispanic == 0 && d.asian == 0 && d.american_indian == 0 && d.alaskan_native == 0 && d.native_hawaiian == 0;
         })
-    
+
+    var svg = d3.select("#graph-container")
+      .append("svg")
+      .attr("width", graphWidth)
+      .attr("height", graphHeight)
+    var gCity= svg.append("g")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("class", "state-graph")
+      .attr("transform","translate(0," + 40 + ")")
+      // .on("mouseout", removeLineInfo);
+
+    var gState= svg.append("g")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("class", "state-graph")
+      .attr("transform","translate("+width+ "," + 40 + ")")
+      // .on("mouseout", removeLineInfo);
+
     //CITIES GRAPH
+
+      var cityText = gCity.append("g")
+        .attr("width", width)
+        .attr("height", 100)
+        .append("text")
+        .attr("transform","translate("+width/3+",0)")
+        .attr("class", "cityText")
+
       var lines = gCity.selectAll("line")
         .data(cityData_white);
-        
+
       lines.enter()
         .append("line")
         .attr("x1", margin.left)
@@ -55,43 +67,47 @@
         .attr("y1", function(d) {
           return leftScale(d['city_k12']);
         })
-        .attr("y2", function(d) {
+        .attr("y2", function(d) { 
           return rightScale(d['city_teacher']);
         })
         .attr("stroke", "black")
-        .attr("stroke-width", 1);
-
-      var rightLabelsCity = gCity.selectAll(".labels")
-        .data(cityData_white);
-        
-      rightLabelsCity.enter()
-        .append("text")
-        .attr("class","labels")
-        .attr("x", width - margin.right + 3)
-        .attr("y", function(d) {
-          return rightScale(d['city_teacher']) + 4;
-        })
-        .text(function (d) {
-          return d['city'] //+ " " + currencyFormatter(d['2010']);
-        });
+        .attr("stroke-width", 1)
+        .attr("class", "city-line")
+        .on("mouseover", showLineInfo)
       
-      var leftLabelsCity = gCity.selectAll(".left-labels")
-        .data(cityData_white);
+      gCity
+        .append("line")
+        .attr("x1", margin.left)
+        .attr("x2", margin.left)
+        .attr("y1", function(d) {
+          return leftScale(0)
+        })
+        .attr("y2", function(d) {
+          return leftScale(1)
+        })
+        .attr("class", "sideline")
         
-      leftLabelsCity.enter()
-        .append("text")
-        .attr("class","left-labels")
-        .attr("x", margin.left - 65)
-        .attr("y", function(d) {
-          return leftScale(d['city_k12']) + 4;
+      gCity
+        .append("line")
+        .attr("x1", width-margin.right)
+        .attr("x2", width-margin.right)
+        .attr("y1", function(d) {
+          return leftScale(0)
         })
-        .text(function (d) {
-          return d['city']// + " " + currencyFormatter(d['1980']);
+        .attr("y2", function(d) {
+          return leftScale(1)
         })
-        .style("text-anchor","begin");
+        .attr("class", "sideline")
       
       // //STATE GRAPH
-      
+
+      var stateText = gState.append("g")
+        .attr("width", width)
+        .attr("height", 100)
+        .append("text")
+        .attr("transform","translate("+width/3+",0)")
+        .attr("class", "stateText")
+
       var lines2 = gState.selectAll("line")
         .data(stateData_white);
         
@@ -106,42 +122,33 @@
           return rightScale(d['state_teacher']);
         })
         .attr("stroke", "black")
-        .attr("stroke-width", 1);
-
-      var rightLabelsState = gState.selectAll(".labels")
-        .data(stateData_white);
+        .attr("stroke-width", 1)
+        .attr("class", "state-line")
+        .on("mouseover", showLineInfo);
+      gState
+        .append("line")
+        .attr("x1", margin.left)
+        .attr("x2", margin.left)
+        .attr("y1", function(d) {
+          return leftScale(0)
+        })
+        .attr("y2", function(d) {
+          return leftScale(1)
+        })
+        .attr("class", "sideline")
         
-      rightLabelsState.enter()
-        .append("text")
-        .attr("class","labels")
-        .attr("x", width - margin.right + 3)
-        .attr("y", function(d) {
-          return rightScale(d['state_teacher']) + 4;
+      gState
+        .append("line")
+        .attr("x1", width-margin.right)
+        .attr("x2", width-margin.right)
+        .attr("y1", function(d) {
+          return leftScale(0)
         })
-        .text(function (d) {
-          return d['state'] //+ " " + currencyFormatter(d['2010']);
-        });
-      
-      var leftLabelsState = gState.selectAll(".left-labels")
-        .data(stateData_white);
-        
-      leftLabelsState.enter()
-        .append("text")
-        .attr("class","left-labels")
-        .attr("x", margin.left - 65)
-        .attr("y", function(d) {
-          return leftScale(d['state_k12']) + 4;
+        .attr("y2", function(d) {
+          return leftScale(1)
         })
-        .text(function (d) {
-          return d['state']// + " " + currencyFormatter(d['1980']);
-        })
-        .style("text-anchor","begin");
+        .attr("class", "sideline")
 
-      svg.append("text")
-        .attr("x", graphWidth / 2)
-        .attr("y", 20)
-        .attr("class", "chart-title")
-        .text("Share of Students vs. Teachers by Race");
 
       d3.selectAll(".button_toggle")
         .on("click", function() {
@@ -155,6 +162,24 @@
             updateDataOn("on", this.id)
           }
         })
+      function removeLineInfo() {
+        d3.selectAll(".stateText, .cityText")
+          .text("")
+      }
+      function showLineInfo(d) {
+        d3.selectAll(".city-line, .state-line")
+          .classed("highlight", false)
+        d3.select(".stateText")
+          .text(function() {
+            return d.state
+          })
+        d3.select(".cityText")
+          .text(function() {
+            return (d.city=="") ? "No city data for this state" : d.city
+          })
+        d3.select(this)
+          .classed("highlight", true)
+      }
 
       function updateDataOn(buttonState, race){
         if (buttonState == "on") {
@@ -199,7 +224,7 @@
         console.log("raceOff: " + raceOff)
         console.log("raceOn: " + raceOn)
 
-        gCity.selectAll("line")
+        gCity.selectAll(".city-line")
           .data(dataCity)
           .transition()
           .duration(2000)
@@ -239,7 +264,7 @@
           })
           .style("text-anchor","begin");
         
-        gState.selectAll("line")
+        gState.selectAll(".state-line")
           .data(dataState)
           .transition()
           .duration(2000)

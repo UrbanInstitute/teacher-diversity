@@ -1,3 +1,13 @@
+body {
+    font-family: Lato, sans-serif;
+}
+#switch-div {
+    max-width: 680px;
+}
+
+#graph-container {
+    max-width: 680px;
+}
 .urban-switch.large {
     font-size: 13px;
     font-family: Lato, sans-serif;
@@ -11,8 +21,19 @@
     margin-bottom: 32px;
     margin-top: 18px;
 }
-
-
+.sideline {
+    stroke: #000;
+    stroke-width: .94;
+}
+.city-line {
+    stroke: #fbbe15;
+}
+.highlight {
+    stroke: #000;
+}
+.state-line {
+    stroke: #1896d2;
+}
 .switch.large.on {
     background-position: -10px 0px;
     background-color: #1696d2;
