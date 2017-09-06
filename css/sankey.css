@@ -120,6 +120,12 @@ hr {
   font-weight: 700;
 }
 
+.linkTextMobile {
+  font-size: 13px;
+  opacity: 0;
+}
+
+
 .teacherSubText {
   fill: #46abdb;
   font-size: 13px;
@@ -197,6 +203,14 @@ hr {
     display: none;
   }
 
+  .linkText {
+    display: none;
+  }
+
+
+  .linkTextMobile.showText{
+    opacity: 1 !important;
+  }
   .label, .node text {
     font-size: 12px;
   }

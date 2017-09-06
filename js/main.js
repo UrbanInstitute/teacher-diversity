@@ -15,6 +15,7 @@ function drawGraph(container_width, category) {
       xRectHeight = (dataCategory == 'all') ? [65, 65, 65, 65, 25,] : [0, 65, 65, 25, 0,]
       xLabelsRect = (dataCategory == 'all') ? [95, 85, 75, 70, 60,] : [0, 76, 70, 62, 0,],
       xLabelsRectMobile = (dataCategory == 'all') ? [65, 55, 75, 62, 60,] : [0, 76, 62, 62, 0,],
+      nodeCategories = (dataCategory == 'all') ? ["", "-HS diploma", "-Bach", "-Teaching degree", "-Teacher"] : ["-Bach", "-Teaching degree", "-Teacher"],
       nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["-Bach", "-Teaching", "-Teacher"],
       numberStats = (dataCategory == 'all') ? [92338890, 19560471, 25434140,10383460] : [92338890, 19560471, 25434140,10383460],
       teacherTextPercent = (dataCategory == 'all') ? ["2.3% of white adults receive teaching degrees and become teachers. 2.0% become teachers without earning a teaching degree.", "0.7% of black adults receive teaching degrees and become teachers. 1.1% become teachers without earning a teaching degree.", "0.6% of Hispanic adults receive teaching degrees and become teachers. 0.9% become teachers without earning a teaching degree.", "0.5% of Asian adults receive teaching degrees and become teachers. 1.6% become teachers without earning a teaching degree."] : ["5.8% of white college graduates receive teaching degrees and become teachers. 5.1% become teachers without earning a teaching degree.", "3.3% of black college graduates receive teaching degrees and become teachers. 5.3% become teachers without earning a teaching degree.", "4.0% of Hispanic college graduates receive teaching degrees and become teachers. 5.4% become teachers without earning a teaching degree.", "0.8% of Asian college graduates receive teaching degrees and become teachers. 2.5% become teachers without earning a teaching degree."] 
@@ -258,31 +259,82 @@ function drawGraph(container_width, category) {
     var xPosMobile2 = (dataCategory == 'all') ? width*.055 : -100;
 
     //ADD Y-AXIS RACE LABELS
+
+    //MOBILE
+   var yLabelG = svg.append("g") 
+        .attr("class", "g-y-labels")
+  for (j=0; j<nodeCategories.length; j++){
+    for (i=0; i<HEADERS2.length; i++){
+    yLabelG.append("g") 
+        .attr("class", "y-label")
+        .data(graph_percent.filter(function(d) { 
+          return (d.target.name) == HEADERS2[i] + nodeCategories[j]
+          })
+        )
+        .append("text")
+        .text(function(d) {
+          if (d.target.name == HEADERS2[i] + "-Teacher") { console.log(d.source.name)
+            return HEADERS2[i] + " " + percentFormat(d.target.value)
+          }else { console.log(d.target.name)
+            return HEADERS2[i] + " " + percentFormat(d.value)
+          }
+        })
+        .attr("class", function(d) {
+            return "linkTextMobile linkTextMobile-" + HEADERS2[i] + nodeCategories[j]
+        })        
+        .attr("x", 85)
+        .attr("y", function(d) {
+          var yPos = d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top
+          console.log(yPos)
+          return yPos
+        })
+        .attr("transform", "translate(0,"+ (-170) +")")
+        // .style("opacity", 0)
+    }
+  }
+
+    // node.append("text")
+
+    //    .attr("y", function(d) { console.log(d)
+    //       return -5; 
+    //     })
+    //     .attr("dy", ".35em")
+    //     .attr("text-anchor", "end")
+    //     .text(function(d) { 
+    //       // var name = d.name.split("-")[0] 
+    //       // var type = d.name.split("-")[1]
+    //       // var typeName = (dataCategory == 'all') ? "All" : "Bach"
+    //       // if  (type == typeName) { 
+    //       //   return name
+    //       // }else {
+    //       //   return ""
+    //       // }
+    //     })
+    //     .style("opacity", function() {
+    //       return (isPhone) ? 1 : 0;
+    //     })
+    //     .filter(function(d) { return d.x < width / 2; })
+    //     .attr("x", function(d) {
+    //       if ((d.name).search("Hispanic") == 0) {
+    //         if (isPhone) {
+    //           return (dataCategory == 'all') ? 75 + sankey.nodeWidth() : sankey.nodeWidth() - 20
+    //         } return (dataCategory == 'all') ? 15 + sankey.nodeWidth() : -75
+    //       }else {
+    //         if (isPhone) {
+    //           return (dataCategory == 'all') ? 75 + sankey.nodeWidth() : sankey.nodeWidth() - 20
+    //         } return (dataCategory == 'all') ? 35 + sankey.nodeWidth() : -55
+    //       }
+    //     })
+    //     .attr("text-anchor", "start")
+    //     .attr("class", function(d) {
+    //         return "linkTextMobile linkTextMobile-" + d.name.split(" ")[0] 
+    //     })
     node.append("text")
         .attr("y", function(d) { 
-          return (isPhone) ? -2 : d.dy / 2; 
+          return d.dy / 2; 
         })
         .attr("dy", ".35em")
         .attr("text-anchor", "end")
-        // .attr("transform", function(d) { 
-        //   if (d.name == "Hispanic-All" || d.name == "Hispanic-Bach") {
-        //     if (isMobile) {
-        //       return (dataCategory == 'all') ? "translate(-12,0)" : "translate(-87,0)"
-        //     } else if (container_width < 600) {
-        //       return (dataCategory == 'all') ? "translate(15,0)" : "translate(-95,0)"
-        //     }else {
-        //       return (dataCategory == 'all') ? "translate(15,0)" : "translate(-115,0)"
-        //     }
-        //   }else{
-        //     if (isMobile) {
-        //       return (dataCategory == 'all') ? "translate(5,0)" : "translate(-75,0)"
-        //     }else if (container_width < 600) {
-        //       return (dataCategory == 'all') ? "translate(33,0)" : "translate(-80,0)"
-        //     }else {
-        //       return (dataCategory == 'all') ? "translate(33,0)" : "translate(-98,0)"
-        //     }
-        //   }
-        // })
         .text(function(d) { 
           var name = d.name.split("-")[0] 
           var type = d.name.split("-")[1]
@@ -292,6 +344,9 @@ function drawGraph(container_width, category) {
           }else {
             return ""
           }
+        })
+        .style("opacity", function() {
+          return (isPhone) ? 0 : 1;
         })
         .filter(function(d) { return d.x < width / 2; })
         .attr("x", function(d) {
@@ -361,7 +416,6 @@ function drawGraph(container_width, category) {
       })
       .attr("dy", 0)
       .call(wrapText, wrapWidth)
-      console.log(wrapWidth)
     d3.select(".g-x-labels")
       .attr("transform", function(d, i) { 
         return "translate(" + 0 + ",0)";
@@ -476,6 +530,7 @@ function drawGraph(container_width, category) {
       .attr("class", "mouseoverRect")
       .style("opacity", "0")
       .on('mousemove', showStats)
+      .on('click', showStats)
       .on("mouseout", hideStats);
 
     //TEACHER STATS
@@ -491,7 +546,6 @@ function drawGraph(container_width, category) {
       var teacherNodeData = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").data()[0];
       var teachingNodeData = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").data()[0]
       var teacherNodeY = teacherNodeData.y;
-      console.log(teacherNodeY)
       var teacherNodeX = (dataCategory == 'all') ? (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left)/2 + teachingNode.getBoundingClientRect().right : (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left) + teachingNode.getBoundingClientRect().right
       var teacherTextSvg = d3.select("#stats-div svg").append("g")
         .attr("transform", function() {
@@ -582,7 +636,7 @@ function drawGraph(container_width, category) {
 
       var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
           // format = (category == "numbers") ? numberFormat : percentFormat;
-      d3.selectAll(".linkText, .teacherSubText")
+      d3.selectAll(".linkText, .teacherSubText, .linkTextMobile")
         .classed("showText", false)
       // d3.selectAll(".linkTextRect")
       //   .classed("setTransparent", false)
@@ -620,20 +674,20 @@ function drawGraph(container_width, category) {
             })
             ();
             //SHOW ALL STATS BY DEGREE TYPE
-            if (event.clientX >= rectBreaksX[3] ||  ( !belowLine && event.clientX > rectBreaksX[2])){ 
+            if (event.clientX >= rectBreaksX[3] ||  ( !belowLine && event.clientX > rectBreaksX[2])){ console.log('hi')
                 d3.selectAll(".labelRect-Teacher, .label-Teacher")
                   .classed("highlight", true)
-                d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher, .teacherSubTextG1-" + i + ",.teacherSubTextG2-" + i)
+                d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher, .teacherSubTextG1-" + i + ",.teacherSubTextG2-" + i + ", .linkTextMobile-" + HEADERS2[i] + "-Teacher")
                   .classed("showText", true)
                 highlightSelected("-Teacher", "-Bach.no-TD", person + "become teachers.")
                 highlightSelected("-Teacher", "-Teaching", person + "become teachers.")
             }else 
-            if (event.clientX > rectBreaksX[2] && belowLine){ console.log(belowLine)
+            if (event.clientX > rectBreaksX[2] && belowLine){ console.log('below')
                 d3.selectAll(".labelRect-Teaching, .label-Teaching")
                   .classed("highlight", true)
-                d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher")
+                d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher" + ", .linkTextMobile-" + HEADERS2[i] + "-Teacher")
                   .classed("showText", false)
-                d3.select(".linkText-" + HEADERS2[i] + "-Teaching")
+                d3.select(".linkText-" + HEADERS2[i] + "-Teaching" + ", .linkTextMobile-" + HEADERS2[i] + "-Teaching")
                   .classed("showText", true)
                 // d3.selectAll(".linkTextRect-" + HEADERS2[i] + "-Teaching")
                 //   .classed("setTransparent", true)
@@ -642,14 +696,14 @@ function drawGraph(container_width, category) {
             }else if (event.clientX > rectBreaksX[1]){
                 d3.selectAll(".labelRect-Bach, .label-Bach")
                   .classed("highlight", true)
-                d3.select(".linkText-" + HEADERS2[i] + "-Bach")
+                d3.select(".linkText-" + HEADERS2[i] + "-Bach" + ", .linkTextMobile-" + HEADERS2[i] + "-Bach")
                   .classed("showText", true)
                 highlightSelected("-Bach", "-HS", "adults earn a bachelor's degree.")
 
-            }else if (event.clientX > rectBreaksX[0]){ 
+            }else if (event.clientX > rectBreaksX[0]){  console.log('high school')
                 d3.selectAll(".labelRect-HS, .label-HS")
                   .classed("highlight", true)
-                d3.select(".linkText-" + HEADERS2[i] + "-HS")
+                d3.select(".linkText-" + HEADERS2[i] + "-HS" + ", .linkTextMobile-" + HEADERS2[i] + "-HS")
                   .classed("showText", true)
                  highlightSelected("-HS", "", "adults earn a high school diploma.")
 
@@ -713,7 +767,7 @@ function drawGraph(container_width, category) {
           .classed("highlight", false)
         d3.selectAll(".link")
           .classed("highlight", false)
-        d3.selectAll(".linkText")
+        d3.selectAll(".linkText, linkTextMobile")
           .classed("showText", false)
         d3.selectAll(".teacherSubText")
           .classed("showText", false)
@@ -817,14 +871,15 @@ function drawGraph(container_width, category) {
         .nodes(nodeData)
         .links(linkData)
         .layout(32);
-
+      yLabelG.selectAll(".linkTextMobile")
+        .classed("showText", false)
       svg.selectAll(".link")
         .data(linkData, function(x) { return x.id })
         .sort(function(a, b) { 
           return b.dy - a.dy;
         })
         .transition()
-        .duration(1300)
+        .duration(1000)
         .attr("d", path)
         .style("stroke-width", function(d) {
           return Math.max(1, d.dy) + "px";
@@ -833,33 +888,62 @@ function drawGraph(container_width, category) {
       nodeG.selectAll(".node")
         .data(nodeData, function(d) { return d.name; })
         .transition()
-        .duration(1300)
+        .duration(1000)
         .attr("transform", function(d) {
           return "translate(" + d.x + "," + d.y + ")";
         });
 
       svg.selectAll(".node-rect")
         .transition()
-        .duration(1300)
+        .duration(1000)
         .attr("height", function(d) {
           return d.dy;
         })
         .on('end', function() {
-          for (i=0; i<4; i++){
-var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node();
-      var teachingNode = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").node();
-      var teacherNodeData = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").data()[0];
-      var teachingNodeData = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").data()[0]
-      var teacherNodeY = teacherNodeData.y;
-      var teacherNodeX = (dataCategory == 'all') ? (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left)/2 + teachingNode.getBoundingClientRect().right : (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left) + teachingNode.getBoundingClientRect().right
-            var bottom = teacherNode.getBoundingClientRect().bottom;
-            transitionTeacherText(teacherNodeX, teacherNodeY, bottom)
-          }
+          for (j=0; j<nodeCategories.length; j++){
+            for (i=0; i<HEADERS2.length; i++){
+              var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
+              var linkData = (category == "numbers") ? graph_number : graph_percent;
+              yLabelG.select(".linkTextMobile-" + HEADERS2[i] + nodeCategories[j]) 
+                .data(linkData.filter(function(d) { 
+                  return (d.target.name) == HEADERS2[i] + nodeCategories[j]
+                  })
+                )
+                // // .append("text")
+                .text(function(d) {
+                  if (d.target.name == HEADERS2[i] + "-Teacher") { console.log(d.target.name)
+                    return HEADERS2[i] + " " + format(d.target.value)
+                  }else { console.log(d.target.name)
+                    return HEADERS2[i] + " " + format(d.value)
+                  }
+                })
+                // .attr("class", function(d) {
+                //     return "linkTextMobile linkTextMobile-" + d.target.name
+                // })        
+                // .attr("x", 85)
+                .attr("y", function(d) {
+                  var yPos = d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top
+                  console.log(yPos);
+                  return  yPos
+                })
+                // .attr("transform", "translate(0,"+ (-170) +")")
+
+                // .style("opacity", 0)
+            }
+          }  
+      // var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node();
+      // var teachingNode = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").node();
+      // var teacherNodeData = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").data()[0];
+      // var teachingNodeData = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").data()[0]
+      // var teacherNodeY = teacherNodeData.y;
+      // var teacherNodeX = (dataCategory == 'all') ? (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left)/2 + teachingNode.getBoundingClientRect().right : (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left) + teachingNode.getBoundingClientRect().right
+      //       var bottom = teacherNode.getBoundingClientRect().bottom;
+      //       transitionTeacherText(teacherNodeX, teacherNodeY, bottom)
         })
 
       node.selectAll(".raceLabels")
         .transition()
-        .duration(1300)
+        .duration(1000)
         .attr("y", function(d) { return d.dy / 2; })
 
       linkG.selectAll(".linkText")
@@ -904,11 +988,12 @@ var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node();
           var textWidth = this.getBoundingClientRect().width
               // return (nodeWidth -textWidth)/2
               return d.target.x + ((d.target.x + nodeWidth) - (d.target.x + textWidth))/2
-        })   
+        }) 
 
-      for (i=0; i<4; i++){
+
+      for (i=0; i<HEADERS2.length; i++){
         d3.select(".node-" + HEADERS2[i] + "-Teacher .linkText")
-          .text(function(d){ console.log(d)
+          .text(function(d){ 
             return linkTextFormat(d.value);
           })
           .attr("x", function(d) { 
