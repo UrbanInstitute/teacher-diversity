@@ -25,14 +25,26 @@ body {
     stroke: #000;
     stroke-width: .94;
 }
+
+.stateText, .cityText {
+    font-size: 16px;
+}
+
+.cityText.no-city {
+    font-size: 16px;
+    fill: #9c9c9c;
+}
 .city-line {
     stroke: #fbbe15;
+    stroke-width: 1px;
 }
 .highlight {
-    stroke: #000;
+    stroke: #000 !important;
+    stroke-width: 2px !important;
 }
 .state-line {
     stroke: #1896d2;
+    stroke-width: 1px;
 }
 .switch.large.on {
     background-position: -10px 0px;

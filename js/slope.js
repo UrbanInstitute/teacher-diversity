@@ -59,22 +59,11 @@
 
       var lines = gCity.selectAll("line")
         .data(cityData_white);
+      var leftCircles = gCity.selectAll("circle")
+        .data(cityData_white)
+      var rightCircles = gCity.selectAll("circle")
+        .data(cityData_white)
 
-      lines.enter()
-        .append("line")
-        .attr("x1", margin.left)
-        .attr("x2", width - margin.right)
-        .attr("y1", function(d) {
-          return leftScale(d['city_k12']);
-        })
-        .attr("y2", function(d) { 
-          return rightScale(d['city_teacher']);
-        })
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-        .attr("class", "city-line")
-        .on("mouseover", showLineInfo)
-      
       gCity
         .append("line")
         .attr("x1", margin.left)
@@ -99,6 +88,44 @@
         })
         .attr("class", "sideline")
       
+      lines.enter()
+        .append("line")
+        .attr("x1", margin.left)
+        .attr("x2", width - margin.right)
+        .attr("y1", function(d) {
+          return leftScale(d['city_k12']);
+        })
+        .attr("y2", function(d) { 
+          return rightScale(d['city_teacher']);
+        })
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .attr("class", function(d) {
+          return "city-line city-line-" + d.abbr 
+        })
+        .on("mouseover", showLineInfo)
+      leftCircles.enter()
+        .append("circle")
+        .attr("cy", function(d) {
+          return leftScale(d['city_k12']);
+        })
+        .attr("cx", margin.left)
+        .attr("r", 5)
+        .attr("fill", "#fbbe15")
+        .attr("class", function(d) {
+          return "city-circle-left city-circle-left-right" + d.abbr 
+        })
+      rightCircles.enter()
+        .append("circle")
+        .attr("cy", function(d) {
+          return rightScale(d['city_teacher']);
+        })
+        .attr("cx", width - margin.right)
+        .attr("r", 5)
+        .attr("fill", "#fbbe15")
+        .attr("class", function(d) {
+          return "city-circle-right city-circle-right-" + d.abbr 
+        })
       // //STATE GRAPH
 
       var stateText = gState.append("g")
@@ -110,7 +137,13 @@
 
       var lines2 = gState.selectAll("line")
         .data(stateData_white);
-        
+      var leftCircles2 = gState.selectAll("circle")
+        .data(stateData_white)
+      var rightCircles2 = gState.selectAll("circle")
+        .data(stateData_white)
+
+
+
       lines2.enter()
         .append("line")
         .attr("x1", margin.left)
@@ -123,7 +156,9 @@
         })
         .attr("stroke", "black")
         .attr("stroke-width", 1)
-        .attr("class", "state-line")
+        .attr("class", function(d) {
+          return "state-line state-line-" + d.abbr
+        })
         .on("mouseover", showLineInfo);
       gState
         .append("line")
@@ -148,7 +183,28 @@
           return leftScale(1)
         })
         .attr("class", "sideline")
-
+      leftCircles2.enter()
+        .append("circle")
+        .attr("cy", function(d) {
+          return leftScale(d['state_k12']);
+        })
+        .attr("cx", margin.left)
+        .attr("r", 5)
+        .attr("fill", "#1896d2")
+        .attr("class", function(d) {
+          return "state-circle-left state-circle-left-" + d.abbr 
+        })
+      rightCircles2.enter()
+        .append("circle")
+        .attr("cy", function(d) {
+          return rightScale(d['state_teacher']);
+        })
+        .attr("cx", width - margin.right)
+        .attr("r", 5)
+        .attr("fill", "#1896d2")
+        .attr("class", function(d) {
+          return "state-circle-right state-circle-right-" + d.abbr 
+        })
 
       d3.selectAll(".button_toggle")
         .on("click", function() {
@@ -177,7 +233,12 @@
           .text(function() {
             return (d.city=="") ? "No city data for this state" : d.city
           })
+          .classed("no-city", function() {
+            return (d.city== "") ? true: false
+          })
         d3.select(this)
+          .classed("highlight", true)
+        d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr)
           .classed("highlight", true)
       }
 
@@ -238,32 +299,36 @@
           })
           .attr("stroke", "black")
           .attr("stroke-width", 1);
-        //CITY LABELS
-        var rightLabelsCity = gCity.selectAll(".labels")
+
+        gCity.selectAll(".city-circle-left")
           .data(dataCity)
           .transition()
           .duration(2000)
-          .attr("x", width - margin.right + 3)
-          .attr("y", function(d) {
-            return rightScale(d['city_teacher']) + 4;
+          .attr("cy", function(d) { 
+            return leftScale(d['city_k12']);
           })
-          .text(function (d) {
-            return d['city'] //+ " " + currencyFormatter(d['2010']);
-          });
-      
-        var leftLabelsCity = gCity.selectAll(".left-labels")
+        gCity.selectAll(".city-circle-right")
           .data(dataCity)
           .transition()
           .duration(2000)
-          .attr("x", margin.left - 65)
-          .attr("y", function(d) {
-            return leftScale(d['city_k12']) + 4;
+          .attr("cy", function(d) { 
+            return rightScale(d['city_teacher']);
           })
-          .text(function (d) {
-            return d['city']// + " " + currencyFormatter(d['1980']);
+
+        gState.selectAll(".state-circle-left")
+          .data(dataCity)
+          .transition()
+          .duration(2000)
+          .attr("cy", function(d) { 
+            return leftScale(d['state_k12']);
           })
-          .style("text-anchor","begin");
-        
+        gState.selectAll(".state-circle-right")
+          .data(dataCity)
+          .transition()
+          .duration(2000)
+          .attr("cy", function(d) { 
+            return rightScale(d['state_teacher']);
+          })    
         gState.selectAll(".state-line")
           .data(dataState)
           .transition()
