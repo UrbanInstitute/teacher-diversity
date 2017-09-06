@@ -120,8 +120,18 @@ hr {
   font-weight: 700;
 }
 
-.linkTextMobile {
+.linkTextPhone {
+  opacity: 0;
   font-size: 13px;
+}
+
+.linkTextPhone-race {
+  font-size: 12px;
+}
+
+.teacherStatsPhoneG {
+  font-size: 12px;
+  font-style: italic;
   opacity: 0;
 }
 
@@ -208,7 +218,7 @@ hr {
   }
 
 
-  .linkTextMobile.showText{
+  .linkTextPhone.showText, .teacherStatsPhoneG.showText {
     opacity: 1 !important;
   }
   .label, .node text {
