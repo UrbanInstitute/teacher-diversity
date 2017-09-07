@@ -9,9 +9,9 @@ body {
     max-width: 680px;
 }
 
-.state-line-FL, .state-line-CA {
+/*.state-line-FL, .state-line-CA {
     stroke: #ec008b !important;
-}
+}*/
 .urban-switch.large {
     font-size: 13px;
     font-family: Lato, sans-serif;
@@ -56,6 +56,14 @@ hr {
 .city-line {
     stroke: #fbbe15;
     stroke-width: 1px;
+}
+
+.city-circle-left, .city-circle-right {
+    fill: #fbbe15;
+}
+
+.state-circle-left, .state-circle-right {
+    fill: #1896d2;
 }
 .highlight {
     stroke: #000 !important;

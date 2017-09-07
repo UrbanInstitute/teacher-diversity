@@ -122,7 +122,6 @@
         })
         .attr("cx", margin.left)
         .attr("r", 5)
-        .attr("fill", "#fbbe15")
         .attr("class", function(d) {
           return "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id
         })
@@ -133,7 +132,6 @@
         })
         .attr("cx", width - margin.right)
         .attr("r", 5)
-        .attr("fill", "#fbbe15")
         .attr("class", function(d) {
           return "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
         })
@@ -201,7 +199,6 @@
         })
         .attr("cx", margin.left)
         .attr("r", 5)
-        .attr("fill", "#1896d2")
         .attr("class", function(d) {
           return "circle state-circle-left state-circle-left-" + d.abbr 
         })
@@ -212,7 +209,6 @@
         })
         .attr("cx", width - margin.right)
         .attr("r", 5)
-        .attr("fill", "#1896d2")
         .attr("class", function(d) {
           return "circle state-circle-right state-circle-right-" + d.abbr 
         })
@@ -268,7 +264,7 @@
         });
       };
 
-      function updateDataOn(buttonState, race, all_data){ console.log(all_data)
+      function updateDataOn(buttonState, race, all_data){ 
         //if button is turned on, update On and Off array
         if (buttonState == "on") {
           var index = raceOff.indexOf(race);
@@ -276,7 +272,7 @@
             raceOff.splice(index,1)
           }
           raceOn.push(race) 
-        }else{ console.log('off') //if button is turned off, update  On and Off array
+        }else{  //if button is turned off, update  On and Off array
           var index = raceOn.indexOf(race);
           if (index > -1) {
             raceOn.splice(index,1)
@@ -288,7 +284,7 @@
             return d[raceOn[i]] == 1;
           })
           all_data = newData
-        }  console.log(newData)
+        }  
         updateDataOff(newData)
       }
 
@@ -314,90 +310,142 @@
         console.log("raceOn: " + raceOn)
         console.log(dataCity)
         console.log(dataState)
-    
-        gCity.selectAll(".city-line")
-          .data(dataCity)
-          .transition()
-          .duration(2000)
-          .attr("x1", margin.left)
-          .attr("x2", width - margin.right)
-          .attr("y1", function(d) {
-            return leftScale(d['city_k12']);
-          })
-          .attr("y2", function(d) {
-            return rightScale(d['city_teacher']);
-          })
-          .attr("stroke", "black")
-          .attr("stroke-width", 1);
-
-        gCity.selectAll(".city-circle-left")
-          .data(dataCity)
-          .transition()
-          .duration(2000)
-          .attr("cy", function(d) { 
-            return leftScale(d['city_k12']);
-          })
-        gCity.selectAll(".city-circle-right")
-          .data(dataCity)
-          .transition()
-          .duration(2000)
-          .attr("cy", function(d) { 
-            return rightScale(d['city_teacher']);
-          })
-
-        gState.selectAll(".state-circle-left")
-          .data(dataCity)
-          .transition()
-          .duration(2000)
-          .attr("cy", function(d) { 
-            return leftScale(d['state_k12']);
-          })
-        gState.selectAll(".state-circle-right")
-          .data(dataCity)
-          .transition()
-          .duration(2000)
-          .attr("cy", function(d) { 
-            return rightScale(d['state_teacher']);
-          })    
-        gState.selectAll(".state-line")
-          .data(dataState)
-          .transition()
-          .duration(2000)
-          .attr("x1", margin.left)
-          .attr("x2", width - margin.right)
-          .attr("y1", function(d) {
-            return leftScale(d['state_k12']);
-          })
-          .attr("y2", function(d) {
-            return rightScale(d['state_teacher']);
-          })
-          .attr("stroke", "black")
-          .attr("stroke-width", 1);
-        //STATE LABELS
-        var rightLabelsState = gState.selectAll(".labels")
-          .data(dataState)
-          .transition()
-          .duration(2000)
-          .attr("x", width - margin.right + 3)
-          .attr("y", function(d) {
-            return rightScale(d['state_teacher']) + 4;
-          })
-          .text(function (d) {
-            return d['state'] //+ " " + currencyFormatter(d['2010']);
-          });
         
-        var leftLabelsState = gState.selectAll(".left-labels")
+        //TRANSITION CITY LINES
+        var cityLines = gCity.selectAll(".city-line")
+          .data(dataCity)
+        var city = "city"
+        var line = "line"
+        moveLines(cityLines, city, line)
+        //TRANSITION STATE LINES  
+        var stateLines = gState.selectAll(".state-line")
           .data(dataState)
-          .transition()
-          .duration(2000)
-          .attr("x", margin.left - 65)
-          .attr("y", function(d) {
-            return leftScale(d['state_k12']) + 4;
-          })
-          .text(function (d) {
-            return d['state']// + " " + currencyFormatter(d['1980']);
-          })
-          .style("text-anchor","begin");
+        var state = "state"
+        var line = "line"
+        var circle = "circle"
+        moveLines(stateLines, state, line)
+
+        //TRANSITION CITY CIRCLES
+        var cityCirclesLeft = gCity.selectAll(".city-circle-left")
+          .data(dataCity)
+        var left = "left"
+        moveCircles(cityCirclesLeft, city, circle, left)
+
+        var cityCirclesRight = gCity.selectAll(".city-circle-right")
+          .data(dataCity)
+        var right = "right"
+        moveCircles(cityCirclesRight, city, circle, right)
+
+        var stateCirclesLeft = gState.selectAll(".state-circle-left")
+          .data(dataState)
+        moveCircles(stateCirclesLeft, state, circle, left)
+
+        var stateCirclesRight = gState.selectAll(".state-circle-right")
+          .data(dataState)
+         moveCircles(stateCirclesRight, state, circle, right)
+
+
+        function moveCircles(elements, geography, elementType, elementSide) {
+          elements
+            .transition()
+            .duration(1000)
+            .attr("cy", function(d) {
+              if (geography == "city"){
+                return (elementSide == "left") ? leftScale(d['city_k12']) : rightScale(d['city_teacher']);
+              }else {
+                return (elementSide == "left") ? leftScale(d['state_k12']) : rightScale(d['state_teacher']);
+              }
+            })
+            .attr("cx", function() {
+              return (elementSide == "left") ? margin.left : width - margin.right
+            })
+            .attr("r", 5)
+            .attr("class", function(d) { 
+              if (geography == "city") {
+                return (elementSide == "left") ? "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id : "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+              }else {
+                return (elementSide == "left") ? "circle state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id : "circle state-circle-right state-circle-right-" + d.abbr + " state-circle-right-" + d.abbr + d.city_id
+              }
+            })
+          elements.enter().append(elementType)
+            .attr("class", function(d) { 
+              if (geography == "city") {
+                return (elementSide == "left") ? "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id : "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+              }else {
+                return (elementSide == "left") ? "circle state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id : "circle state-circle-right state-circle-right-" + d.abbr + " state-circle-right-" + d.abbr + d.city_id
+              }
+            })
+            .merge(elements)
+            .transition()
+            .duration(1000)
+            .attr("cy", function(d) {
+              if (geography == "city"){
+                return (elementSide == "left") ? leftScale(d['city_k12']) : rightScale(d['city_teacher']);
+              }else {
+                return (elementSide == "left") ? leftScale(d['state_k12']) : rightScale(d['state_teacher']);
+              }
+            })
+            .attr("cx", function() {
+              return (elementSide == "left") ? margin.left : width - margin.right
+            })            
+            .attr("r", 5)
+          elements
+            .exit()
+            .transition()
+            .style("opacity", 0)
+            .remove()
+        }
+        function moveLines(elements, geography, elementType) {
+          elements
+            .transition()
+            .duration(1000)
+            .attr("x1", margin.left)
+            .attr("x2", width - margin.right)
+            .attr("y1", function(d) {
+              return leftScale(d[geography + '_k12']);
+            })
+            .attr("y2", function(d) {
+              return rightScale(d[geography + '_teacher']);
+            })
+            .attr("class", function(d) {
+              if (elements == cityLines) {
+                return "city-line city-line-" + d.abbr + " city-line-" + d.abbr + d.city_id
+              }else{
+                if (elements == stateLines) {
+                  return "state-line state-line-" + d.abbr
+                }
+              }
+            })
+          elements.enter().append(elementType)
+            .attr("class", function(d) { 
+              if (elements == cityLines) {
+                return "city-line city-line-" + d.abbr + " city-line-" + d.abbr + d.city_id
+              }else {
+                if (elements == stateLines) {
+                 return "state-line state-line-" + d.abbr
+                }
+              }
+            })
+            .merge(elements)
+            .transition()
+            .duration(1000)
+            .attr("x1", margin.left)
+            .attr("x2", width - margin.right)
+            .attr("y1", function(d) {
+              return leftScale(d[geography + '_k12']);
+            })
+            .attr("y2", function(d) {
+              return rightScale(d[geography + '_teacher']);
+            })
+          elements
+            .exit()
+            .transition()
+            .style("opacity", 0)
+            .remove()
+        }
+      d3.selectAll(".city-line, .state-line")
+        .on("mouseover", showLineInfo);
+
 
       }
 
