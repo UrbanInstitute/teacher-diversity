@@ -51,7 +51,7 @@
       //DROPDOWN MENUS
       var selectCity = d3.select("#city-menu").append("select")
         .attr("id", "city-select")
-      var options = selectCity
+      var optionsCity = selectCity
         .selectAll('option')
         .data(cityData_white).enter()
         .append('option')
@@ -64,9 +64,13 @@
         .attr("disabled", "disabled")
         .attr("hidden", "hidden")
         .attr("class", "dropdown-default")
-      var selectState = d3.select("#state-menu").append("select")
+      var selectState = d3.select("#state-menu")
+        .append("select")
         .attr("id", "state-select")
-      var options = selectState
+        // .on("change", function() {
+        //   console.log('hi')
+        // })
+      var optionsState = selectState
         .selectAll('option')
         .data(stateData_white).enter()
         .append('option')
@@ -80,6 +84,7 @@
         .attr("hidden", "hidden")
         .attr("class", "dropdown-default")
 
+
       $( function() {
         $( "#state-select" )
           .selectmenu()
@@ -88,6 +93,27 @@
           // .selectmenu( "menuWidget" )
           //   .addClass( "custom" );
       });
+
+      d3.select("#state-menu")
+        .on("change", function() {
+          console.log('hi')
+        })
+
+
+      var sort = function() {
+        // choose target dropdown
+        var citySelect = $("#city-select");
+        citySelect.html(citySelect.find('option').sort(function(x, y) {
+          // to change to descending order switch "<" for ">"
+          return $(x).text() > $(y).text() ? 1 : -1;
+        }));
+        var stateSelect = $("#state-select");
+        stateSelect.html(stateSelect.find('option').sort(function(x, y) {
+          // to change to descending order switch "<" for ">"
+          return $(x).text() > $(y).text() ? 1 : -1;
+        }));
+      };
+      sort()
 
 
       //CITIES GRAPH
