@@ -246,10 +246,19 @@
           .classed("no-city", function() {
             return (d.city== "") ? true: false
           })
+          if(d3.select(this).attr("class").search("city-line") == 0) {
+            d3.select(this)
+              .classed("highlight", true)
+              .moveToFront()
+            d3.selectAll(".state-line-" + d.abbr + ", .city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
+              .classed("highlight", true)
+              .moveToFront()
+          }else {
+          d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr + ", .city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
+            .classed("highlight", true)
+            .moveToFront()
+          }
 
-        d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr + ", .city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
-          .classed("highlight", true)
-          .moveToFront()
       }
 
       function updateDataOn(buttonState, race){
