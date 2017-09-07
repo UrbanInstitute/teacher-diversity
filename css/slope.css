@@ -1,6 +1,52 @@
 body {
     font-family: Lato, sans-serif;
 }
+
+/*SELECT MENU */
+
+select {
+/*    background-color: #332d2f !important;
+*/    padding: 30px;
+    color: #fff;
+
+}
+.ui-selectmenu-menu {
+    height: 300px !important;
+
+}
+    .ui-menu-item {
+        border-bottom: 1px solid #dcdbdb !important;
+        font-size: 16px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+.ui-selectmenu-button.ui-button {
+    background: #332d2f !important;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: Lato, sans-serif;
+    text-align: center !important;
+    width: 70%;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+
+}
+.ui-selectmenu-icon .ui-icon .ui-icon-triangle-1-s {
+    color: #fff;
+}
+.ui-widget-header {
+    border: 1px solid #dddddd;
+    background: #fff !important;
+    color: #333333;
+    font-weight: bold;
+}
+    .ui-selectmenu-text {
+    font-family: Lato, sans-serif;
+        font-size: 18px !important;
+        text-align: center;
+        color: #fff;
+    }
+
 #switch-div {
     max-width: 680px;
 }
@@ -9,9 +55,29 @@ body {
     max-width: 680px;
 }
 
-/*.state-line-FL, .state-line-CA {
-    stroke: #ec008b !important;
-}*/
+#city-select-button {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#city-select-menu {
+    height: 400px !important;
+}
+#city-menu {
+    width: 50%;
+    float: left;
+}
+#state-select-button {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+#state-menu {
+    width: 50%;
+    float: left;
+}
+#state-select-menu {
+    height: 400px !important;
+}
 .urban-switch.large {
     font-size: 13px;
     font-family: Lato, sans-serif;

@@ -30,7 +30,7 @@
         var stateData_white= data.filter(function(d) { 
           return d.white == 1 && d.black == 0 && d.hispanic == 0 && d.asian == 0 && d.american_indian == 0 && d.alaskan_native == 0 && d.native_hawaiian == 0;
         })
-
+   
       var svg = d3.select("#graph-container")
         .append("svg")
         .attr("width", graphWidth)
@@ -39,33 +39,64 @@
         .attr("width", width)
         .attr("height", height)
         .attr("class", "state-graph")
-        .attr("transform","translate(0," + 40 + ")")
+        .attr("transform","translate(0," + 20 + ")")
         // .on("mouseout", removeLineInfo);
 
       var gState= svg.append("g")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "state-graph")
-        .attr("transform","translate("+width+ "," + 40 + ")")
-        // .on("mouseout", removeLineInfo);
+        .attr("transform","translate("+width+ "," + 20 + ")")
 
-      svg.append("text")
-        .attr("x", width/2-margin.left)
-        .attr("y", 15)
+      //DROPDOWN MENUS
+      var selectCity = d3.select("#city-menu").append("select")
+        .attr("id", "city-select")
+      var options = selectCity
+        .selectAll('option')
+        .data(cityData_white).enter()
+        .append('option')
+        .text(function (d) { return d.city; });
+      selectCity
+        .append("option")
         .text("CITIES")
-        .attr("class", "header")
-      svg.append("text")
-        .attr("x", width + width/2 - margin.right)
-        .attr("y", 15)
-        .text("STATES")
-        .attr("class", "header")
+        .attr("value","")
+        .attr("selected", "selected")
+        .attr("disabled", "disabled")
+        .attr("hidden", "hidden")
+        .attr("class", "dropdown-default")
+      var selectState = d3.select("#state-menu").append("select")
+        .attr("id", "state-select")
+      var options = selectState
+        .selectAll('option')
+        .data(stateData_white).enter()
+        .append('option')
+        .text(function (d) { return d.state; });
+      selectState
+        .append("option")
+        .text("STATE")
+        .attr("value","")
+        .attr("selected", "selected")
+        .attr("disabled", "disabled")
+        .attr("hidden", "hidden")
+        .attr("class", "dropdown-default")
+
+      $( function() {
+        $( "#state-select" )
+          .selectmenu()
+        $( "#city-select" )
+          .selectmenu()
+          // .selectmenu( "menuWidget" )
+          //   .addClass( "custom" );
+      });
+
+
       //CITIES GRAPH
 
       var cityText = gCity.append("g")
         .attr("width", width)
         .attr("height", 100)
         .append("text")
-        .attr("transform","translate("+width/3.2+",30)")
+        .attr("transform","translate("+width/3.2+",15)")
         .attr("class", "cityText")
 
       var lines = gCity.selectAll("line")
@@ -141,7 +172,7 @@
         .attr("width", width)
         .attr("height", 100)
         .append("text")
-        .attr("transform","translate("+width/3+",30)")
+        .attr("transform","translate("+width/3+",15)")
         .attr("class", "stateText")
 
       var lines2 = gState.selectAll("line")
