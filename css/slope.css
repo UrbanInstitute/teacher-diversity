@@ -8,6 +8,10 @@ body {
 #graph-container {
     max-width: 680px;
 }
+
+.state-line-FL, .state-line-CA {
+    stroke: #ec008b !important;
+}
 .urban-switch.large {
     font-size: 13px;
     font-family: Lato, sans-serif;

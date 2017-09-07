@@ -23,6 +23,7 @@
 
     d3.csv('data/slope_data.csv', function(error, data) {
      // data = d;
+        var all_data = data
         var cityData_white= data.filter(function(d) { 
           return d.white == 1 && d.black == 0 && d.hispanic == 0 && d.asian == 0 && d.american_indian == 0 && d.alaskan_native == 0 && d.native_hawaiian == 0 && d.city != "";
         })
@@ -111,7 +112,7 @@
         .attr("stroke", "black")
         .attr("stroke-width", 1)
         .attr("class", function(d) {
-          return "city-line city-line-" + d.abbr 
+          return "city-line city-line-" + d.abbr + " city-line-" + d.abbr + d.city_id
         })
         .on("mouseover", showLineInfo)
       leftCircles.enter()
@@ -123,7 +124,7 @@
         .attr("r", 5)
         .attr("fill", "#fbbe15")
         .attr("class", function(d) {
-          return "circle city-circle-left city-circle-left-" + d.abbr 
+          return "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id
         })
       rightCircles.enter()
         .append("circle")
@@ -134,7 +135,7 @@
         .attr("r", 5)
         .attr("fill", "#fbbe15")
         .attr("class", function(d) {
-          return "circle city-circle-right city-circle-right-" + d.abbr 
+          return "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
         })
       // //STATE GRAPH
 
@@ -221,11 +222,11 @@
           if (d3.select(this).classed("on")){
             d3.select(this).classed("off", true)
             d3.select(this).classed("on", false)
-            updateDataOn("off", this.id)
+            updateDataOn("off", this.id, all_data)
           }else {
             d3.select(this).classed("on", true)
             d3.select(this).classed("off", false)
-            updateDataOn("on", this.id)
+            updateDataOn("on", this.id, all_data)
           }
         })
       function removeLineInfo() {
@@ -250,7 +251,7 @@
             d3.select(this)
               .classed("highlight", true)
               .moveToFront()
-            d3.selectAll(".state-line-" + d.abbr + ", .city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
+            d3.selectAll(".state-line-" + d.abbr + ", .city-circle-left-" + d.abbr + d.city_id + ", .city-circle-right-" + d.abbr + d.city_id + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
               .classed("highlight", true)
               .moveToFront()
           }else {
@@ -261,54 +262,59 @@
 
       }
 
-      function updateDataOn(buttonState, race){
-        if (buttonState == "on") {
-          var index = raceOff.indexOf(race);
-          if (index > -1) {
-            raceOff.splice(index,1)
-          }
-          raceOn.push(race)
-          newData = data.filter(function(d,i){ 
-            return d[race] == 1;
-          });  
-        }else{
-          var index = raceOn.indexOf(race);
-          if (index > -1) {
-            raceOn.splice(index,1)
-          }
-          raceOff.push(race)
-          newData = data.filter(function(d,i){ 
-            return d[race] == 0;
-          }); 
-        }
-        updateDataOff(newData)
-      }
       d3.selection.prototype.moveToFront = function() {  
         return this.each(function(){
           this.parentNode.appendChild(this);
         });
       };
 
-      function updateDataOff(newData) {
+      function updateDataOn(buttonState, race, all_data){ console.log(all_data)
+        //if button is turned on, update On and Off array
+        if (buttonState == "on") {
+          var index = raceOff.indexOf(race);
+          if (index > -1) {
+            raceOff.splice(index,1)
+          }
+          raceOn.push(race) 
+        }else{ console.log('off') //if button is turned off, update  On and Off array
+          var index = raceOn.indexOf(race);
+          if (index > -1) {
+            raceOn.splice(index,1)
+          }
+          raceOff.push(race)
+        } 
+        for (i=0; i<raceOn.length; i++){ // filter data by races that are turned on
+          newData = all_data.filter(function(d){ 
+            return d[raceOn[i]] == 1;
+          })
+          all_data = newData
+        }  console.log(newData)
+        updateDataOff(newData)
+      }
+
+
+      function updateDataOff(newData) { //pass filtered data from updateDataOn function and filter by races that are turned off
         for (i=0; i<raceOff.length; i++){   
           newDataFiltered = newData.filter(function(d){
             return d[raceOff[i]] == 0
           })
           newData = newDataFiltered;
-        }
+        } 
           var dataCity = newDataFiltered.filter(function(d) {
             return d.city != ""
           })
+
           var dataState = newDataFiltered
           updateLines(dataCity, dataState)
       }
 
       function updateLines(dataCity, dataState) {
-        console.log(dataCity)
-        console.log(dataState)
+
         console.log("raceOff: " + raceOff)
         console.log("raceOn: " + raceOn)
-
+        console.log(dataCity)
+        console.log(dataState)
+    
         gCity.selectAll(".city-line")
           .data(dataCity)
           .transition()
