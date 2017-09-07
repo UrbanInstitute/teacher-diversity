@@ -10,6 +10,10 @@ select {
     color: #fff;
 
 }
+
+.ui-state-disabled.ui-menu-item {
+    display: none !important;
+}
 .ui-selectmenu-menu {
     height: 300px !important;
 
@@ -46,20 +50,6 @@ select {
         text-align: center;
         color: #fff;
     }
-
-#switch-div {
-    max-width: 680px;
-}
-
-#graph-container {
-    max-width: 680px;
-}
-
-#city-select-button {
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
 #city-select-menu {
     height: 400px !important;
 }
@@ -78,6 +68,22 @@ select {
 #state-select-menu {
     height: 400px !important;
 }
+#city-select-button {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+/*SELECT MENU END */
+
+
+#switch-div {
+    max-width: 680px;
+}
+
+#graph-container {
+    max-width: 680px;
+}
+
+
 .urban-switch.large {
     font-size: 13px;
     font-family: Lato, sans-serif;

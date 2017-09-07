@@ -59,7 +59,7 @@
       selectCity
         .append("option")
         .text("CITIES")
-        .attr("value","")
+        .attr("value","cities")
         .attr("selected", "selected")
         .attr("disabled", "disabled")
         .attr("hidden", "hidden")
@@ -67,9 +67,6 @@
       var selectState = d3.select("#state-menu")
         .append("select")
         .attr("id", "state-select")
-        // .on("change", function() {
-        //   console.log('hi')
-        // })
       var optionsState = selectState
         .selectAll('option')
         .data(stateData_white).enter()
@@ -78,27 +75,49 @@
       selectState
         .append("option")
         .text("STATE")
-        .attr("value","")
+        .attr("value","state")
         .attr("selected", "selected")
         .attr("disabled", "disabled")
         .attr("hidden", "hidden")
         .attr("class", "dropdown-default")
 
 
-      $( function() {
-        $( "#state-select" )
-          .selectmenu()
-        $( "#city-select" )
-          .selectmenu()
-          // .selectmenu( "menuWidget" )
-          //   .addClass( "custom" );
-      });
-
-      d3.select("#state-menu")
-        .on("change", function() {
-          console.log('hi')
-        })
-
+    $("#state-select")
+      .selectmenu({
+         // open: function( event, ui ) {
+         //    // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
+         //    // pymChild.sendHeight();
+         //  },
+         //  close: function(event, ui){
+         //    d3.select("body").style("height", null)
+         //    pymChild.sendHeight();
+         //  },
+         change: function(event, d){
+            var name = this.value
+            var state = "state"
+            highlightLine(name, state)
+          }
+      })     
+      .selectmenu( "menuWidget" )
+      .addClass( "ui-menu-icons customicons" );
+    $("#city-select")
+      .selectmenu({
+         // open: function( event, ui ) {
+         //    // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
+         //    // pymChild.sendHeight();
+         //  },
+         //  close: function(event, ui){
+         //    d3.select("body").style("height", null)
+         //    pymChild.sendHeight();
+         //  },
+         change: function(event, d){
+            var name = this.value
+            var city = "city"
+            highlightLine(name, city)
+          }
+      })     
+      .selectmenu( "menuWidget" )
+      .addClass( "ui-menu-icons customicons" );
 
       var sort = function() {
         // choose target dropdown
@@ -114,6 +133,27 @@
         }));
       };
       sort()
+
+      var highlightLine = function(name, geography) {
+        d3.selectAll(".stateText, .cityText")
+          .text("")
+        d3.selectAll(".city-line, .city-circle-left, .city-circle-right, .state-line, .state-circle-left, .state-circle-right ")
+          .classed("highlight", function(d) {
+            if (geography == "city"){
+              return (d.city == name) ? true : false
+            }else {
+              if (geography == "state"){
+                return (d.state == name) ? true : false
+              }
+            }
+          })
+          d3.selectAll(".highlight").moveToFront()
+          if (d3.selectAll(".city-line.highlight").node() == null) {
+            console.log($('#city-select').value)
+            $('#city-select').val("cities")
+          }
+
+      }
 
 
       //CITIES GRAPH
@@ -315,7 +355,7 @@
 
       }
 
-      d3.selection.prototype.moveToFront = function() {  
+      d3.selection.prototype.moveToFront = function() {  console.log('hi')
         return this.each(function(){
           this.parentNode.appendChild(this);
         });
