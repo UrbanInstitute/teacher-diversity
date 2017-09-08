@@ -49,79 +49,104 @@
         .attr("transform","translate("+width+ "," + 20 + ")")
 
       //DROPDOWN MENUS
-      var selectCity = d3.select("#city-menu").append("select")
+      var selectCity = d3.select("#city-menu")
+        .append("select")
         .attr("id", "city-select")
-      var optionsCity = selectCity
-        .selectAll('option')
-        .data(cityData_white).enter()
-        .append('option')
-        .text(function (d) { return d.city; })
-        .attr('value', function(d){
-          return d.city
-        })
-      selectCity
-        .append("option")
-        .text("CITIES")
-        .attr("value","cities")
-        .attr("selected", "selected")
-        .attr("disabled", "disabled")
-        .attr("hidden", "hidden")
-        .attr("class", "dropdown-default")
       var selectState = d3.select("#state-menu")
         .append("select")
         .attr("id", "state-select")
-      var optionsState = selectState
-        .selectAll('option')
-        .data(stateData_white).enter()
-        .append('option')
-        .text(function (d) { return d.state; });
-      selectState
-        .append("option")
-        .text("STATES")
-        .attr("value","state")
-        .attr("selected", "selected")
-        .attr("disabled", "disabled")
-        .attr("hidden", "hidden")
-        .attr("class", "dropdown-default")
 
+      modifyDropdownOptions(cityData_white, stateData_white)
 
-    $("#state-select")
-      .selectmenu({
-         // open: function( event, ui ) {
-         //    // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
-         //    // pymChild.sendHeight();
-         //  },
-         //  close: function(event, ui){
-         //    d3.select("body").style("height", null)
-         //    pymChild.sendHeight();
-         //  },
-         change: function(event, d){
-            var name = this.value
-            var state = "state"
-            highlightLine(name, state)
-          }
-      })     
-      .selectmenu( "menuWidget" )
-      .addClass( "ui-menu-icons customicons" );
-    $("#city-select")
-      .selectmenu({
-         open: function( event, ui ) {       console.log($(".ui-menu-item-wrapper.ui-state-active").text())
-//console.log($("#city-menu option:selected").val())
-            // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
-            // pymChild.sendHeight();
-          },
-         //  close: function(event, ui){
-         //    d3.select("body").style("height", null)
-         //    pymChild.sendHeight();
-         //  },
-         change: function(event, d){ 
-            var name = this.value
-            var city = "city"
-            highlightLine(name, city)
-          }
-      })     
-      .selectmenu( "menuWidget" )
-      .addClass( "ui-menu-icons customicons" );
+      function modifyDropdownOptions(cityData, stateData){
+        console.log(cityData)
+        var optionsCity = selectCity
+          .selectAll('option')
+          .data(cityData)
+        optionsCity.enter()
+          .append('option')
+          .text(function (d) { return d.city; })
+          .attr('value', function(d){ console.log(d.city)
+            return d.city
+          })
+          .merge(optionsCity)
+        optionsCity.exit().remove()
+        selectCity
+          .append("option")
+          .text("CITIES")
+          .attr("value","cities")
+          .attr("selected", "selected")
+          .attr("disabled", "disabled")
+          .attr("hidden", "hidden")
+          .attr("class", "dropdown-default")
+
+        var optionsState = selectState
+          .selectAll('option')
+          .data(stateData)
+        optionsState.enter()
+          .append('option')
+          .text(function (d) { return d.state; })
+          .attr('value', function(d){
+            return d.state
+          })
+          .merge(optionsState)
+        optionsState.exit().remove()
+        selectState
+          .append("option")
+          .text("STATES")
+          .attr("value","state")
+          .attr("selected", "selected")
+          .attr("disabled", "disabled")
+          .attr("hidden", "hidden")
+          .attr("class", "dropdown-default")
+        
+        var exist = {};
+        $('#state-select > option').each(function() {
+            if (exist[$(this).val()])
+                $(this).remove();
+            else
+                exist[$(this).val()] = true;
+        });
+      }
+      
+
+      $("#state-select")
+        .selectmenu({
+           // open: function( event, ui ) {
+           //    // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
+           //    // pymChild.sendHeight();
+           //  },
+           //  close: function(event, ui){
+           //    d3.select("body").style("height", null)
+           //    pymChild.sendHeight();
+           //  },
+           change: function(event, d){
+              var name = this.value
+              var state = "state"
+              highlightLine(name, state)
+            }
+        })     
+        .selectmenu( "menuWidget" )
+        .addClass( "ui-menu-icons customicons" );
+      $("#city-select")
+        .selectmenu({
+           open: function( event, ui ) {       console.log($(".ui-menu-item-wrapper.ui-state-active").text())
+  //console.log($("#city-menu option:selected").val())
+              // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
+              // pymChild.sendHeight();
+            },
+           //  close: function(event, ui){
+           //    d3.select("body").style("height", null)
+           //    pymChild.sendHeight();
+           //  },
+           change: function(event, d){ 
+              var name = this.value
+              var city = "city"
+              highlightLine(name, city)
+            }
+        })     
+        .selectmenu( "menuWidget" )
+        .addClass( "ui-menu-icons customicons" );
 
       var sort = function() {
         // choose target dropdown
@@ -451,6 +476,8 @@
       }
 
       function updateLines(dataCity, dataState) {
+        
+        modifyDropdownOptions(dataCity, dataState)
 
         console.log("raceOff: " + raceOff)
         console.log("raceOn: " + raceOn)
