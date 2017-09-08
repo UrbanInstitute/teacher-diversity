@@ -131,6 +131,7 @@ hr {
 .city-line {
     stroke: #fbbe15;
     stroke-width: 1px;
+    cursor: pointer;
 }
 
 .city-circle-left, .city-circle-right {
@@ -147,6 +148,7 @@ hr {
 .state-line {
     stroke: #1896d2;
     stroke-width: 1px;
+    cursor: pointer;
 }
 .switch.large.on {
     background-position: -10px 0px;

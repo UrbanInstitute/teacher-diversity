@@ -52,21 +52,24 @@
       var selectCity = d3.select("#city-menu")
         .append("select")
         .attr("id", "city-select")
+      var optionsCity = selectCity
+        .selectAll('option')
+        .data(cityData_white)
       var selectState = d3.select("#state-menu")
         .append("select")
         .attr("id", "state-select")
+      var optionsState = selectState
+        .selectAll('option')
+        .data(stateData_white)
 
-      modifyDropdownOptions(cityData_white, stateData_white)
+      modifyDropdownOptions(optionsCity, optionsState)
 
-      function modifyDropdownOptions(cityData, stateData){
-        console.log(cityData)
-        var optionsCity = selectCity
-          .selectAll('option')
-          .data(cityData)
+      function modifyDropdownOptions(optionsCity, optionsState){
+
         optionsCity.enter()
           .append('option')
           .text(function (d) { return d.city; })
-          .attr('value', function(d){ console.log(d.city)
+          .attr('value', function(d){ 
             return d.city
           })
           .merge(optionsCity)
@@ -79,10 +82,6 @@
           .attr("disabled", "disabled")
           .attr("hidden", "hidden")
           .attr("class", "dropdown-default")
-
-        var optionsState = selectState
-          .selectAll('option')
-          .data(stateData)
         optionsState.enter()
           .append('option')
           .text(function (d) { return d.state; })
@@ -130,7 +129,7 @@
         .addClass( "ui-menu-icons customicons" );
       $("#city-select")
         .selectmenu({
-           open: function( event, ui ) {       console.log($(".ui-menu-item-wrapper.ui-state-active").text())
+           open: function( event, ui ) {       
   //console.log($("#city-menu option:selected").val())
               // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
               // pymChild.sendHeight();
@@ -164,8 +163,7 @@
       sort()
 
       var highlightLine = function(name, geography) { 
-        d3.selectAll(".stateText, .cityText")
-          .text("")
+        removeLineInfo()
           .classed("no-city", false)
         d3.selectAll(".city-line, .city-circle-left, .city-circle-right, .state-line, .state-circle-left, .state-circle-right ")
           .classed("highlight", function(d) {
@@ -178,8 +176,7 @@
             }
           })
           d3.selectAll(".highlight").moveToFront()
-          console.log((d3.selectAll(".city-line.highlight").size()))
-          if (d3.selectAll(".city-line.highlight").node() == null) { console.log('null')
+          if (d3.selectAll(".city-line.highlight").node() == null) {
             d3.select(".cityText")
               .text("No city data for this state")
               .classed("no-city", true)
@@ -189,7 +186,6 @@
               if (d3.select(".city-line.highlight").datum().city != null) {
                 var city = d3.select(".city-line.highlight").datum().city 
                 var state = d3.select(".state-line.highlight").datum().state
-                console.log(city)
                 changeDropdown(city, state)
               }
             }
@@ -200,7 +196,7 @@
           }
 
       }
-      var changeDropdown = function(city, state) {console.log(city)
+      var changeDropdown = function(city, state) {
         $('#city-select-button > .ui-selectmenu-text').text(city)
         $('select[id^="city-select"] option:selected').attr("selected",null);       
         $('select[id^="city-select"] option[value=city]').attr("selected","selected");
@@ -476,8 +472,18 @@
       }
 
       function updateLines(dataCity, dataState) {
-        
-        modifyDropdownOptions(dataCity, dataState)
+        var optionsCity = d3.select("#city-select")
+          .selectAll('option:not(.dropdown-default)')
+          .data(dataCity, function(d) { 
+            return d.city
+          })
+        var optionsState = d3.select("#state-select")
+          .selectAll('option:not(.dropdown-default)')
+          .data(dataState, function(d) {
+            return d.state
+          })
+        removeLineInfo()
+        modifyDropdownOptions(optionsCity, optionsState)
 
         console.log("raceOff: " + raceOff)
         console.log("raceOn: " + raceOn)
