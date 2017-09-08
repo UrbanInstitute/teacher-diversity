@@ -21,8 +21,6 @@ select {
     .ui-menu-item {
         border-bottom: 1px solid #dcdbdb !important;
         font-size: 16px;
-        padding-top: 8px;
-        padding-bottom: 8px;
     }
 .ui-selectmenu-button.ui-button {
     background: #332d2f !important;
@@ -34,6 +32,11 @@ select {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
 
+}
+
+.ui-menu .ui-menu-item-wrapper {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
 .ui-selectmenu-icon .ui-icon .ui-icon-triangle-1-s {
     color: #fff;

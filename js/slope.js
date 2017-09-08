@@ -55,7 +55,10 @@
         .selectAll('option')
         .data(cityData_white).enter()
         .append('option')
-        .text(function (d) { return d.city; });
+        .text(function (d) { return d.city; })
+        .attr('value', function(d){
+          return d.city
+        })
       selectCity
         .append("option")
         .text("CITIES")
@@ -74,7 +77,7 @@
         .text(function (d) { return d.state; });
       selectState
         .append("option")
-        .text("STATE")
+        .text("STATES")
         .attr("value","state")
         .attr("selected", "selected")
         .attr("disabled", "disabled")
@@ -102,15 +105,16 @@
       .addClass( "ui-menu-icons customicons" );
     $("#city-select")
       .selectmenu({
-         // open: function( event, ui ) {
-         //    // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
-         //    // pymChild.sendHeight();
-         //  },
+         open: function( event, ui ) {       console.log($(".ui-menu-item-wrapper.ui-state-active").text())
+//console.log($("#city-menu option:selected").val())
+            // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
+            // pymChild.sendHeight();
+          },
          //  close: function(event, ui){
          //    d3.select("body").style("height", null)
          //    pymChild.sendHeight();
          //  },
-         change: function(event, d){
+         change: function(event, d){ 
             var name = this.value
             var city = "city"
             highlightLine(name, city)
@@ -134,9 +138,10 @@
       };
       sort()
 
-      var highlightLine = function(name, geography) {
+      var highlightLine = function(name, geography) { 
         d3.selectAll(".stateText, .cityText")
           .text("")
+          .classed("no-city", false)
         d3.selectAll(".city-line, .city-circle-left, .city-circle-right, .state-line, .state-circle-left, .state-circle-right ")
           .classed("highlight", function(d) {
             if (geography == "city"){
@@ -148,13 +153,49 @@
             }
           })
           d3.selectAll(".highlight").moveToFront()
-          if (d3.selectAll(".city-line.highlight").node() == null) {
-            console.log($('#city-select').value)
-            $('#city-select').val("cities")
+          console.log((d3.selectAll(".city-line.highlight").size()))
+          if (d3.selectAll(".city-line.highlight").node() == null) { console.log('null')
+            d3.select(".cityText")
+              .text("No city data for this state")
+              .classed("no-city", true)
+            $('#city-select-button > .ui-selectmenu-text').text("CITIES")
+          }else {
+            if (d3.selectAll(".city-line.highlight").size() == 1) { 
+              if (d3.select(".city-line.highlight").datum().city != null) {
+                var city = d3.select(".city-line.highlight").datum().city 
+                var state = d3.select(".state-line.highlight").datum().state
+                console.log(city)
+                changeDropdown(city, state)
+              }
+            }
+            else if (d3.selectAll(".city-line.highlight").size() > 1) { 
+              d3.select(".cityText")
+              .text("multiple cities")
+            }
           }
 
       }
+      var changeDropdown = function(city, state) {console.log(city)
+        $('#city-select-button > .ui-selectmenu-text').text(city)
+        $('select[id^="city-select"] option:selected').attr("selected",null);       
+        $('select[id^="city-select"] option[value=city]').attr("selected","selected");
+        $('#state-select-button > .ui-selectmenu-text').text(state)
+        $('select[id^="state-select"] option:selected').attr("selected",null);       
+        $('select[id^="state-select"] option[value=state]').attr("selected","selected");
+        // var dropdownItem = $(".ui-menu-item-wrapper")
+        // d3.selectAll(".ui-menu-item-wrapper")
+        //   .classed("ui-state-active", false)
+        // d3.selectAll(".ui-menu-item")
+        //   .each(function(d) { console.log(d)
+        //     d3.select(this)
+        //     .classed("ui-state-active", function() { 
+        //       return (dropdownItem.text() == city) ? true : false
+        //     })
+        //   })
 
+
+      // $("#city-menu option:selected").val(city)
+      }
 
       //CITIES GRAPH
 
@@ -327,35 +368,43 @@
           .text("")
       }
       function showLineInfo(d) {
+        $('#city-select-button > .ui-selectmenu-text').text("CITIES")
+        $('#state-select-button > .ui-selectmenu-text').text("STATES")
+        
         d3.selectAll(".city-line, .state-line, .circle")
           .classed("highlight", false)
+        if(d3.select(this).attr("class").search("city-line") == 0) { 
+          d3.select(this)
+            .classed("highlight", true)
+            .moveToFront()
+          d3.selectAll(".state-line-" + d.abbr + ", .city-circle-left-" + d.abbr + d.city_id + ", .city-circle-right-" + d.abbr + d.city_id + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
+            .classed("highlight", true)
+            .moveToFront()
+        }else { 
+        d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr + ", .city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
+          .classed("highlight", true)
+          .moveToFront()
+        }
         d3.select(".stateText")
           .text(function() {
-            return d.state
+              return d.state
           })
         d3.select(".cityText")
           .text(function() {
-            return (d.city=="") ? "No city data for this state" : d.city
+            if (d3.selectAll(".city-line.highlight").size() > 1) { 
+              return "multiple cities"
+            }else{
+              return (d.city=="") ? "No city data for this state" : d.city
+            }
           })
           .classed("no-city", function() {
             return (d.city== "") ? true: false
           })
-          if(d3.select(this).attr("class").search("city-line") == 0) {
-            d3.select(this)
-              .classed("highlight", true)
-              .moveToFront()
-            d3.selectAll(".state-line-" + d.abbr + ", .city-circle-left-" + d.abbr + d.city_id + ", .city-circle-right-" + d.abbr + d.city_id + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
-              .classed("highlight", true)
-              .moveToFront()
-          }else {
-          d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr + ", .city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
-            .classed("highlight", true)
-            .moveToFront()
-          }
+         
 
       }
 
-      d3.selection.prototype.moveToFront = function() {  console.log('hi')
+      d3.selection.prototype.moveToFront = function() {  
         return this.each(function(){
           this.parentNode.appendChild(this);
         });
