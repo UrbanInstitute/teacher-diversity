@@ -62,9 +62,48 @@
         .selectAll('option')
         .data(stateData_white)
 
-      modifyDropdownOptions(optionsCity, optionsState)
+      optionsCity.enter()
+        .append('option')
+        .text(function (d) { return d.city; })
+        .attr('value', function(d){ 
+          return d.city
+        })
+        .merge(optionsCity)
+      optionsCity.exit().remove()
+      selectCity
+        .append("option")
+        .text("CITIES")
+        .attr("value","CITIES")
+        .attr("selected", "selected")
+        .attr("disabled", "disabled")
+        .attr("hidden", "hidden")
+        .attr("class", "dropdown-default")
+      optionsState.enter()
+        .append('option')
+        .text(function (d) { return d.state; })
+        .attr('value', function(d){
+          return d.state
+        })
+        .merge(optionsState)
+      optionsState.exit().remove()
+      selectState
+        .append("option")
+        .text("STATES")
+        .attr("value","STATES")
+        .attr("selected", "selected")
+        .attr("disabled", "disabled")
+        .attr("hidden", "hidden")
+        .attr("class", "dropdown-default")
+      
+      var exist = {};
+      $('#state-select > option').each(function() {
+          if (exist[$(this).val()])
+              $(this).remove();
+          else
+              exist[$(this).val()] = true;
+      });
 
-      function modifyDropdownOptions(optionsCity, optionsState){
+      function modifyDropdownOptions(optionsCity, optionsState, cityDropdown, stateDropdown){
 
         optionsCity.enter()
           .append('option')
@@ -74,14 +113,6 @@
           })
           .merge(optionsCity)
         optionsCity.exit().remove()
-        selectCity
-          .append("option")
-          .text("CITIES")
-          .attr("value","cities")
-          .attr("selected", "selected")
-          .attr("disabled", "disabled")
-          .attr("hidden", "hidden")
-          .attr("class", "dropdown-default")
         optionsState.enter()
           .append('option')
           .text(function (d) { return d.state; })
@@ -90,14 +121,6 @@
           })
           .merge(optionsState)
         optionsState.exit().remove()
-        selectState
-          .append("option")
-          .text("STATES")
-          .attr("value","state")
-          .attr("selected", "selected")
-          .attr("disabled", "disabled")
-          .attr("hidden", "hidden")
-          .attr("class", "dropdown-default")
         
         var exist = {};
         $('#state-select > option').each(function() {
@@ -106,6 +129,17 @@
             else
                 exist[$(this).val()] = true;
         });
+        $("#city-select").selectmenu("refresh")
+        $("#state-select").selectmenu("refresh")
+        sort()
+
+        console.log($('#city-select-button > .ui-selectmenu-text').text())
+        $('#city-select-button > .ui-selectmenu-text').text(cityDropdown)
+        $('#state-select-button > .ui-selectmenu-text').text(stateDropdown)
+        $('select[id^="city-select"] option:selected').attr("selected",null);       
+        $('select[id^="city-select"] option[value=cityDropdown]').attr("selected","selected");
+        $('select[id^="state-select"] option:selected').attr("selected",null);       
+        $('select[id^="state-select"] option[value=stateDropdown]').attr("selected","selected");
       }
       
 
@@ -147,7 +181,7 @@
         .selectmenu( "menuWidget" )
         .addClass( "ui-menu-icons customicons" );
 
-      var sort = function() {
+      var sort = function() { console.log('sort')
         // choose target dropdown
         var citySelect = $("#city-select");
         citySelect.html(citySelect.find('option').sort(function(x, y) {
@@ -164,9 +198,10 @@
 
       var highlightLine = function(name, geography) { 
         removeLineInfo()
+        d3.selectAll(".stateText, .cityText")
           .classed("no-city", false)
         d3.selectAll(".city-line, .city-circle-left, .city-circle-right, .state-line, .state-circle-left, .state-circle-right ")
-          .classed("highlight", function(d) {
+          .classed("selected", function(d) {
             if (geography == "city"){
               return (d.city == name) ? true : false
             }else {
@@ -175,28 +210,28 @@
               }
             }
           })
-          d3.selectAll(".highlight").moveToFront()
-          if (d3.selectAll(".city-line.highlight").node() == null) {
+          d3.selectAll(".selected").moveToFront()
+          if (d3.selectAll(".city-line.selected").node() == null) {
             d3.select(".cityText")
               .text("No city data for this state")
               .classed("no-city", true)
             $('#city-select-button > .ui-selectmenu-text').text("CITIES")
           }else {
-            if (d3.selectAll(".city-line.highlight").size() == 1) { 
-              if (d3.select(".city-line.highlight").datum().city != null) {
-                var city = d3.select(".city-line.highlight").datum().city 
-                var state = d3.select(".state-line.highlight").datum().state
+            if (d3.selectAll(".city-line.selected").size() == 1) { 
+              if (d3.select(".city-line.selected").datum().city != null) {
+                var city = d3.select(".city-line.selected").datum().city 
+                var state = d3.select(".state-line.selected").datum().state
                 changeDropdown(city, state)
               }
             }
-            else if (d3.selectAll(".city-line.highlight").size() > 1) { 
+            else if (d3.selectAll(".city-line.selected").size() > 1) { 
               d3.select(".cityText")
               .text("multiple cities")
             }
           }
 
       }
-      var changeDropdown = function(city, state) {
+      var changeDropdown = function(city, state) { console.log(city)
         $('#city-select-button > .ui-selectmenu-text').text(city)
         $('select[id^="city-select"] option:selected').attr("selected",null);       
         $('select[id^="city-select"] option[value=city]').attr("selected","selected");
@@ -274,6 +309,7 @@
           return "city-line city-line-" + d.abbr + " city-line-" + d.abbr + d.city_id
         })
         .on("mouseover", showLineInfo)
+        .on("mouseout", removeLineInfo)
       leftCircles.enter()
         .append("circle")
         .attr("cy", function(d) {
@@ -327,7 +363,8 @@
         .attr("class", function(d) {
           return "state-line state-line-" + d.abbr
         })
-        .on("mouseover", showLineInfo);
+        .on("mouseover", showLineInfo)
+        .on("mouseout", removeLineInfo)
       gState
         .append("line")
         .attr("x1", margin.left)
@@ -385,6 +422,8 @@
           }
         })
       function removeLineInfo() {
+        d3.selectAll(".city-line, .state-line, .circle")
+          .classed("highlight", false)
         d3.selectAll(".stateText, .cityText, .circle")
           .text("")
       }
@@ -472,6 +511,8 @@
       }
 
       function updateLines(dataCity, dataState) {
+        var cityDropdown = ($('#city-select-button > .ui-selectmenu-text').text())
+        var stateDropdown = ($('#state-select-button > .ui-selectmenu-text').text())
         var optionsCity = d3.select("#city-select")
           .selectAll('option:not(.dropdown-default)')
           .data(dataCity, function(d) { 
@@ -482,8 +523,11 @@
           .data(dataState, function(d) {
             return d.state
           })
+        var city = "CITIES"
+        var state = "STATES"
         removeLineInfo()
-        modifyDropdownOptions(optionsCity, optionsState)
+        modifyDropdownOptions(optionsCity, optionsState, cityDropdown, stateDropdown)
+        // changeDropdown(city, state)
 
         console.log("raceOff: " + raceOff)
         console.log("raceOn: " + raceOn)
@@ -495,14 +539,14 @@
           .data(dataCity)
         var city = "city"
         var line = "line"
-        moveLines(cityLines, city, line)
+        moveLines(cityLines, city, line, cityDropdown)
         //TRANSITION STATE LINES  
         var stateLines = gState.selectAll(".state-line")
           .data(dataState)
         var state = "state"
         var line = "line"
         var circle = "circle"
-        moveLines(stateLines, state, line)
+        moveLines(stateLines, state, line, stateDropdown)
 
         //TRANSITION CITY CIRCLES
         var cityCirclesLeft = gCity.selectAll(".city-circle-left")
@@ -574,7 +618,7 @@
             .style("opacity", 0)
             .remove()
         }
-        function moveLines(elements, geography, elementType) {
+        function moveLines(elements, geography, elementType, selectedDropdown) {
           elements
             .transition()
             .duration(1000)
@@ -595,6 +639,15 @@
                 }
               }
             })
+            // .classed("highlight", function(d) {
+            //   if (geography == "city") {
+            //     return (d.city == 'selectedDropdown') ? true : false
+            //   }else {
+            //     if (geography == "state"){
+            //       return (d.state == 'selectedDropdown') ? true : false
+            //     }
+            //   }
+            // })
           elements.enter().append(elementType)
             .attr("class", function(d) { 
               if (elements == cityLines) {
@@ -623,9 +676,8 @@
             .remove()
         }
       d3.selectAll(".city-line, .state-line")
-        .on("mouseover", showLineInfo);
-
-
+        .on("mouseover", showLineInfo)
+        .on("mouseout", removeLineInfo)
       }
 
 

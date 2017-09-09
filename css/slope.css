@@ -53,9 +53,7 @@ select {
         text-align: center;
         color: #fff;
     }
-#city-select-menu {
-    height: 400px !important;
-}
+
 #city-menu {
     width: 50%;
     float: left;
@@ -68,9 +66,7 @@ select {
     width: 50%;
     float: left;
 }
-#state-select-menu {
-    height: 400px !important;
-}
+
 #city-select-button {
     margin-left: 5%;
     margin-right: 5%;
@@ -121,7 +117,7 @@ hr {
     font-size: 16px;
 }
 
-.circle.highlight {
+.circle.highlight, .circle.selected {
     stroke: #000;
 }
 .cityText.no-city {
@@ -141,7 +137,7 @@ hr {
 .state-circle-left, .state-circle-right {
     fill: #1896d2;
 }
-.highlight {
+.highlight, .selected {
     stroke: #000 !important;
     stroke-width: 2px !important;
 }
