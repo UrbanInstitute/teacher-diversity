@@ -103,7 +103,7 @@
               exist[$(this).val()] = true;
       });
 
-      function modifyDropdownOptions(optionsCity, optionsState, cityDropdown, stateDropdown){ console.log(cityDropdown)
+      function modifyDropdownOptions(optionsCity, optionsState, cityDropdown, stateDropdown){ 
 
         optionsCity.enter()
           .append('option')
@@ -182,7 +182,7 @@
         .selectmenu( "menuWidget" )
         .addClass( "ui-menu-icons customicons" );
 
-      var sort = function() { console.log('sort')
+      var sort = function() { 
         // choose target dropdown
         var citySelect = $("#city-select");
         citySelect.html(citySelect.find('option').sort(function(x, y) {
@@ -198,44 +198,37 @@
       sort()
 
       var highlightLine = function(name, geography) { 
-        removeLineInfo()
-        d3.selectAll(".stateText, .cityText")
-          .classed("no-city", false)
-        d3.selectAll(".city-line, .city-circle-left, .city-circle-right, .state-line, .state-circle-left, .state-circle-right ")
-          .classed("selected", function(d) {
-            if (geography == "city"){
-              return (d.city == name) ? true : false
-            }else {
-              if (geography == "state"){
-                return (d.state == name) ? true : false
+        if (name != undefined) {
+          removeLineInfo()
+          d3.selectAll(".stateText, .cityText")
+            .classed("no-city", false)
+          d3.selectAll(".city-line, .city-circle-left, .city-circle-right, .state-line, .state-circle-left, .state-circle-right ")
+            .classed("selected", function(d) {
+              if (geography == "city"){
+                return (d.city == name) ? true : false
+              }else {
+                if (geography == "state"){
+                  return (d.state == name) ? true : false
+                }
               }
-            }
-          })
-          .moveToFront()
-          d3.selectAll(".selected").moveToFront()
-          if (d3.selectAll(".city-line.selected").node() == null) {
-            d3.select(".cityText")
-              .text("No city data for this state")
-              .classed("no-city", true)
-            // $('#city-select-button > .ui-selectmenu-text').text("CITIES")
-          }else {
-            if (d3.selectAll(".city-line.selected").size() == 1) { console.log
-              if (d3.select(".city-line.selected").datum().city != null) {
-                var city = d3.select(".city-line.selected").datum().city 
-                var state = d3.select(".state-line.selected").datum().state
-                changeDropdown(city, state)
-                var data =d3.select(".city-line.selected").datum()
-                console.log(data)
-                showLineInfo(data, "dropdown")
-              }
-            }
-            else if (d3.selectAll(".city-line.selected").size() > 1) { 
-              d3.select(".cityText")
-              .text("multiple cities")
-            }
-          }
+            })
+            .moveToFront()
+        }
+        d3.selectAll(".selected").moveToFront()
+        if (d3.selectAll(".city-line.selected").node() == null) {
+          var data =d3.select(".state-line.selected").datum()
+          showLineInfo(data, "dropdown")
+        }else {
+          if (d3.selectAll(".city-line.selected").size() > 0) { 
+              // var city = d3.select(".city-line.selected").datum().city 
+              // var state = d3.select(".state-line.selected").datum().state
+              changeDropdown()
+              var data =d3.select(".city-line.selected").datum()
+              showLineInfo(data, "dropdown")
+          }      
+        }
       }
-      var changeDropdown = function(city, state) { console.log(city)
+      var changeDropdown = function() { 
         $('#city-select-button > .ui-selectmenu-text').text("CITIES")
         // $('select[id^="city-select"] option:selected').attr("selected",null);       
         // $('select[id^="city-select"] option[value=city]').attr("selected","selected");
@@ -429,16 +422,18 @@
         d3.select(".cityText")
           .classed("no-city", false)
         if (d3.selectAll(".state-line.selected").size() > 0){
-          var state =d3.select(".state-line.selected").datum().state
-          var city =d3.select(".state-line.selected").datum().city
-          d3.select(".stateText")
-            .text(state)
-          d3.select(".cityText")
-            .text(city)   
-          d3.selectAll(".state-line.selected, .city-line.selected")
-            .moveToFront()
-          d3.selectAll(".circle.selected")
-            .moveToFront()
+          highlightLine()
+          // var state =d3.select(".state-line.selected").datum().state
+          // var city =d3.select(".state-line.selected").datum().city
+          // console.log(city)
+          // d3.select(".stateText")
+          //   .text(state)
+          // d3.select(".cityText")
+          //   .text(city)   
+          // d3.selectAll(".state-line.selected, .city-line.selected")
+          //   .moveToFront()
+          // d3.selectAll(".circle.selected")
+          //   .moveToFront()
         }else {
           d3.selectAll(".stateText, .cityText, .circle")
             .text("")
@@ -447,7 +442,7 @@
           .classed("highlight", false)
 
       }
-      function showLineInfo(d, origin) { console.log(d)
+      function showLineInfo(d, origin) { 
         // $('#city-select-button > .ui-selectmenu-text').text("CITIES")
         // $('#state-select-button > .ui-selectmenu-text').text("STATES")
         d3.selectAll(".city-line, .state-line, .circle")
@@ -468,22 +463,20 @@
         }
 
         d3.select(".stateText")
-          .text(function() {
+          .text(function() { 
               return d.state
           })
         d3.select(".cityText")
-          .text(function() {
-            if (d3.selectAll(".city-line.highlight").size() > 1) { 
+          .text(function() { 
+            if (d3.selectAll(".city-line.selected").size() > 1) { 
               return "multiple cities"
-            }else{
+            }else{ 
               return (d.city=="") ? "No city data for this state" : d.city
             }
           })
           .classed("no-city", function() {
             return (d.city== "") ? true: false
           })
-         
-
       }
 
       d3.selection.prototype.moveToFront = function() {  
