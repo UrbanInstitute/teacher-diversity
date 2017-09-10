@@ -219,11 +219,14 @@
               .classed("no-city", true)
             // $('#city-select-button > .ui-selectmenu-text').text("CITIES")
           }else {
-            if (d3.selectAll(".city-line.selected").size() == 1) { 
+            if (d3.selectAll(".city-line.selected").size() == 1) { console.log
               if (d3.select(".city-line.selected").datum().city != null) {
                 var city = d3.select(".city-line.selected").datum().city 
                 var state = d3.select(".state-line.selected").datum().state
                 changeDropdown(city, state)
+                var data =d3.select(".city-line.selected").datum()
+                console.log(data)
+                showLineInfo(data, "dropdown")
               }
             }
             else if (d3.selectAll(".city-line.selected").size() > 1) { 
@@ -231,9 +234,6 @@
               .text("multiple cities")
             }
           }
-        var data =d3.select(".city-line.selected").datum()
-        console.log(data)
-       showLineInfo(data, "dropdown")
       }
       var changeDropdown = function(city, state) { console.log(city)
         $('#city-select-button > .ui-selectmenu-text').text("CITIES")
@@ -425,13 +425,12 @@
             updateDataOn("on", this.id, all_data)
           }
         })
-      function removeLineInfo() {
+      function removeLineInfo() { 
         d3.select(".cityText")
           .classed("no-city", false)
         if (d3.selectAll(".state-line.selected").size() > 0){
           var state =d3.select(".state-line.selected").datum().state
           var city =d3.select(".state-line.selected").datum().city
-          console.log(state)
           d3.select(".stateText")
             .text(state)
           d3.select(".cityText")
@@ -448,7 +447,7 @@
           .classed("highlight", false)
 
       }
-      function showLineInfo(d, origin) {
+      function showLineInfo(d, origin) { console.log(d)
         // $('#city-select-button > .ui-selectmenu-text').text("CITIES")
         // $('#state-select-button > .ui-selectmenu-text').text("STATES")
         d3.selectAll(".city-line, .state-line, .circle")
@@ -548,13 +547,7 @@
           })
         var city = "CITIES"
         var state = "STATES"
-        removeLineInfo()
         // changeDropdown(city, state)
-
-        console.log("raceOff: " + raceOff)
-        console.log("raceOn: " + raceOn)
-        console.log(dataCity)
-        console.log(dataState)
         
         //TRANSITION CITY LINES
         var cityLines = gCity.selectAll(".city-line")
@@ -591,7 +584,7 @@
 
         console.log(selectedCityLine)
         modifyDropdownOptions(optionsCity, optionsState, selectedCityLine.city, selectedStateLine.state)
-        
+
         function moveCircles(elements, geography, elementType, elementSide, selectedCircle) {
           elements
             .transition()
@@ -722,12 +715,13 @@
             .transition()
             .style("opacity", 0)
             .remove()
-
+            .on('end', removeLineInfo)
         }
       d3.selectAll(".city-line, .state-line")
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-      }
+
+    }
 
 
     });
