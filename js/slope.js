@@ -175,8 +175,7 @@
            //  },
            change: function(event, d){ 
               var name = this.value
-              var city = "city"
-              highlightLine(name, city)
+              highlightLine(name, "city")
             }
         })     
         .selectmenu( "menuWidget" )
@@ -307,6 +306,9 @@
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
+        .on('click', function(d) {console.log(d)
+          showLineInfo(d, "click")
+        })
       leftCircles.enter()
         .append("circle")
         .attr("cy", function(d) {
@@ -362,6 +364,10 @@
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
+        .on('click', function(d) { console.log(d)
+          showLineInfo(d, "click")
+        })
+
       gState
         .append("line")
         .attr("x1", margin.left)
@@ -447,36 +453,71 @@
         // $('#state-select-button > .ui-selectmenu-text').text("STATES")
         d3.selectAll(".city-line, .state-line, .circle")
           .classed("highlight", false)
-        if (origin != "dropdown"){
-          if(d3.select(this).attr("class").search("city-line") == 0) { 
+        if (origin == "click") { 
+          if (d3.select(".state-line-" + d.abbr).attr("class").search("selected") > 0){
+            d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected")
+            .classed("selected", false)
+          }else {
+            d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected")
+              .classed("selected", false)
+            d3.selectAll(".city-line-" + d.abbr + d.city_id + ",.state-line-" + d.abbr)
+              .classed("selected", true)
+              .moveToFront()
+            d3.selectAll(".city-circle-left-" + d.abbr + d.city_id + ", .city-circle-right-" + d.abbr + d.city_id + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
+              .classed("selected", true)
+              .moveToFront()  
+          }      
+        }else if (origin == "dropdown"){
+          d3.select(".stateText")
+            .text(function() { 
+                return d.state
+            })
+          d3.select(".cityText")
+            .text(function() { 
+              if (d3.selectAll(".city-line.selected").size() > 1) { 
+                return "multiple cities"
+              }else{ 
+                return (d.city=="") ? "No city data for this state" : d.city
+              }
+            })
+            .classed("no-city", function() {
+              return (d.city== "") ? true: false
+            })
+        }else { 
+          if(d3.select(this).attr("class").search("city-line") == 0) {
             d3.select(this)
               .classed("highlight", true)
               .moveToFront()
-            d3.selectAll(".state-line-" + d.abbr + ", .city-circle-left-" + d.abbr + d.city_id + ", .city-circle-right-" + d.abbr + d.city_id + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
+            d3.selectAll(".state-line-" + d.abbr)
+              .classed("highlight", true)
+              .moveToFront()
+            d3.selectAll(".city-circle-left-" + d.abbr + d.city_id + ", .city-circle-right-" + d.abbr + d.city_id + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
               .classed("highlight", true)
               .moveToFront()
           }else { 
-          d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr + ", .city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
-            .classed("highlight", true)
-            .moveToFront()
+            d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr)
+              .classed("highlight", true)
+              .moveToFront()
+            d3.selectAll(".city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
+              .classed("highlight", true)
+              .moveToFront()
           }
+          d3.select(".stateText")
+            .text(function() { 
+                return d.state
+            })
+          d3.select(".cityText")
+            .text(function() { 
+              if (d3.selectAll(".city-line.highlight").size() > 1) { 
+                return "multiple cities"
+              }else{ 
+                return (d.city=="") ? "No city data for this state" : d.city
+              }
+            })
+            .classed("no-city", function() {
+              return (d.city== "") ? true: false
+            })
         }
-
-        d3.select(".stateText")
-          .text(function() { 
-              return d.state
-          })
-        d3.select(".cityText")
-          .text(function() { 
-            if (d3.selectAll(".city-line.selected").size() > 1) { 
-              return "multiple cities"
-            }else{ 
-              return (d.city=="") ? "No city data for this state" : d.city
-            }
-          })
-          .classed("no-city", function() {
-            return (d.city== "") ? true: false
-          })
       }
 
       d3.selection.prototype.moveToFront = function() {  
@@ -713,7 +754,9 @@
       d3.selectAll(".city-line, .state-line")
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-
+        .on('click', function(d) { console.log(d)
+          showLineInfo(d, "click")
+        })
     }
 
 
