@@ -21,7 +21,6 @@ var currencyFormatter = d3.format("0,.0f");
     
 function drawGraphic(){
 
-
     d3.csv('data/slope_data.csv', function(error, data) {
      // data = d;
         var all_data = data
@@ -175,6 +174,7 @@ function drawGraphic(){
 
       $("#state-select")
         .selectmenu({
+
            // open: function( event, ui ) {
            //    // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
            //    // pymChild.sendHeight();
@@ -608,33 +608,39 @@ function drawGraphic(){
             raceOn.splice(index,1)
           }
           raceOff.push(race)
-        } 
-        for (i=0; i<raceOn.length; i++){ // filter data by races that are turned on
-          newData = all_data.filter(function(d){ 
-            return d[raceOn[i]] == 1;
-          })
-          all_data = newData
-        }  
-        updateDataOff(newData)
+          console.log(raceOn.length)
+        }
+        if (raceOn.length > 0){
+          for (i=0; i<raceOn.length; i++){ // filter data by races that are turned on
+            newData = all_data.filter(function(d){ 
+              return d[raceOn[i]] == 1;
+            })
+            all_data = newData
+          }  
+          updateDataOff(newData)
+        }else { console.log('remove')
+          updateDataOff(all_data)
+        }
       }
 
 
       function updateDataOff(newData) { //pass filtered data from updateDataOn function and filter by races that are turned off
-        for (i=0; i<raceOff.length; i++){   
-          newDataFiltered = newData.filter(function(d){
-            return d[raceOff[i]] == 0
-          })
-          newData = newDataFiltered;
-        } 
+          for (i=0; i<raceOff.length; i++){  
+            newDataFiltered = newData.filter(function(d){
+              return d[raceOff[i]] == 0
+            })
+            newData = newDataFiltered;
+          } 
           var dataCity = newDataFiltered.filter(function(d) {
             return d.city != ""
           })
-
           var dataState = newDataFiltered
           updateLines(dataCity, dataState)
       }
 
+
       function updateLines(dataCity, dataState) {
+        console.log(dataState)
         var selectedCityLine = (d3.select(".city-line.selected").size() > 0) ? d3.select(".city-line.selected").datum() : ""
         var selectedStateLine = (d3.select(".city-line.selected").size() > 0) ? d3.select(".state-line.selected").datum() : ""
         var optionsCity = d3.select("#city-select")
@@ -647,43 +653,45 @@ function drawGraphic(){
           .data(dataState, function(d) {
             return d.state
           })
+
         var city = "CITIES"
         var state = "STATES"
-        // changeDropdown(city, state)
-        
-        //TRANSITION CITY LINES
         var cityLines = gCity.selectAll(".city-line")
           .data(dataCity)
-        var city = "city"
-        var line = "line"
-        moveLines(cityLines, city, line, selectedCityLine.city, selectedCityLine)
-        //TRANSITION STATE LINES  
         var stateLines = gState.selectAll(".state-line")
           .data(dataState)
-        var state = "state"
-        var line = "line"
-        var circle = "circle"
-        moveLines(stateLines, state, line, selectedStateLine.state, selectedStateLine)
+        // changeDropdown(city, state)
 
-        //TRANSITION CITY CIRCLES
-        var cityCirclesLeft = gCity.selectAll(".city-circle-left")
-          .data(dataCity)
-        var left = "left"
-        moveCircles(cityCirclesLeft, city, circle, left, selectedCityLine)
+          var city = "city"
+          var line = "line"
+        //TRANSITION CITY LINES
+          moveLines(cityLines, city, line, selectedCityLine.city, selectedCityLine)
+        //TRANSITION STATE LINES  
+          var state = "state"
+          var line = "line"
+          var circle = "circle"
+          moveLines(stateLines, state, line, selectedStateLine.state, selectedStateLine)
 
-        var cityCirclesRight = gCity.selectAll(".city-circle-right")
-          .data(dataCity)
-        var right = "right"
-        moveCircles(cityCirclesRight, city, circle, right, selectedCityLine)
+          //TRANSITION CITY CIRCLES
+          var cityCirclesLeft = gCity.selectAll(".city-circle-left")
+            .data(dataCity)
+          var left = "left"
+          moveCircles(cityCirclesLeft, city, circle, left, selectedCityLine)
 
-        var stateCirclesLeft = gState.selectAll(".state-circle-left")
-          .data(dataState)
-        moveCircles(stateCirclesLeft, state, circle, left, selectedStateLine)
+          var cityCirclesRight = gCity.selectAll(".city-circle-right")
+            .data(dataCity)
+          var right = "right"
+          moveCircles(cityCirclesRight, city, circle, right, selectedCityLine)
 
-        var stateCirclesRight = gState.selectAll(".state-circle-right")
-          .data(dataState)
-         moveCircles(stateCirclesRight, state, circle, right, selectedStateLine)
-        modifyDropdownOptions(optionsCity, optionsState, selectedCityLine.city, selectedStateLine.state)
+          var stateCirclesLeft = gState.selectAll(".state-circle-left")
+            .data(dataState)
+          moveCircles(stateCirclesLeft, state, circle, left, selectedStateLine)
+
+          var stateCirclesRight = gState.selectAll(".state-circle-right")
+            .data(dataState)
+           moveCircles(stateCirclesRight, state, circle, right, selectedStateLine)
+          modifyDropdownOptions(optionsCity, optionsState, selectedCityLine.city, selectedStateLine.state)
+      
 
         function moveCircles(elements, geography, elementType, elementSide, selectedCircle) {
           elements
