@@ -578,7 +578,9 @@ function drawGraphic(){
                 return d3.select(".city-circle-left-" + d.abbr + d.city_id ).attr("cy")
               })
               .attr("x", 1)
-              .attr("class", "data-label highlight data-label-city-left")
+              .attr("class", function() {
+                return "data-label highlight data-label-city-left-" + d.abbr 
+              })
             gCity
               .append("text")
               .text(function() {
@@ -588,7 +590,9 @@ function drawGraphic(){
                 return d3.select(".city-circle-right-" + d.abbr + d.city_id ).attr("cy")
               })
               .attr("x", width - margin.right + 8)
-              .attr("class", "data-label highlight data-label-city-right")
+              .attr("class", function() {
+                return "data-label highlight data-label-city-right-" + d.abbr 
+              })            
             gState
               .append("text")
               .text(function() {
@@ -598,7 +602,9 @@ function drawGraphic(){
                 return d3.select(".state-circle-left-" + d.abbr ).attr("cy")
               })
               .attr("x", 1)
-              .attr("class", "data-label highlight data-label-state-left")
+              .attr("class", function() {
+                return "data-label highlight data-label-state-left-" + d.abbr 
+              })
             gState
               .append("text")
               .text(function() {
@@ -608,7 +614,9 @@ function drawGraphic(){
                 return d3.select(".state-circle-right-" + d.abbr ).attr("cy")
               })
               .attr("x", width - margin.right + 8)
-              .attr("class", "data-label highlight data-label-state-right")
+              .attr("class", function() {
+                return "data-label highlight data-label-state-right-" + d.abbr 
+              })
           }else { //IF HOVERING OVER STATE 
             console.log('hi')
             d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr)
@@ -631,8 +639,10 @@ function drawGraphic(){
                     return (d3.select(".city-circle-left-" + d.abbr).size() == 0) ? 0 : circleY
                   })
                   .attr("x", 1)
-                  .attr("class", "data-label highlight")
-                gCity
+                  .attr("class", function() {
+                    return "data-label highlight data-label-city-left-" + d.abbr 
+                  })                
+              gCity
                   .append("text")
                   .text(function() {
                     return formatPercent(d.city_teacher)
@@ -643,29 +653,35 @@ function drawGraphic(){
                     return (d3.select(".city-circle-right-" + d.abbr).size() == 0) ? 0 : circleY
                   })
                   .attr("x", width - margin.right + 8)
-                  .attr("class", "data-label highlight")
+                  .attr("class", function(d) {
+                    return "data-label highlight data-label-city-right-" + d.abbr
+                  })   
               })
             }else {
               gCity
                 .append("text")
                 .text(function() {
-                  return formatPercent(d.city_k12)
+                  return (d3.select(".city-circle-left-" + d.abbr).size() == 0) ? "" : formatPercent(d.city_k12)
                 })
                 .attr("y", function(){ 
                   return (d3.select(".city-circle-left-" + d.abbr).size() == 0) ? 0 : d3.select(".city-circle-left-" + d.abbr ).attr("cy")
                 })
                 .attr("x", 1)
-                .attr("class", "data-label highlight")
+                .attr("class", function() {
+                  return "data-label highlight data-label-city-left-" + d.abbr 
+                })   
               gCity
                 .append("text")
                 .text(function() {
-                  return formatPercent(d.city_teacher)
+                  return (d3.select(".city-circle-left-" + d.abbr).size() == 0) ? "" : formatPercent(d.city_teacher)
                 })
                 .attr("y", function(){ 
                   return (d3.select(".city-circle-right-" + d.abbr).size() == 0) ? 0 : d3.select(".city-circle-right-" + d.abbr ).attr("cy")
                 })
                 .attr("x", width - margin.right + 8)
-                .attr("class", "data-label highlight")
+                .attr("class", function() {
+                  return "data-label highlight data-label-city-right-" + d.abbr 
+                })   
               gState
                 .append("text")
                 .text(function() {
@@ -675,7 +691,9 @@ function drawGraphic(){
                   return d3.select(".state-circle-left-" + d.abbr ).attr("cy")
                 })
                 .attr("x", 1)
-                .attr("class", "data-label highlight")
+                .attr("class", function() {
+                  return "data-label highlight data-label-state-left-" + d.abbr 
+                })   
               gState
                 .append("text")
                 .text(function() {
@@ -685,8 +703,9 @@ function drawGraphic(){
                   return d3.select(".state-circle-right-" + d.abbr ).attr("cy")
                 })
                 .attr("x", width - margin.right + 8)
-                .attr("class", "data-label highlight")
-            }
+                .attr("class", function() {
+                  return "data-label highlight data-label-state-right-" + d.abbr 
+                })               }
           }
           d3.select(".stateText")
             .text(function() { 
@@ -882,13 +901,12 @@ function drawGraphic(){
             })   
             .attr("r", 5)        
             .on('end', function(){ console.log(d3.selectAll(".data-label").size())
-              if (d3.selectAll(".data-label").size() > 0 && d3.select(".state-line.selected").size() > 0) {
+              if (d3.selectAll(".data-label").size() > 0 && d3.select(".state-line.selected").size() > 0) { 
               var selectedData = d3.select(".state-line.selected").datum()
                 moveLabels(gCity, selectedData, city, left)
                 moveLabels(gCity, selectedData, city, right)
                 moveLabels(gState, selectedData, state, left)
                 moveLabels(gState, selectedData, state, right)
-
               }
             })
           elements
@@ -900,8 +918,8 @@ function drawGraphic(){
 
 
         }
-        function moveLabels(element, d, geography, side) { 
-          element.select(".data-label.selected" + ".data-label-" + geography + "-" + side)
+        function moveLabels(element, d, geography, side) { console.log(element.select(".data-label.selected" + ".data-label-" + geography + "-" + side).size())
+          element.select(".data-label.selected" + ".data-label-" + geography + "-" + side + "-" + d.abbr)
             .attr("y", function(){ 
               return d3.select("." + geography + "-circle-" + side + "-" + d.abbr ).attr("cy")
             })
@@ -964,6 +982,12 @@ function drawGraphic(){
             .attr("y2", function(d) {
               return rightScale(d[geography + '_teacher']);
             })
+            .on('end', function() {
+              d3.selectAll(".city-line.selected, .state-line.selected")
+                .moveToFront()
+              d3.selectAll(".circle.selected")
+                .moveToFront()
+            })
           elements
             .exit()
             .transition()
@@ -977,6 +1001,8 @@ function drawGraphic(){
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
+
+
     }
 
 
