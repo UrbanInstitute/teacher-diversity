@@ -28,7 +28,6 @@ select {
     font-weight: 600;
     font-family: Lato, sans-serif;
     text-align: center !important;
-    width: 70%;
     padding-top: 10px !important;
     padding-bottom: 10px !important;
 
@@ -54,23 +53,23 @@ select {
         color: #fff;
     }
 
+.city-menu-div, .state-menu-div {
+    width: 50%;
+    float: left;
+}
 #city-menu {
-    width: 50%;
-    float: left;
-}
-#state-select-button {
-    margin-left: 5%;
-    margin-right: 5%;
-}
-#state-menu {
-    width: 50%;
-    float: left;
+    display: table;
+    margin: 0 auto;
 }
 
-#city-select-button {
-    margin-left: 5%;
-    margin-right: 5%;
+#state-menu {
+    display: table;
+    margin: 0 auto;
 }
+
+
+
+
 /*SELECT MENU END */
 
 
@@ -109,10 +108,15 @@ select {
     margin-left: 24px;
 }
 
+.ui-icon {
+    background: url(../img/urban-select.png) no-repeat right !important
+
+}
+
 hr {
   width: 100%;
   border: 1px solid #e6e7e8;
-  margin-bottom: 50px;
+  margin: 30px 0;
   display: block;
 }
 .sideline {
@@ -122,6 +126,9 @@ hr {
 
 .sideline-label {
     font-size: 10.6px;
+}
+.sideline-label-text {
+    font-size: 12px;
 }
 
 .header {

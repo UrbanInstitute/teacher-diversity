@@ -724,11 +724,11 @@ button.ui-button::-moz-focus-inner {
 	border: black;
 	text-align: center;
 	white-space: nowrap;
-	max-width: 260px;
+	max-width: 257px;
    	background: url(../images/urban-select-2x.png) no-repeat right #efefef;
    	background-size: 45px 45px;
 	border: none;   	
-   	/*width: 45px;*/
+   	width: 257px;
 
 }
 .ui-selectmenu-icon.ui-icon {

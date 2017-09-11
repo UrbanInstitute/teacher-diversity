@@ -1,24 +1,25 @@
 
-  //credits to http://bl.ocks.org/benvandyke/8482820
-    var graphWidth = 680;
-    var graphHeight = 620;
-    var width = 340;
-    var height = 600;
-    var raceOn = ["white"];
-    var raceOff = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"]
+//credits to http://bl.ocks.org/benvandyke/8482820
+var graphWidth = 680;
+var graphHeight = 620;
+var width = 340;
+var height = 600;
+var raceOn = ["white"];
+var raceOff = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"]
+
+var margin = {top: 80, bottom: 20, left: 28, right:28};
+
+var leftScale = d3.scaleLinear()
+  .domain([0.0, 1])
+  .range([height - margin.top, margin.bottom]);
+
+var rightScale = d3.scaleLinear()
+  .domain([0.0, 1])
+  .range([height - margin.top, margin.bottom]); 
+
+var currencyFormatter = d3.format("0,.0f");
     
-    var margin = {top: 80, bottom: 20, left: 40, right:40};
-    
-    var leftScale = d3.scaleLinear()
-      .domain([0.0, 1])
-      .range([height - margin.top, margin.bottom]);
-    
-    var rightScale = d3.scaleLinear()
-      .domain([0.0, 1])
-      .range([height - margin.top, margin.bottom]); 
-    
-    var currencyFormatter = d3.format("0,.0f");
-    
+function drawGraphic(){
 
 
     d3.csv('data/slope_data.csv', function(error, data) {
@@ -35,19 +36,47 @@
         .append("svg")
         .attr("width", graphWidth)
         .attr("height", graphHeight)
+
       var gCity= svg.append("g")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "city-graph")
         .attr("transform","translate(0," + 20 + ")")
-        // .on("mouseout", removeLineInfo);
-
+      gCity.append("text")
+        .text("Students")
+        .attr("x", function(d) {
+          var textWidth = this.getBoundingClientRect().width
+          return margin.left - textWidth/3
+        })
+        .attr("y", height*.91)
+        .attr("class", "sideline-label-text")
+      gCity.append("text")
+        .text("Teachers")
+        .attr("x", function(d) {
+          return width - margin.right*1.9
+        })
+        .attr("y", height*.91)
+        .attr("class", "sideline-label-text")
       var gState= svg.append("g")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "state-graph")
         .attr("transform","translate("+width+ "," + 20 + ")")
-
+      gState.append("text")
+        .text("Students")
+        .attr("x", function(d) {
+          var textWidth = this.getBoundingClientRect().width
+          return margin.left - textWidth/3
+        })        
+        .attr("y", height*.91)
+        .attr("class", "sideline-label-text")
+      gState.append("text")
+        .text("Teachers")
+        .attr("x", function(d) {
+          return width - margin.right*1.9
+        })        
+        .attr("y", height*.91)
+        .attr("class", "sideline-label-text")
       //DROPDOWN MENUS
       var selectCity = d3.select("#city-menu")
         .append("select")
@@ -166,13 +195,15 @@
         .selectmenu({
            open: function( event, ui ) {       
   //console.log($("#city-menu option:selected").val())
-              // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
-              // pymChild.sendHeight();
+              d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*2) + "px")
+              // d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open:first-child").style("height",  "300px")
+              console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*2)
+              pymChild.sendHeight();
             },
-           //  close: function(event, ui){
-           //    d3.select("body").style("height", null)
-           //    pymChild.sendHeight();
-           //  },
+            close: function(event, ui){
+              d3.select("body").style("height", null)
+              pymChild.sendHeight();
+            },
            change: function(event, d){ 
               var name = this.value
               highlightLine(name, "city")
@@ -314,7 +345,7 @@
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-        .on('click', function(d) {console.log(d)
+        .on('click', function(d) {
           showLineInfo(d, "click")
         })
       leftCircles.enter()
@@ -376,7 +407,7 @@
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-        .on('click', function(d) { console.log(d)
+        .on('click', function(d) { 
           showLineInfo(d, "click")
         })
 
@@ -491,7 +522,6 @@
             .attr("transform", function(d){
               var textWidth = (this.getBoundingClientRect().width)
               var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
-              console.log(graphWidth)
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
           d3.select(".cityText")
@@ -508,7 +538,6 @@
             .attr("transform", function(d){
               var textWidth = (this.getBoundingClientRect().width)
               var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
-              console.log(graphWidth)
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
         }else { 
@@ -537,7 +566,6 @@
             .attr("transform", function(d){
               var textWidth = (this.getBoundingClientRect().width)
               var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
-              console.log(graphWidth)
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
 
@@ -552,7 +580,6 @@
             .attr("transform", function(d){
               var textWidth = (this.getBoundingClientRect().width)
               var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
-              console.log(graphWidth)
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
             .classed("no-city", function() {
@@ -656,8 +683,6 @@
         var stateCirclesRight = gState.selectAll(".state-circle-right")
           .data(dataState)
          moveCircles(stateCirclesRight, state, circle, right, selectedStateLine)
-
-        console.log(selectedCityLine)
         modifyDropdownOptions(optionsCity, optionsState, selectedCityLine.city, selectedStateLine.state)
 
         function moveCircles(elements, geography, elementType, elementSide, selectedCircle) {
@@ -727,7 +752,6 @@
             .remove()
         }
         function moveLines(elements, geography, elementType, selectedDropdown, selectedLine) {
-          console.log(selectedLine)
           elements
             .transition()
             .duration(1000)
@@ -795,10 +819,13 @@
       d3.selectAll(".city-line, .state-line")
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-        .on('click', function(d) { console.log(d)
+        .on('click', function(d) { 
           showLineInfo(d, "click")
         })
     }
 
 
     });
+}
+var pymChild = new pym.Child({ renderCallback: drawGraphic, polling: 500 });
+
