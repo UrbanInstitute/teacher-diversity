@@ -111,13 +111,17 @@ select {
 
 hr {
   width: 100%;
-  border: 1px solid #dad9d9;
+  border: 1px solid #e6e7e8;
   margin-bottom: 50px;
   display: block;
 }
 .sideline {
     stroke: #000;
     stroke-width: .94;
+}
+
+.sideline-label {
+    font-size: 10.6px;
 }
 
 .header {
@@ -131,6 +135,7 @@ hr {
 
 .circle.highlight, .circle.selected {
     stroke: #000;
+    stroke-width: 3px;
 }
 .cityText.no-city {
     font-size: 16px;
@@ -151,7 +156,7 @@ hr {
 }
 .highlight, .selected {
     stroke: #000 !important;
-    stroke-width: 2px !important;
+    stroke-width: 3px !important;
 }
 .state-line {
     stroke: #1896d2;

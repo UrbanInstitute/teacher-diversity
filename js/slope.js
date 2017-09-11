@@ -38,7 +38,7 @@
       var gCity= svg.append("g")
         .attr("width", width)
         .attr("height", height)
-        .attr("class", "state-graph")
+        .attr("class", "city-graph")
         .attr("transform","translate(0," + 20 + ")")
         // .on("mouseout", removeLineInfo);
 
@@ -255,7 +255,7 @@
         .attr("width", width)
         .attr("height", 100)
         .append("text")
-        .attr("transform","translate("+width/3.2+",15)")
+        // .attr("transform","translate("+width/3.2+",15)")
         .attr("class", "cityText")
 
       var lines = gCity.selectAll("line")
@@ -276,7 +276,11 @@
           return leftScale(1)
         })
         .attr("class", "sideline")
-        
+      gCity.append("text")
+        .attr("class", "sideline-label")
+        .attr("x", margin.left/1.1)
+        .attr("y", leftScale(0) + 10)
+        .text("0%")
       gCity
         .append("line")
         .attr("x1", width-margin.right)
@@ -288,7 +292,11 @@
           return leftScale(1)
         })
         .attr("class", "sideline")
-      
+      gCity.append("text")
+        .attr("class", "sideline-label")
+        .attr("x", margin.left/1.4)
+        .attr("y", leftScale(1) - 3)
+        .text("100%")
       lines.enter()
         .append("line")
         .attr("x1", margin.left)
@@ -335,7 +343,7 @@
         .attr("width", width)
         .attr("height", 100)
         .append("text")
-        .attr("transform","translate("+width/3+",15)")
+        // .attr("transform","translate("+width/3+",15)")
         .attr("class", "stateText")
 
       var lines2 = gState.selectAll("line")
@@ -345,7 +353,11 @@
       var rightCircles2 = gState.selectAll("circle")
         .data(stateData_white)
 
-
+      gState.append("text")
+        .attr("class", "sideline-label")
+        .attr("x", margin.left/1.4)
+        .attr("y", leftScale(1) - 3)
+        .text("100%")
 
       lines2.enter()
         .append("line")
@@ -379,7 +391,11 @@
           return leftScale(1)
         })
         .attr("class", "sideline")
-        
+      gState.append("text")
+        .attr("class", "sideline-label")
+        .attr("x", margin.left/1.1)
+        .attr("y", leftScale(0) + 10)
+        .text("0%")
       gState
         .append("line")
         .attr("x1", width-margin.right)
@@ -472,6 +488,12 @@
             .text(function() { 
                 return d.state
             })
+            .attr("transform", function(d){
+              var textWidth = (this.getBoundingClientRect().width)
+              var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
+              console.log(graphWidth)
+              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+            })
           d3.select(".cityText")
             .text(function() { 
               if (d3.selectAll(".city-line.selected").size() > 1) { 
@@ -482,6 +504,12 @@
             })
             .classed("no-city", function() {
               return (d.city== "") ? true: false
+            })
+            .attr("transform", function(d){
+              var textWidth = (this.getBoundingClientRect().width)
+              var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
+              console.log(graphWidth)
+              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
         }else { 
           if(d3.select(this).attr("class").search("city-line") == 0) {
@@ -506,6 +534,13 @@
             .text(function() { 
                 return d.state
             })
+            .attr("transform", function(d){
+              var textWidth = (this.getBoundingClientRect().width)
+              var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
+              console.log(graphWidth)
+              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+            })
+
           d3.select(".cityText")
             .text(function() { 
               if (d3.selectAll(".city-line.highlight").size() > 1) { 
@@ -513,6 +548,12 @@
               }else{ 
                 return (d.city=="") ? "No city data for this state" : d.city
               }
+            })
+            .attr("transform", function(d){
+              var textWidth = (this.getBoundingClientRect().width)
+              var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
+              console.log(graphWidth)
+              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
             .classed("no-city", function() {
               return (d.city== "") ? true: false
