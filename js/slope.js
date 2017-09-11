@@ -575,7 +575,7 @@ function drawGraphic(){
                 return formatPercent(d.city_k12)
               })
               .attr("y", function(){ 
-                return d3.select(".city-circle-left-" + d.abbr ).attr("cy")
+                return d3.select(".city-circle-left-" + d.abbr + d.city_id ).attr("cy")
               })
               .attr("x", 1)
               .attr("class", "data-label highlight data-label-city-left")
@@ -585,7 +585,7 @@ function drawGraphic(){
                 return formatPercent(d.city_teacher)
               })
               .attr("y", function(){ 
-                return d3.select(".city-circle-right-" + d.abbr ).attr("cy")
+                return d3.select(".city-circle-right-" + d.abbr + d.city_id ).attr("cy")
               })
               .attr("x", width - margin.right + 8)
               .attr("class", "data-label highlight data-label-city-right")
@@ -805,7 +805,7 @@ function drawGraphic(){
             .data(dataCity)
           var left = "left"
           moveCircles(cityCirclesLeft, city, circle, left, selectedCityLine)
-
+          console.log(dataCity)
           var cityCirclesRight = gCity.selectAll(".city-circle-right")
             .data(dataCity)
           var right = "right"
@@ -876,7 +876,11 @@ function drawGraphic(){
               }else {
                 return (elementSide == "left") ? leftScale(d['state_k12']) : rightScale(d['state_teacher']);
               }
-            })           
+            })  
+            .attr("cx", function() {   
+               return (elementSide == "left") ? margin.left : width - margin.right   
+            })   
+            .attr("r", 5)        
             .on('end', function(){ console.log(d3.selectAll(".data-label").size())
               if (d3.selectAll(".data-label").size() > 0 && d3.select(".state-line.selected").size() > 0) {
               var selectedData = d3.select(".state-line.selected").datum()
@@ -892,6 +896,7 @@ function drawGraphic(){
             .transition()
             .style("opacity", 0)
             .remove()
+            console.log(elements)
 
 
         }
