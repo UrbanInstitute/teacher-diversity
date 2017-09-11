@@ -73,8 +73,13 @@ select {
 /*SELECT MENU END */
 
 
+body {
+    max-width: 690px;
+}
+
 #switch-div {
-    max-width: 680px;
+    max-width: 609px;
+    margin: 0 auto;
 }
 
 #graph-container {
@@ -118,6 +123,11 @@ hr {
   border: 1px solid #e6e7e8;
   margin: 30px 0;
   display: block;
+}
+
+.data-label {
+    font-size: 12px;
+    font-weight: 600;
 }
 .sideline {
     stroke: #000;
