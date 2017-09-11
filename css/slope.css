@@ -18,10 +18,14 @@ select {
     height: 300px !important;
 
 }
-    .ui-menu-item {
-        border-bottom: 1px solid #dcdbdb !important;
-        font-size: 16px;
-    }
+.ui-menu-item {
+    border-bottom: 1px solid #dcdbdb !important;
+    font-size: 16px;
+}
+.ui-button {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
 .ui-selectmenu-button.ui-button {
     background: #332d2f !important;
     font-size: 18px;
@@ -114,7 +118,8 @@ body {
 }
 
 .ui-icon {
-    background: url(../img/urban-select.png) no-repeat right !important
+    background: url(../img/urban-select.png) no-repeat right !important;
+    margin-right: 10px;
 
 }
 
@@ -125,10 +130,13 @@ hr {
   display: block;
 }
 
-.data-label {
+.data-label, .data-label.highlight, .data-label.selected {
     font-size: 12px;
     font-weight: 600;
+    stroke: none !important;
 }
+
+
 .sideline {
     stroke: #000;
     stroke-width: .94;

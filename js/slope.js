@@ -8,7 +8,7 @@ var height = 600;
 var raceOn = ["white"];
 var raceOff = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"]
 
-var margin = {top: 80, bottom: 20, left: 30, right:30};
+var margin = {top: 80, bottom: 20, left: 43, right:43};
 
 var leftScale = d3.scaleLinear()
   .domain([0.0, 1])
@@ -473,7 +473,7 @@ function drawGraphic(){
           }
         })
       function removeLineInfo() { 
-        d3.selectAll(".data-label")
+        d3.selectAll(".data-label.highlight")
           .remove()
         d3.select(".cityText")
           .classed("no-city", false)
@@ -501,9 +501,13 @@ function drawGraphic(){
       function showLineInfo(d, origin) { 
         // $('#city-select-button > .ui-selectmenu-text').text("CITIES")
         // $('#state-select-button > .ui-selectmenu-text').text("STATES")
-        d3.selectAll(".city-line, .state-line, .circle")
+        d3.selectAll(".city-line, .state-line, .circle, .data-label")
           .classed("highlight", false)
-        if (origin == "click") { 
+        if (origin == "click") {
+          d3.selectAll(".data-label.selected")
+            .remove() 
+          d3.selectAll(".data-label")
+            .classed("selected", true)
           if (d3.select(".state-line-" + d.abbr).attr("class").search("selected") > 0){
             d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected")
             .classed("selected", false)
@@ -543,7 +547,7 @@ function drawGraphic(){
               var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
-        }else { 
+        }else { //IF HOVERING OVER CITY
           if(d3.select(this).attr("class").search("city-line") == 0) {
             d3.select(this)
               .classed("highlight", true)
@@ -559,42 +563,42 @@ function drawGraphic(){
               .text(function() {
                 return formatPercent(d.city_k12)
               })
-              .attr("y", function(){ console.log(d.abbr)
+              .attr("y", function(){ 
                 return d3.select(".city-circle-left-" + d.abbr ).attr("cy")
               })
-              .attr("x", -9)
-              .attr("class", "data-label")
+              .attr("x", 1)
+              .attr("class", "data-label highlight")
             gCity
               .append("text")
               .text(function() {
                 return formatPercent(d.city_teacher)
               })
-              .attr("y", function(){ console.log(d.abbr)
+              .attr("y", function(){ 
                 return d3.select(".city-circle-right-" + d.abbr ).attr("cy")
               })
-              .attr("x", width - margin.right/1.3)
-              .attr("class", "data-label")
+              .attr("x", width - margin.right + 8)
+              .attr("class", "data-label highlight")
             gState
               .append("text")
               .text(function() {
                 return formatPercent(d.state_k12)
               })
-              .attr("y", function(){ console.log(d.abbr)
+              .attr("y", function(){ 
                 return d3.select(".state-circle-left-" + d.abbr ).attr("cy")
               })
-              .attr("x", -9)
-              .attr("class", "data-label")
+              .attr("x", 1)
+              .attr("class", "data-label highlight")
             gState
               .append("text")
               .text(function() {
                 return formatPercent(d.state_teacher)
               })
-              .attr("y", function(){ console.log(d.abbr)
+              .attr("y", function(){ 
                 return d3.select(".state-circle-right-" + d.abbr ).attr("cy")
               })
-              .attr("x", width - margin.right/1.3)
-              .attr("class", "data-label")
-          }else { 
+              .attr("x", width - margin.right + 8)
+              .attr("class", "data-label highlight")
+          }else { //IF HOVERING OVER STATE
             d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr)
               .classed("highlight", true)
               .moveToFront()
@@ -606,41 +610,41 @@ function drawGraphic(){
               .text(function() {
                 return formatPercent(d.city_k12)
               })
-              .attr("y", function(){ console.log(d3.select(".city-circle-left-" + d.abbr ).size())
+              .attr("y", function(){ 
                 return (d3.select(".city-circle-left-" + d.abbr).size() == 0) ? 0 : d3.select(".city-circle-left-" + d.abbr ).attr("cy")
               })
-              .attr("x", -9)
-              .attr("class", "data-label")
+              .attr("x", 1)
+              .attr("class", "data-label highlight")
             gCity
               .append("text")
               .text(function() {
                 return formatPercent(d.city_teacher)
               })
-              .attr("y", function(){ console.log(d3.select(".city-circle-left-" + d.abbr ).size())
-                return (d3.select(".city-circle-left-" + d.abbr).size() == 0) ? 0 : d3.select(".city-circle-left-" + d.abbr ).attr("cy")
+              .attr("y", function(){ 
+                return (d3.select(".city-circle-right-" + d.abbr).size() == 0) ? 0 : d3.select(".city-circle-right-" + d.abbr ).attr("cy")
               })
-              .attr("x", width - margin.right/1.3)
-              .attr("class", "data-label")
+              .attr("x", width - margin.right + 8)
+              .attr("class", "data-label highlight")
             gState
               .append("text")
               .text(function() {
                 return formatPercent(d.state_k12)
               })
-              .attr("y", function(){ console.log(d.abbr)
+              .attr("y", function(){ 
                 return d3.select(".state-circle-left-" + d.abbr ).attr("cy")
               })
-              .attr("x", -9)
-              .attr("class", "data-label")
+              .attr("x", 1)
+              .attr("class", "data-label highlight")
             gState
               .append("text")
               .text(function() {
                 return formatPercent(d.state_teacher)
               })
-              .attr("y", function(){ console.log(d.abbr)
+              .attr("y", function(){ 
                 return d3.select(".state-circle-right-" + d.abbr ).attr("cy")
               })
-              .attr("x", width - margin.right/1.3)
-              .attr("class", "data-label")
+              .attr("x", width - margin.right + 8)
+              .attr("class", "data-label highlight")
           }
           d3.select(".stateText")
             .text(function() { 
@@ -691,7 +695,6 @@ function drawGraphic(){
             raceOn.splice(index,1)
           }
           raceOff.push(race)
-          console.log(raceOn.length)
         }
         if (raceOn.length > 0){
           for (i=0; i<raceOn.length; i++){ // filter data by races that are turned on
