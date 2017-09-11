@@ -4,7 +4,7 @@ var formatPercent = d3.format(".1%");
 var graphWidth = 690;
 var graphHeight = 620;
 var width = 340;
-var height = 600;
+var height = 550;
 var raceOn = ["white"];
 var raceOff = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"]
 
