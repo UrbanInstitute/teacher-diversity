@@ -82,7 +82,18 @@ select {
     max-width: 680px;
 }
 
+.long-name {
+    line-height: 14px !important;
+    margin-left: 0px !important;
 
+}
+.switch-label.alaskan {
+    margin-left: 5px;
+}
+
+.switch-label.hawaiian {
+    margin-left: 20px;
+}
 .urban-switch.large {
     font-size: 13px;
     font-family: Lato, sans-serif;
@@ -90,11 +101,12 @@ select {
     border: none;
     color: #ffffff;
     display: inline-block;
-    line-height: 12px;
-    text-align: left;
+    line-height: 26px;
+    text-align: right;
     border-radius: 10px;
-    margin-bottom: 32px;
     margin-top: 18px;
+    margin-right: 7px;
+    margin-left: 24px;
 }
 
 hr {
@@ -146,24 +158,31 @@ hr {
     stroke-width: 1px;
     cursor: pointer;
 }
+
+.switch-label {
+    font-size: 13px;
+    color: #353535;
+    float: left;
+    vertical-align: middle;
+}
 .switch.large.on {
-    background-position: -10px 0px;
+    background-position: -4px -.5px;
     background-color: #1696d2;
 }
 
 .switch.large.off {
-    background-position: -68px 0px;
+    background-position: -39.5px -.5px;
     background-color: #696969;
 }
 
 .switch.large {
-    background-image: url(../img/off-on.png);
+    background-image: url(../img/off-on-2.png);
     background-color: #696969;
     background-repeat: no-repeat;
     /* width: 55px; */
     /* height: 18px; */
     /* border-radius: 10px; */
-    width: 83px;
+    width: 60px;
     height: 26px;
     border-radius: 20px;
     margin-left: 10px;
