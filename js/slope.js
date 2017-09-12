@@ -135,7 +135,7 @@ function drawGraphic(){
       });
 
       function modifyDropdownOptions(optionsCity, optionsState, cityDropdown, stateDropdown){ 
-
+console.log('modify')
         optionsCity.enter()
           .append('option')
           .text(function (d) { return d.city; })
@@ -179,17 +179,19 @@ function drawGraphic(){
       $("#state-select")
         .selectmenu({
 
-           open: function( event, ui ) {
+           open: function( event, ui ) { console.log('open')
             changeDropdown()
               // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
               // pymChild.sendHeight();
             },
-           //  close: function(event, ui){
-           //    d3.select("body").style("height", null)
-           //    pymChild.sendHeight();
-           //  },
-           change: function(event, d){
-              var name = this.value
+            close: function(event, ui){
+              changeDropdown()
+              // d3.select("body").style("height", null)
+              // pymChild.sendHeight();
+            },
+           change: function(event, d){ console.log('change')
+              changeDropdown()
+              var name = d.item.value
               highlightLine(name, "state")
             }
         })     
@@ -206,11 +208,14 @@ function drawGraphic(){
               pymChild.sendHeight();
             },
             close: function(event, ui){
+              changeDropdown()
               d3.select("body").style("height", null)
               pymChild.sendHeight();
             },
            change: function(event, d){ 
-              var name = this.value
+              changeDropdown()
+              var name = d.item.value
+              console.log(name)
               highlightLine(name, "city")
             }
         })     
@@ -268,42 +273,9 @@ function drawGraphic(){
           var data = (d3.select(".state-line.selected").size() > 0) ? d3.select(".state-line.selected").datum() : ""
           showLineInfo(data, "dropdown", "state")
         }
-        // if (name != undefined) {
-        //   removeLineInfo()
-        //   d3.selectAll(".stateText, .cityText")
-        //     .classed("no-city", false)
-        //   d3.selectAll(".city-line, .city-circle-left, .city-circle-right, .state-line, .state-circle-left, .state-circle-right ")
-        //     .classed("selected", function(d) {
-        //       if (geography == "city"){
-        //         return (d.city == name) ? true : false
-        //       }else {
-        //         if (geography == "state"){
-        //           return (d.state == name) ? true : false
-        //         }
-        //       }
-        //     })
-        //     .moveToFront()
-        // }
-        // d3.selectAll(".selected").moveToFront()
-        // if (d3.selectAll(".city-line.selected").size() > 1) { console.log('state-dropdown')
-        //   var data =d3.select(".state-line.selected").datum()
-        //   showLineInfo(data, "dropdown", "multiple-cities")
-        // }else {
-        //    if (d3.selectAll(".city-line.selected").size() == 1){
-        //       changeDropdown()
-        //       var data =d3.select(".city-line.selected").datum()
-        //       showLineInfo(data, "dropdown", "single city")
-        //    }else {
-        //       changeDropdown()
-        //       // var data =d3.select(".state-line.selected").datum()
-        //       // showLineInfo(data, "dropdown", "no city")
-        //    }
-        //       // var city = d3.select(".city-line.selected").datum().city 
-        //       // var state = d3.select(".state-line.selected").datum().state
 
-        // }
       }
-      var changeDropdown = function() { 
+      var changeDropdown = function() { console.log('change dropdown')
         $('#city-select-button > .ui-selectmenu-text').text("CITIES")
         // $('select[id^="city-select"] option:selected').attr("selected",null);       
         // $('select[id^="city-select"] option[value=city]').attr("selected","selected");
@@ -560,6 +532,13 @@ function drawGraphic(){
         .attr("class", function(d) {
           return "data-label data-label-state data-label-state-right " + d.abbr 
         }) 
+      var exist = {};
+      d3.selectAll('.data-label-state').each(function() {
+          if (exist[$(this).attr("class")])
+              $(this).remove();
+          else
+              exist[$(this).attr("class")] = true;
+      });
       d3.selectAll(".button_toggle")
         .on("click", function() {
           if (d3.select(this).classed("on")){
@@ -948,18 +927,7 @@ function drawGraphic(){
             })
         }
         function moveLines(elements, geography, selectedDropdown, selectedLine) {
-          // elements.select(".data-label-" + geography + "-right")
-          //   .transition()
-          //   .duration(1000)
-          //   .attr("y", function(d){ 
-          //     return rightScale(d[geography + "_teacher"])
-          //   })
-          // elements.select(".data-label-" + geography + "-left")
-          //   .transition()
-          //   .duration(1000)
-          //   .attr("y", function(d){ 
-          //       return leftScale(d[geography + "_k12"])
-          //   })
+
           elements.select("line")
             .transition()
             .duration(1000)
@@ -1130,6 +1098,13 @@ function drawGraphic(){
             .style("opacity", 0)
             .remove()
             .on('end', removeLineInfo)
+        var exist = {};
+        d3.selectAll('.data-label-state').each(function() {
+            if (exist[$(this).attr("class")])
+                $(this).remove();
+            else
+                exist[$(this).attr("class")] = true;
+        });
         }
       d3.selectAll(".city-line, .state-line")
         .on("mouseover", showLineInfo)
