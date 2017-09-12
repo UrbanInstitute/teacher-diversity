@@ -268,7 +268,11 @@ function drawGraphic(){
           var data = (d3.select(".city-line.selected").size() > 0) ? d3.select(".city-line.selected").datum() : ""
           showLineInfo(data, "dropdown", "city")
         }else if (geography == "state"){
-          d3.selectAll(".state-line, .city-line, .circle, .data-label")
+          d3.selectAll(".state-line, .circle, .data-label")
+            .classed("selected", function(d) { 
+              return d.state == name ? true : false
+            })
+          d3.selectAll(".city-line")
             .classed("selected", function(d) { 
               return d.state == name ? true : false
             })
@@ -547,7 +551,11 @@ function drawGraphic(){
       function removeLineInfo() { 
         d3.selectAll(".data-label")
           .classed("highlight", false)
-        if (d3.selectAll(".state-line.selected").size() > 0){
+        if (raceOn.length == 0) {
+          d3.selectAll(".stateText, .cityText")
+            .text("")
+        }
+        else if (d3.selectAll(".state-line.selected").size() > 0){
           // highlightLine()
           var state =d3.select(".state-line.selected").datum().state
           d3.select(".stateText")
@@ -557,7 +565,7 @@ function drawGraphic(){
               var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
-            if (d3.selectAll(".city-line.selected").size() > 1) { 
+            if (selectedCities.length > 1) { 
               d3.select(".cityText")
                 .classed("no-city", false)
                 .text("multiple cities") 
@@ -566,8 +574,8 @@ function drawGraphic(){
                   var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
                   return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
                 })  
-            }else if (d3.selectAll(".city-line.selected").size() == 1){
-              var city =d3.select(".city-line.selected").datum().city
+            }else if (selectedCities.length == 1){
+              var city = d3.select(".city-line.selected").size() > 0 ? d3.select(".city-line.selected").datum().city : ""
                d3.select(".cityText")
                 .classed("no-city", false)
                 .text(city) 
@@ -576,7 +584,7 @@ function drawGraphic(){
                   var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
                   return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
                 })
-            }else if (d3.selectAll(".city-line.selected").size() == 0){ 
+            }else if (selectedCities.length == 0){ 
                d3.select(".cityText")
                 .text("No city data for this state") 
                 .classed("no-city", true)
@@ -592,7 +600,8 @@ function drawGraphic(){
             .moveToFront()
           d3.selectAll(".circle.selected")
             .moveToFront()
-        }else {
+        }
+        else {
           d3.selectAll(".stateText, .cityText")
             .text("")
         }
@@ -666,7 +675,7 @@ function drawGraphic(){
               var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
-          selectedState = d3.select(".state-line.selected").datum().state
+          selectedState = d3.select(".state-line.selected").size() > 0 ? d3.select(".state-line.selected").datum().state : []
           if (d3.select(".city-line.selected").size() > 0){ 
             selectedCities = [];
             d3.selectAll(".city-line.selected")
@@ -789,6 +798,10 @@ function drawGraphic(){
 
 
       function updateLines(dataCity, dataState) { 
+        if (raceOn.length == 0) {
+          d3.selectAll(".stateText, .cityText")
+            .text("")
+        }
         d3.selectAll(".data-label")
           .remove()
         var selectedCityLine = (d3.select(".city-line.selected").size() > 0) ? d3.select(".city-line.selected").datum() : ""
@@ -832,7 +845,7 @@ function drawGraphic(){
           //TRANSITION LEFT CIRCLES
           elements.select("." + geography + "-circle-left")
             .transition()
-            .duration(1000)
+            .duration(800)
             .attr("cy", function(d) { 
               return leftScale(d[geography + "_k12"])
             })
@@ -858,7 +871,7 @@ function drawGraphic(){
           //TRANSITION RIGHT CIRCLES
           elements.select("." + geography + "-circle-right")
             .transition()
-            .duration(1000)
+            .duration(800)
             .attr("cy", function(d) {
               return rightScale(d[geography + "_teacher"])
               // if (geography == "city"){ console.log(d3.select(this).attr("class"))
@@ -888,7 +901,7 @@ function drawGraphic(){
             })
           elements.select("line")
             .transition()
-            .duration(1000)
+            .duration(800)
             .attr("x1", margin.left)
             .attr("x2", width - margin.right)
             .attr("y1", function(d) {
@@ -995,7 +1008,7 @@ function drawGraphic(){
             })
             .merge(elements)
             .transition()
-            .duration(1000)
+            .duration(800)
             .attr("x1", margin.left)
             .attr("x2", width - margin.right)
             .attr("y1", function(d) {
@@ -1030,7 +1043,7 @@ function drawGraphic(){
             })
             .merge(elements)
             .transition()
-            .duration(1000)
+            .duration(800)
             .attr("cy", function(d) {
               if (geography == "city"){
                 return leftScale(d['city_k12']) 
@@ -1060,7 +1073,7 @@ function drawGraphic(){
             })
             .merge(elements)
             .transition()
-            .duration(1000)
+            .duration(800)
             .attr("cy", function(d) {
               if (geography == "city"){
                 return rightScale(d['city_teacher']);
