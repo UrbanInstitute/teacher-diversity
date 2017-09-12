@@ -135,7 +135,6 @@ function drawGraphic(){
       });
 
       function modifyDropdownOptions(optionsCity, optionsState, cityDropdown, stateDropdown){ 
-console.log('modify')
         optionsCity.enter()
           .append('option')
           .text(function (d) { return d.city; })
@@ -179,7 +178,7 @@ console.log('modify')
       $("#state-select")
         .selectmenu({
 
-           open: function( event, ui ) { console.log('open')
+           open: function( event, ui ) { 
             changeDropdown()
               // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
               // pymChild.sendHeight();
@@ -189,7 +188,7 @@ console.log('modify')
               // d3.select("body").style("height", null)
               // pymChild.sendHeight();
             },
-           change: function(event, d){ console.log('change')
+           change: function(event, d){ 
               changeDropdown()
               var name = d.item.value
               highlightLine(name, "state")
@@ -215,7 +214,6 @@ console.log('modify')
            change: function(event, d){ 
               changeDropdown()
               var name = d.item.value
-              console.log(name)
               highlightLine(name, "city")
             }
         })     
@@ -275,23 +273,11 @@ console.log('modify')
         }
 
       }
-      var changeDropdown = function() { console.log('change dropdown')
+      var changeDropdown = function() { 
         $('#city-select-button > .ui-selectmenu-text').text("CITIES")
         // $('select[id^="city-select"] option:selected').attr("selected",null);       
         // $('select[id^="city-select"] option[value=city]').attr("selected","selected");
         $('#state-select-button > .ui-selectmenu-text').text("STATES")
-        // $('select[id^="state-select"] option:selected').attr("selected",null);       
-        // $('select[id^="state-select"] option[value=state]').attr("selected","selected");
-        // var dropdownItem = $(".ui-menu-item-wrapper")
-        // d3.selectAll(".ui-menu-item-wrapper")
-        //   .classed("ui-state-active", false)
-        // d3.selectAll(".ui-menu-item")
-        //   .each(function(d) { console.log(d)
-        //     d3.select(this)
-        //     .classed("ui-state-active", function() { 
-        //       return (dropdownItem.text() == city) ? true : false
-        //     })
-        //   })
 
 
       // $("#city-menu option:selected").val(city)
@@ -308,10 +294,12 @@ console.log('modify')
 
       var linesCityG = gCity.selectAll("g")
         .data(cityData_white);
-      var leftCircles = gCity.selectAll("circle")
-        .data(cityData_white)
-      var rightCircles = gCity.selectAll("circle")
-        .data(cityData_white)
+
+      // var leftCircles = gCity.selectAll("circle")
+      //   .data(cityData_white)
+
+      // var rightCircles = gCity.selectAll("circle")
+      //   .data(cityData_white)
 
       gCity
         .append("line")
@@ -369,7 +357,7 @@ console.log('modify')
         .on('click', function(d) {
           showLineInfo(d, "click")
         })
-      leftCircles.enter()
+      linesCity
         .append("circle")
         .attr("cy", function(d) {
           return leftScale(d['city_k12']);
@@ -379,7 +367,7 @@ console.log('modify')
         .attr("class", function(d) {
           return "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id
         })
-      rightCircles.enter()
+      linesCity
         .append("circle")
         .attr("cy", function(d) {
           return rightScale(d['city_teacher']);
@@ -425,42 +413,16 @@ console.log('modify')
 
       var linesStateG = gState.selectAll("g")
         .data(stateData_white);
-      var leftCircles2 = gState.selectAll("circle")
-        .data(stateData_white)
-      var rightCircles2 = gState.selectAll("circle")
-        .data(stateData_white)
+      // var leftCircles2 = gState.selectAll("circle")
+      //   .data(stateData_white)
+      // var rightCircles2 = gState.selectAll("circle")
+      //   .data(stateData_white)
 
       gState.append("text")
         .attr("class", "sideline-label")
         .attr("x", margin.left/1.4)
         .attr("y", leftScale(1) - 3)
         .text("100%")
-
-      var linesState = linesStateG.enter()
-        .append("g")
-        .attr("class", "state-g");
-
-      linesState
-        .append("line")
-        .attr("x1", margin.left)
-        .attr("x2", width - margin.right)
-        .attr("y1", function(d) {
-          return leftScale(d['state_k12']);
-        })
-        .attr("y2", function(d) {
-          return rightScale(d['state_teacher']);
-        })
-        .attr("stroke", "black")
-        .attr("stroke-width", 1)
-        .attr("class", function(d) {
-          return "state-line state-line-" + d.abbr
-        })
-        .on("mouseover", showLineInfo)
-        .on("mouseout", removeLineInfo)
-        .on('click', function(d) { 
-          showLineInfo(d, "click")
-        })
-
       gState
         .append("line")
         .attr("x1", margin.left)
@@ -488,7 +450,33 @@ console.log('modify')
           return leftScale(1)
         })
         .attr("class", "sideline")
-      leftCircles2.enter()
+
+      var linesState = linesStateG.enter()
+        .append("g")
+        .attr("class", "state-g");
+
+      linesState
+        .append("line")
+        .attr("x1", margin.left)
+        .attr("x2", width - margin.right)
+        .attr("y1", function(d) {
+          return leftScale(d['state_k12']);
+        })
+        .attr("y2", function(d) {
+          return rightScale(d['state_teacher']);
+        })
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .attr("class", function(d) {
+          return "state-line state-line-" + d.abbr
+        })
+        .on("mouseover", showLineInfo)
+        .on("mouseout", removeLineInfo)
+        .on('click', function(d) { 
+          showLineInfo(d, "click")
+        })
+
+      linesState
         .append("circle")
         .attr("cy", function(d) {
           return leftScale(d['state_k12']);
@@ -498,7 +486,7 @@ console.log('modify')
         .attr("class", function(d) {
           return "circle state-circle-left state-circle-left-" + d.abbr 
         })
-      rightCircles2.enter()
+      linesState
         .append("circle")
         .attr("cy", function(d) {
           return rightScale(d['state_teacher']);
@@ -622,14 +610,12 @@ console.log('modify')
                 .classed("selected", true) 
                 .classed("highlight", false) 
               selectedState = d3.select(".state-line.selected").datum().state
-              console.log(selectedState)
               if (d3.select(".city-line.selected").size() > 0){ 
                 selectedCities = [];
                 d3.selectAll(".city-line.selected")
                 .each(function() {
                   var data = d3.select(this).datum()
                   selectedCities.push(data.city)
-                  console.log(selectedCities)
                 })
               }       
           }      
@@ -675,14 +661,12 @@ console.log('modify')
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
           selectedState = d3.select(".state-line.selected").datum().state
-          console.log(selectedState)
           if (d3.select(".city-line.selected").size() > 0){ 
             selectedCities = [];
             d3.selectAll(".city-line.selected")
             .each(function() {
               var data = d3.select(this).datum()
               selectedCities.push(data.city)
-              console.log(selectedCities)
             })
           } 
         }else { //IF HOVERING OVER CITY
@@ -853,71 +837,72 @@ console.log('modify')
       
 
         function moveCircles(elements, geography, elementType, elementSide, selectedCircle) {
-          elements
-            .transition()
-            .duration(1000)
-            .attr("cy", function(d) {
-              if (geography == "city"){
-                return (elementSide == "left") ? leftScale(d['city_k12']) : rightScale(d['city_teacher']);
-              }else {
-                return (elementSide == "left") ? leftScale(d['state_k12']) : rightScale(d['state_teacher']);
-              }
-            })
-            .attr("cx", function() {
-              return (elementSide == "left") ? margin.left : width - margin.right
-            })
-            .attr("r", 5)
-            .attr("class", function(d) { 
-              if (geography == "city") {
-                if (selectedCities.indexOf(d.city) > -1){
-                  return (elementSide == "left") ? "circle selected city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id : "circle selected city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
-                }else {
-                  return (elementSide == "left") ? "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id : "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
-                }
-              }else {
-                if (selectedState.indexOf(d.state) > -1) {
-                  return (elementSide == "left") ? "circle selected state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id : "circle selected state-circle-right state-circle-right-" + d.abbr + " state-circle-right-" + d.abbr + d.city_id
-                }else {
-                  return (elementSide == "left") ? "circle state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id : "circle state-circle-right state-circle-right-" + d.abbr + " state-circle-right-" + d.abbr + d.city_id
-                }
-              }
-            })
-          elements.enter().append(elementType)
-            .attr("class", function(d) { 
-              if (geography == "city") {
-                if (selectedCities.indexOf(d.city) > -1){
-                  return (elementSide == "left") ? "circle selected city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id : "circle selected city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
-                }else {
-                  return (elementSide == "left") ? "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id : "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
-                }
-              }else {
-                if (selectedState.indexOf(d.state) > -1) {
-                  return (elementSide == "left") ? "circle selected state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id : "circle selected state-circle-right state-circle-right-" + d.abbr + " state-circle-right-" + d.abbr + d.city_id
-                }else {
-                  return (elementSide == "left") ? "circle state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id : "circle state-circle-right state-circle-right-" + d.abbr + " state-circle-right-" + d.abbr + d.city_id
-                }
-              }
-            })
-            .merge(elements)
-            .transition()
-            .duration(1000)
-            .attr("cy", function(d) {
-              if (geography == "city"){
-                return (elementSide == "left") ? leftScale(d['city_k12']) : rightScale(d['city_teacher']);
-              }else {
-                return (elementSide == "left") ? leftScale(d['state_k12']) : rightScale(d['state_teacher']);
-              }
-            })  
-            .attr("cx", function() {   
-               return (elementSide == "left") ? margin.left : width - margin.right   
-            })   
-            .attr("r", 5)        
+          // elements.select("circle")
+          //   .transition()
+          //   .duration(1000)
+          //   .attr("cy", function(d) {
+          //     if (geography == "city"){
+          //       return (elementSide == "left") ? leftScale(d['city_k12']) : rightScale(d['city_teacher']);
+          //     }else {
+          //       return (elementSide == "left") ? leftScale(d['state_k12']) : rightScale(d['state_teacher']);
+          //     }
+          //   })
+          //   .attr("cx", function() {
+          //     return (elementSide == "left") ? margin.left : width - margin.right
+          //   })
+          //   .attr("r", 5)
+          //   .attr("class", function(d) { 
+          //     if (geography == "city") {
+          //       if (selectedCities.indexOf(d.city) > -1){
+          //         return (elementSide == "left") ? "circle selected city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id : "circle selected city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+          //       }else {
+          //         return (elementSide == "left") ? "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id : "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+          //       }
+          //     }else {
+          //       if (selectedState.indexOf(d.state) > -1) {
+          //         return (elementSide == "left") ? "circle selected state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id : "circle selected state-circle-right state-circle-right-" + d.abbr + " state-circle-right-" + d.abbr + d.city_id
+          //       }else {
+          //         return (elementSide == "left") ? "circle state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id : "circle state-circle-right state-circle-right-" + d.abbr + " state-circle-right-" + d.abbr + d.city_id
+          //       }
+          //     }
+          //   })
 
-          elements
-            .exit()
-            .transition()
-            .style("opacity", 0)
-            .remove()
+          // linesG.append("circle")
+          //   .attr("class", function(d) { 
+          //     if (geography == "city") {
+          //       if (selectedCities.indexOf(d.city) > -1){
+          //         return (elementSide == "left") ? "circle selected city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id : "circle selected city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+          //       }else {
+          //         return (elementSide == "left") ? "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id : "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+          //       }
+          //     }else {
+          //       if (selectedState.indexOf(d.state) > -1) {
+          //         return (elementSide == "left") ? "circle selected state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id : "circle selected state-circle-right state-circle-right-" + d.abbr + " state-circle-right-" + d.abbr + d.city_id
+          //       }else {
+          //         return (elementSide == "left") ? "circle state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id : "circle state-circle-right state-circle-right-" + d.abbr + " state-circle-right-" + d.abbr + d.city_id
+          //       }
+          //     }
+          //   })
+          //   .merge(elements)
+          //   .transition()
+          //   .duration(1000)
+          //   .attr("cy", function(d) {
+          //     if (geography == "city"){
+          //       return (elementSide == "left") ? leftScale(d['city_k12']) : rightScale(d['city_teacher']);
+          //     }else {
+          //       return (elementSide == "left") ? leftScale(d['state_k12']) : rightScale(d['state_teacher']);
+          //     }
+          //   })  
+          //   .attr("cx", function() {   
+          //      return (elementSide == "left") ? margin.left : width - margin.right   
+          //   })   
+          //   .attr("r", 5)        
+
+          // elements
+          //   .exit()
+          //   .transition()
+          //   .style("opacity", 0)
+          //   .remove()
 
         }
         function moveLabels(element, d, geography, side) { 
@@ -927,7 +912,63 @@ console.log('modify')
             })
         }
         function moveLines(elements, geography, selectedDropdown, selectedLine) {
-
+          //TRANSITION LEFT CIRCLES
+          elements.select("." + geography + "-circle-left")
+            .transition()
+            .duration(1000)
+            .attr("cy", function(d) { 
+              return leftScale(d[geography + "_k12"])
+            })
+            .attr("cx", function() {
+              return margin.left
+            })
+            .attr("r", 5)
+            .attr("class", function(d) { 
+              if (geography == "city") { 
+                if (selectedCities.indexOf(d.city) > -1){ 
+                  return "circle selected city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id
+                }else{
+                  return "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id
+                }
+              }else if (geography == "state") {
+                if (selectedState.indexOf(d.state) > -1){
+                  return "circle selected state-circle-left state-circle-left-" + d.abbr 
+                }else {
+                  return "circle state-circle-left state-circle-left-" + d.abbr 
+                }
+              }
+            })
+          //TRANSITION RIGHT CIRCLES
+          elements.select("." + geography + "-circle-right")
+            .transition()
+            .duration(1000)
+            .attr("cy", function(d) {
+              return rightScale(d[geography + "_teacher"])
+              // if (geography == "city"){ console.log(d3.select(this).attr("class"))
+              //   return (d3.select(this).attr("class").search("left") > 0) ? leftScale(d['city_k12']) : rightScale(d['city_teacher']);
+              // }else {
+              //   return (d3.select(this).attr("class").search("right") > 0) ? rightScale(d['state_teacher']) : leftScale(d['state_k12']);
+              // }
+            })
+            .attr("cx", function() {
+              return width - margin.right
+            })
+            .attr("r", 5)
+            .attr("class", function(d) { 
+              if (geography == "city") { 
+                if (selectedCities.indexOf(d.city) > -1){
+                  return "circle selected city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+                }else{
+                  return "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+                }
+              }else if (geography == "state") {
+                if (selectedState.indexOf(d.state) > -1){ 
+                  return "circle selected state-circle-right state-circle-right-" + d.abbr 
+                }else {
+                  return "circle state-circle-right state-circle-right-" + d.abbr 
+                }
+              }
+            })
           elements.select("line")
             .transition()
             .duration(1000)
@@ -956,9 +997,10 @@ console.log('modify')
                 }
               }
             })
+          //ADD RIGHT DATA LABELS
           elements
             .append("text")
-            .text(function(d) {
+            .text(function(d) { 
               return formatPercent(d[geography + "_teacher"])
             })
             .attr("y", function(d){ 
@@ -980,6 +1022,7 @@ console.log('modify')
                 }
               }
             })
+          //ADD LEFT DATA LABELS
           elements
             .append("text")
             .text(function(d) {
@@ -1004,6 +1047,7 @@ console.log('modify')
                 }
               }
             })
+
           var linesG = elements.enter().append("g")
             .attr("class", geography + "-g")
           linesG
@@ -1043,6 +1087,66 @@ console.log('modify')
                 .moveToFront()
               removeLineInfo()
             })
+          linesG.append("circle")
+            .attr("class", function(d) { 
+              if (geography == "city") {
+                if (selectedCities.indexOf(d.city) > -1){
+                  return "circle selected city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id 
+                }else {
+                  return "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id 
+                }
+              }else {
+                if (selectedState.indexOf(d.state) > -1) {
+                  return "circle selected state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id 
+                }else {
+                  return "circle state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id 
+                }
+              }
+            })
+            .merge(elements)
+            .transition()
+            .duration(1000)
+            .attr("cy", function(d) {
+              if (geography == "city"){
+                return leftScale(d['city_k12']) 
+              }else {
+                return leftScale(d['state_k12']) 
+              }
+            })  
+            .attr("cx", function() {   
+               return margin.left 
+            })   
+            .attr("r", 5)  
+         linesG.append("circle")
+            .attr("class", function(d) { 
+              if (geography == "city") { 
+                if (selectedCities.indexOf(d.city) > -1){
+                  return "circle selected city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+                }else{
+                  return "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+                }
+              }else if (geography == "state") {
+                if (selectedState.indexOf(d.state) > -1){ 
+                  return "circle selected state-circle-right state-circle-right-" + d.abbr 
+                }else {
+                  return "circle state-circle-right state-circle-right-" + d.abbr 
+                }
+              }
+            })
+            .merge(elements)
+            .transition()
+            .duration(1000)
+            .attr("cy", function(d) {
+              if (geography == "city"){
+                return rightScale(d['city_teacher']);
+              }else {
+                return rightScale(d['state_teacher']);
+              }
+            })  
+            .attr("cx", function() {   
+               return width - margin.right   
+            })   
+            .attr("r", 5)    
           linesG
             .append("text")
             .text(function(d) {
@@ -1060,7 +1164,7 @@ console.log('modify')
                   return "data-label data-label-city data-label-city-right " + d.abbr + " " + d.abbr + d.city_id
                 }
               }else if (geography == "state") {
-                if (selectedState.indexOf(d.state) > -1){
+                if (selectedState.indexOf(d.state) > -1){ 
                   return "data-label selected data-label-state data-label-state-right " + d.abbr 
                 }else {
                   return "data-label data-label-state data-label-state-right " + d.abbr 
