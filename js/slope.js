@@ -246,17 +246,15 @@ function drawGraphic(){
             .moveToFront()
         }
         d3.selectAll(".selected").moveToFront()
-        if (d3.selectAll(".city-line.selected").node() == null) {
+        if (d3.selectAll(".city-line.selected").size() > 1) { console.log('state-dropdown')
           var data =d3.select(".state-line.selected").datum()
-          showLineInfo(data, "dropdown")
+          showLineInfo(data, "dropdown", "multiple-cities")
         }else {
-          if (d3.selectAll(".city-line.selected").size() > 0) { 
               // var city = d3.select(".city-line.selected").datum().city 
               // var state = d3.select(".state-line.selected").datum().state
               changeDropdown()
               var data =d3.select(".city-line.selected").datum()
-              showLineInfo(data, "dropdown")
-          }      
+              showLineInfo(data, "dropdown", "single or no city")
         }
       }
       var changeDropdown = function() { 
@@ -554,7 +552,7 @@ function drawGraphic(){
           .classed("highlight", false)
 
       }
-      function showLineInfo(d, origin) { 
+      function showLineInfo(d, origin, cities) { 
         // $('#city-select-button > .ui-selectmenu-text').text("CITIES")
         // $('#state-select-button > .ui-selectmenu-text').text("STATES")
         d3.selectAll(".city-line, .state-line, .circle")
@@ -589,6 +587,18 @@ function drawGraphic(){
             }
           }      
         }else if (origin == "dropdown"){
+          d3.selectAll(".data-label")
+            .classed("selected", false)
+            .classed("highlighted", false)
+          if (cities == "multiple-cities") {
+            d3.selectAll(".data-label." + d.abbr)
+              .classed("selected", true)
+          }else{
+            if (cities == "single or no city"){ console.log(d.abbr)
+              d3.selectAll(".data-label-state." + d.abbr + " , .data-label-city." + d.abbr + d.city_id)
+                .classed("selected", true)
+            }
+          }
           d3.select(".stateText")
             .text(function() { 
                 return d.state
