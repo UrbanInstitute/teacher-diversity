@@ -383,7 +383,7 @@ function drawGraphic(){
         })
         .attr("x", 1)
         .attr("class", function(d) {
-          return "data-label data-label-city-left highlight " + d.abbr + " " + d.city_id
+          return "data-label data-label-city data-label-city-left " + d.abbr + " " + d.abbr + d.city_id
         })
       linesCity
         .append("text")
@@ -395,7 +395,7 @@ function drawGraphic(){
         })
         .attr("x", width - margin.right + 8)
         .attr("class", function(d) {
-          return "data-label data-label-city-right highlight" + d.abbr + " " + d.city_id
+          return "data-label data-label-city data-label-city-right " + d.abbr + " " + d.abbr + d.city_id
         })            
    
       // //STATE GRAPH
@@ -502,7 +502,7 @@ function drawGraphic(){
         })
         .attr("x", 1)
         .attr("class", function(d) {
-          return "data-label data-label-state-left highlight " + d.abbr 
+          return "data-label data-label-state data-label-state-left " + d.abbr 
         })
       linesState
         .append("text")
@@ -510,11 +510,11 @@ function drawGraphic(){
           return formatPercent(d.state_teacher)
         })
         .attr("y", function(d){ 
-          return rightScale(d['city_teacher'])
+          return rightScale(d['state_teacher'])
         })
         .attr("x", width - margin.right + 8)
         .attr("class", function(d) {
-          return "data-label data-label-state-right highlight " + d.abbr 
+          return "data-label data-label-state data-label-state-right " + d.abbr 
         }) 
       d3.selectAll(".button_toggle")
         .on("click", function() {
@@ -529,8 +529,8 @@ function drawGraphic(){
           }
         })
       function removeLineInfo() { 
-        d3.selectAll(".data-label.highlight")
-          .remove()
+        d3.selectAll(".data-label")
+          .classed("highlight", false)
         d3.select(".cityText")
           .classed("no-city", false)
         if (d3.selectAll(".state-line.selected").size() > 0){
@@ -557,13 +557,14 @@ function drawGraphic(){
       function showLineInfo(d, origin) { 
         // $('#city-select-button > .ui-selectmenu-text').text("CITIES")
         // $('#state-select-button > .ui-selectmenu-text').text("STATES")
-        d3.selectAll(".city-line, .state-line, .circle, .data-label")
+        d3.selectAll(".city-line, .state-line, .circle")
           .classed("highlight", false)
         if (origin == "click") { console.log(d)
           d3.selectAll(".data-label.selected")
             .remove() 
-          d3.selectAll(".data-label")
+          d3.selectAll(".data-label.highlight")
             .classed("selected", true)
+            .classed("highlight", false)
           //IF LINE IS ALREADY SELECTED AND IS CLICKED ON AGAIN
           if (d3.select(".state-line-" + d.abbr).attr("class").search("selected") > 0){ 
             d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected")
@@ -614,7 +615,9 @@ function drawGraphic(){
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
             })
         }else { //IF HOVERING OVER CITY
-          if(d3.select(this).attr("class").search("city-line") == 0) {
+          if(d3.select(this).attr("class").search("city-line") == 0) { console.log(d3.select(this).attr("class"))
+            d3.selectAll(".data-label-city." + d.abbr + d.city_id + ", .data-label-state." + d.abbr)
+            .classed("highlight", true)
             d3.select(this)
               .classed("highlight", true)
               .moveToFront()
@@ -625,8 +628,12 @@ function drawGraphic(){
               .classed("highlight", true)
               .moveToFront()
           }else { //IF HOVERING OVER STATE 
-            console.log('hi')
-            d3.selectAll(".state-line-" + d.abbr + ", .city-line-" + d.abbr)
+            d3.selectAll(".data-label-city." + d.abbr + ", .data-label-state." + d.abbr)
+              .classed("highlight", true)
+            d3.select(this)
+              .classed("highlight", true)
+              .moveToFront()
+            d3.selectAll(".city-line-" + d.abbr)
               .classed("highlight", true)
               .moveToFront()
             d3.selectAll(".city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
@@ -722,6 +729,8 @@ function drawGraphic(){
 
       function updateLines(dataCity, dataState) {
         console.log(dataState)
+        d3.selectAll(".data-label")
+          .remove()
         var selectedCityLine = (d3.select(".city-line.selected").size() > 0) ? d3.select(".city-line.selected").datum() : ""
         var selectedStateLine = (d3.select(".city-line.selected").size() > 0) ? d3.select(".state-line.selected").datum() : ""
         var optionsCity = d3.select("#city-select")
@@ -849,18 +858,18 @@ function drawGraphic(){
             })
         }
         function moveLines(elements, geography, selectedDropdown, selectedLine) {
-          elements.select(".data-label-" + geography + "-right")
-            .transition()
-            .duration(1000)
-            .attr("y", function(d){ 
-              return rightScale(d[geography + "_teacher"])
-            })
-          elements.select(".data-label-" + geography + "-left")
-            .transition()
-            .duration(1000)
-            .attr("y", function(d){ 
-                return leftScale(d[geography + "_k12"])
-            })
+          // elements.select(".data-label-" + geography + "-right")
+          //   .transition()
+          //   .duration(1000)
+          //   .attr("y", function(d){ 
+          //     return rightScale(d[geography + "_teacher"])
+          //   })
+          // elements.select(".data-label-" + geography + "-left")
+          //   .transition()
+          //   .duration(1000)
+          //   .attr("y", function(d){ 
+          //       return leftScale(d[geography + "_k12"])
+          //   })
           elements.select("line")
             .transition()
             .duration(1000)
@@ -887,6 +896,38 @@ function drawGraphic(){
                     return "state-line state-line-" + d.abbr
                   }
                 }
+              }
+            })
+          elements
+            .append("text")
+            .text(function(d) {
+              return formatPercent(d[geography + "_teacher"])
+            })
+            .attr("y", function(d){ 
+              return rightScale(d[geography + '_teacher'])
+            })
+            .attr("x", width - margin.right + 8)
+            .attr("class", function(d) { 
+              if (geography == "city") {
+                return "data-label data-label-city data-label-city-right " + d.abbr + " " + d.abbr + d.city_id
+              }else {
+                return "data-label data-label-state data-label-state-right " + d.abbr 
+              }
+            })
+          elements
+            .append("text")
+            .text(function(d) {
+              return formatPercent(d[geography + "_k12"])
+            })
+            .attr("y", function(d){ 
+              return leftScale(d[geography + '_k12'])
+            })
+            .attr("x", 1)
+            .attr("class", function(d) { 
+              if (geography == "city") { console.log(d)
+                return "data-label data-label-city data-label-city-left " + d.abbr + " " + d.abbr + d.city_id
+              }else {
+                return "data-label data-label-state data-label-state-left " + d.abbr 
               }
             })
           var linesG = elements.enter().append("g")
@@ -921,6 +962,12 @@ function drawGraphic(){
             .attr("y2", function(d) {
               return rightScale(d[geography + '_teacher']);
             })
+            .on('end', function() {
+              d3.selectAll(".city-line.selected, .state-line.selected")
+                .moveToFront()
+              d3.selectAll(".circle.selected")
+                .moveToFront()
+            })
           linesG
             .append("text")
             .text(function(d) {
@@ -932,9 +979,9 @@ function drawGraphic(){
             .attr("x", width - margin.right + 8)
             .attr("class", function(d) { 
               if (geography == "city") {
-                return "data-label data-label-city-right highlight " + d.abbr + " " + d.city_id
+                return "data-label data-label-city data-label-city-right " + d.abbr + " " + d.abbr + d.city_id
               }else {
-                return "data-label data-label-state-right highlight " + d.abbr 
+                return "data-label data-label-state data-label-state-right " + d.abbr 
               }
             })
           linesG
@@ -948,24 +995,19 @@ function drawGraphic(){
             .attr("x", 1)
             .attr("class", function(d) { 
               if (geography == "city") { console.log(d)
-                return "data-label data-label-city-left highlight " + d.abbr + " " + d.city_id
+                return "data-label data-label-city data-label-city-left " + d.abbr + " " + d.abbr + d.city_id
               }else {console.log(d)
-                return "data-label data-label-state-left highlight " + d.abbr 
+                return "data-label data-label-state data-label-state-left " + d.abbr 
               }
             })
-            .on('end', function() {
-              d3.selectAll(".city-line.selected, .state-line.selected")
-                .moveToFront()
-              d3.selectAll(".circle.selected")
-                .moveToFront()
-            })
+
           elements
             .exit()
             .transition()
             .style("opacity", 0)
             .remove()
             .on('end', removeLineInfo)
-            console.log(elements)
+
         }
       d3.selectAll(".city-line, .state-line")
         .on("mouseover", showLineInfo)

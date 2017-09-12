@@ -130,11 +130,19 @@ hr {
   display: block;
 }
 
-.data-label, .data-label.highlight, .data-label.selected {
+.data-label{
     font-size: 12px;
     font-weight: 600;
     stroke: none !important;
+    opacity: 0;
 }
+
+.data-label.highlight, .data-label.selected {
+    opacity: 1;
+    stroke: none !important;
+
+}
+
 
 
 .sideline {
