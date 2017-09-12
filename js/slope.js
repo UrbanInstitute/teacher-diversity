@@ -144,6 +144,7 @@ function drawGraphic(){
           })
           .merge(optionsCity)
         optionsCity.exit().remove()
+
         optionsState.enter()
           .append('option')
           .text(function (d) { return d.state; })
@@ -218,11 +219,28 @@ function drawGraphic(){
 
       var sort = function() { 
         // choose target dropdown
+        var citySelectHidden = $("#city-select-menu")
+        var listitems = citySelectHidden.children('li').get();
+        listitems.sort(function(a, b) {
+           return $(a).text().toUpperCase().localeCompare($(b).text().toUpperCase());
+        })
+        $.each(listitems, function(idx, itm) { 
+          citySelectHidden.append(itm); 
+        });
         var citySelect = $("#city-select");
         citySelect.html(citySelect.find('option').sort(function(x, y) {
           // to change to descending order switch "<" for ">"
           return $(x).text() > $(y).text() ? 1 : -1;
         }));
+
+        var stateSelectHidden = $("#state-select-menu")
+        var statelistitems = stateSelectHidden.children('li').get();
+        statelistitems.sort(function(a, b) {
+           return $(a).text().toUpperCase().localeCompare($(b).text().toUpperCase());
+        })
+        $.each(statelistitems, function(idx, itm) { 
+          stateSelectHidden.append(itm); 
+        });
         var stateSelect = $("#state-select");
         stateSelect.html(stateSelect.find('option').sort(function(x, y) {
           // to change to descending order switch "<" for ">"
