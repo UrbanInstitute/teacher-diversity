@@ -186,8 +186,7 @@ function drawGraphic(){
            //  },
            change: function(event, d){
               var name = this.value
-              var state = "state"
-              highlightLine(name, state)
+              highlightLine(name, "state")
             }
         })     
         .selectmenu( "menuWidget" )
@@ -229,33 +228,55 @@ function drawGraphic(){
       sort()
 
       var highlightLine = function(name, geography) { 
-        if (name != undefined) {
-          removeLineInfo()
-          d3.selectAll(".stateText, .cityText")
-            .classed("no-city", false)
-          d3.selectAll(".city-line, .city-circle-left, .city-circle-right, .state-line, .state-circle-left, .state-circle-right ")
-            .classed("selected", function(d) {
-              if (geography == "city"){
-                return (d.city == name) ? true : false
-              }else {
-                if (geography == "state"){
-                  return (d.state == name) ? true : false
-                }
-              }
+        console.log(name)
+        if (geography == "city") {
+          d3.selectAll(".city-line")
+            .classed("selected", function(d) { console.log((d.city))
+              return (d.city == name) ? true : false
             })
-            .moveToFront()
+          d3.selectAll(".circle.selected, .city-line.selected, .state-line.selected").moveToFront()
+        }else if (geography == "state"){
+          d3.selectAll(".state-line, .city-line, .circle")
+            .classed("selected", function(d) { 
+              return d.state == name ? true : false
+            })
+          d3.selectAll(".circle.selected, .city-line.selected, .state-line.selected").moveToFront()
+
         }
-        d3.selectAll(".selected").moveToFront()
-        if (d3.selectAll(".city-line.selected").size() > 1) { console.log('state-dropdown')
-          var data =d3.select(".state-line.selected").datum()
-          showLineInfo(data, "dropdown", "multiple-cities")
-        }else {
-              // var city = d3.select(".city-line.selected").datum().city 
-              // var state = d3.select(".state-line.selected").datum().state
-              changeDropdown()
-              var data =d3.select(".city-line.selected").datum()
-              showLineInfo(data, "dropdown", "single or no city")
-        }
+        // if (name != undefined) {
+        //   removeLineInfo()
+        //   d3.selectAll(".stateText, .cityText")
+        //     .classed("no-city", false)
+        //   d3.selectAll(".city-line, .city-circle-left, .city-circle-right, .state-line, .state-circle-left, .state-circle-right ")
+        //     .classed("selected", function(d) {
+        //       if (geography == "city"){
+        //         return (d.city == name) ? true : false
+        //       }else {
+        //         if (geography == "state"){
+        //           return (d.state == name) ? true : false
+        //         }
+        //       }
+        //     })
+        //     .moveToFront()
+        // }
+        // d3.selectAll(".selected").moveToFront()
+        // if (d3.selectAll(".city-line.selected").size() > 1) { console.log('state-dropdown')
+        //   var data =d3.select(".state-line.selected").datum()
+        //   showLineInfo(data, "dropdown", "multiple-cities")
+        // }else {
+        //    if (d3.selectAll(".city-line.selected").size() == 1){
+        //       changeDropdown()
+        //       var data =d3.select(".city-line.selected").datum()
+        //       showLineInfo(data, "dropdown", "single city")
+        //    }else {
+        //       changeDropdown()
+        //       // var data =d3.select(".state-line.selected").datum()
+        //       // showLineInfo(data, "dropdown", "no city")
+        //    }
+        //       // var city = d3.select(".city-line.selected").datum().city 
+        //       // var state = d3.select(".state-line.selected").datum().state
+
+        // }
       }
       var changeDropdown = function() { 
         $('#city-select-button > .ui-selectmenu-text').text("CITIES")
@@ -529,64 +550,89 @@ function drawGraphic(){
       function removeLineInfo() { 
         d3.selectAll(".data-label")
           .classed("highlight", false)
-        d3.select(".cityText")
-          .classed("no-city", false)
         if (d3.selectAll(".state-line.selected").size() > 0){
-          highlightLine()
-          // var state =d3.select(".state-line.selected").datum().state
-          // var city =d3.select(".state-line.selected").datum().city
-          // console.log(city)
-          // d3.select(".stateText")
-          //   .text(state)
-          // d3.select(".cityText")
-          //   .text(city)   
-          // d3.selectAll(".state-line.selected, .city-line.selected")
-          //   .moveToFront()
-          // d3.selectAll(".circle.selected")
-          //   .moveToFront()
+          // highlightLine()
+          var state =d3.select(".state-line.selected").datum().state
+          d3.select(".stateText")
+            .text(state)
+            .attr("transform", function(d){
+              var textWidth = (this.getBoundingClientRect().width)
+              var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
+              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+            })
+            if (d3.selectAll(".city-line.selected").size() > 1) {
+              d3.select(".cityText")
+                .classed("no-city", false)
+                .text("multiple cities") 
+                .attr("transform", function(d){
+                  var textWidth = (this.getBoundingClientRect().width)
+                  var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
+                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+                })  
+            }else if (d3.selectAll(".city-line.selected").size() == 1){
+              var city =d3.select(".city-line.selected").datum().city
+               d3.select(".cityText")
+                .classed("no-city", false)
+                .text(city) 
+                .attr("transform", function(d){
+                  var textWidth = (this.getBoundingClientRect().width)
+                  var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
+                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+                })
+            }else if (d3.selectAll(".city-line.selected").size() == 0){
+               d3.select(".cityText")
+                .text("No city data for this state") 
+                .classed("no-city", true)
+            }
+          d3.selectAll(".state-line.selected")
+            .moveToFront()
+          d3.selectAll(".city-line.selected")
+            .moveToFront()
+          d3.selectAll(".circle.selected")
+            .moveToFront()
         }else {
-          d3.selectAll(".stateText, .cityText, .circle")
+          d3.selectAll(".stateText, .cityText")
             .text("")
         }
         d3.selectAll(".city-line, .state-line, .circle")
           .classed("highlight", false)
 
       }
-      function showLineInfo(d, origin, cities) { 
+      function showLineInfo(d, origin, cities) { console.log(d)
         // $('#city-select-button > .ui-selectmenu-text').text("CITIES")
         // $('#state-select-button > .ui-selectmenu-text').text("STATES")
-        d3.selectAll(".city-line, .state-line, .circle")
-          .classed("highlight", false)
+        // d3.selectAll(".city-line, .state-line, .circle, .data-label")
+        //   .classed("highlight", false)
         if (origin == "click") { console.log(d)
-          d3.selectAll(".data-label.selected")
-            .remove() 
-          d3.selectAll(".data-label.highlight")
-            .classed("selected", true)
-            .classed("highlight", false)
           //IF LINE IS ALREADY SELECTED AND IS CLICKED ON AGAIN
           if (d3.select(".state-line-" + d.abbr).attr("class").search("selected") > 0){ 
-            d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected")
+            d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected, .data-label.selected")
               .classed("selected", false)
           }else { 
-              d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected")
+              d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected, .data-label.selected")
                 .classed("selected", false)
-            if (d3.selectAll(".data-label.selected").size() > 4) {
-              d3.selectAll(".city-line-" + d.abbr + ",.state-line-" + d.abbr)
-                .classed("selected", true)
-                .moveToFront()
-              d3.selectAll(".city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
-                .classed("selected", true)
-                .moveToFront()  
-            }else {
-              d3.selectAll(".city-line-" + d.abbr + d.city_id + ",.state-line-" + d.abbr)
-                .classed("selected", true)
-                .moveToFront()
-              d3.selectAll(".city-circle-left-" + d.abbr + d.city_id + ", .city-circle-right-" + d.abbr + d.city_id + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
-                .classed("selected", true)
-                .moveToFront()  
-            }
+              d3.selectAll(".city-line.highlight, .state-line.highlight, .circle.highlight, .data-label.highlight")
+                .classed("selected", true) 
+                .classed("highlight", false)           
+            // if (d3.selectAll(".data-label.selected").size() > 4) {
+            //   d3.selectAll(".city-line-" + d.abbr + ",.state-line-" + d.abbr, .data)
+            //     .classed("selected", true)
+            //     .moveToFront()
+            //   d3.selectAll(".city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
+            //     .classed("selected", true)
+            //     .moveToFront()  
+            // }else {
+            //  d3.selectAll(".data-label-city." + d.abbr + d.city_id)
+            //       .classed("selected", true)
+            //   d3.selectAll(".city-line-" + d.abbr + d.city_id + ",.state-line-" + d.abbr)
+            //     .classed("selected", true)
+            //     .moveToFront()
+            //   d3.selectAll(".city-circle-left-" + d.abbr + d.city_id + ", .city-circle-right-" + d.abbr + d.city_id + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
+            //     .classed("selected", true)
+            //     .moveToFront()  
+            // }
           }      
-        }else if (origin == "dropdown"){
+        }else if (origin == "dropdown"){ console.log(origin)
           d3.selectAll(".data-label")
             .classed("selected", false)
             .classed("highlighted", false)
@@ -594,8 +640,11 @@ function drawGraphic(){
             d3.selectAll(".data-label." + d.abbr)
               .classed("selected", true)
           }else{
-            if (cities == "single or no city"){ console.log(d.abbr)
+            if (cities == "single city"){ 
               d3.selectAll(".data-label-state." + d.abbr + " , .data-label-city." + d.abbr + d.city_id)
+                .classed("selected", true)
+            }else if (cities == "no city"){ 
+              d3.selectAll(".data-label-state." + d.abbr)
                 .classed("selected", true)
             }
           }
@@ -616,8 +665,8 @@ function drawGraphic(){
                 return (d.city=="") ? "No city data for this state" : d.city
               }
             })
-            .classed("no-city", function() {
-              return (d.city== "") ? true: false
+            .classed("no-city", function() {console.log(d)
+                return (d.city== "") ? true: false
             })
             .attr("transform", function(d){
               var textWidth = (this.getBoundingClientRect().width)
@@ -944,7 +993,7 @@ function drawGraphic(){
             .attr("class", geography + "-g")
           linesG
             .append("line")
-            .attr("class", function(d) { 
+            .attr("class", function(d) { console.log(selectedLine)
               if (elements == cityLines) {
                 if (d.city == selectedLine.city){
                   return "city-line selected city-line-" + d.abbr + " city-line-" + d.abbr + d.city_id
