@@ -944,7 +944,7 @@ function drawGraph(container_width, category) {
           yLabelG.select(".linkTextPhone-" + HEADERS2[number] + node)
             .classed("highlight", true)
           yLabelG.select(".teacherStatsPhone-text-" + HEADERS2[number])
-            .text(function() {
+            .text(function() { 
               if (degree.search("teacher") > 0) {
                 var teacherStats = (category == 'percent') ? teacherTextPercent[number] : teacherTextNumber[number]
                 return description(degree, number) + " " + teacherStats
@@ -1048,14 +1048,32 @@ function drawGraph(container_width, category) {
                 // .style("opacity", 0)
             }
           }  
-      // var teacherNode = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").node();
-      // var teachingNode = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").node();
-      // var teacherNodeData = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").data()[0];
-      // var teachingNodeData = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").data()[0]
-      // var teacherNodeY = teacherNodeData.y;
-      // var teacherNodeX = (dataCategory == 'all') ? (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left)/2 + teachingNode.getBoundingClientRect().right : (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left) + teachingNode.getBoundingClientRect().right
-      //       var bottom = teacherNode.getBoundingClientRect().bottom;
-      //       transitionTeacherText(teacherNodeX, teacherNodeY, bottom)
+          if (isPhone){
+            for (j=0; j<nodeCategories.length; j++){
+              for (i=0; i<HEADERS2.length; i++){
+                var yPos = d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top-31
+                yLabelG
+                  .data(linkData.filter(function(d) { 
+                    return (d.target.name) == HEADERS2[i] + nodeCategories[j]
+                  })
+                )
+                yLabelG.select(".linkTextPhone-" + HEADERS2[i] + nodeNames[j]).select(".linkTextPhone-stats")  
+                  .attr("y", function(d) {
+                    return yPos
+                  })
+                  .text(function(d) { 
+                    if (d.value == 1) {
+                      return "100%"
+                    }else if ((d.target.name).search("Teacher") > 0){
+                     return ""
+                    }else{ 
+                      return linkTextFormat(d.value); 
+                    }
+                  })
+              }
+            }
+          }
+
         })
 
       node.selectAll(".raceLabels")
@@ -1106,7 +1124,6 @@ function drawGraph(container_width, category) {
               // return (nodeWidth -textWidth)/2
               return d.target.x + ((d.target.x + nodeWidth) - (d.target.x + textWidth))/2
         }) 
-
 
       for (i=0; i<HEADERS2.length; i++){
         d3.select(".node-" + HEADERS2[i] + "-Teacher .linkText")
