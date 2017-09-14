@@ -21,8 +21,8 @@ var rightScale = d3.scaleLinear()
   .range([height - margin.top, margin.bottom]); 
 
 var currencyFormatter = d3.format("0,.0f");
-    
 function drawGraphic(){
+
 
     d3.csv('data/slope_data.csv', function(error, data) {
      // data = d;
@@ -33,7 +33,8 @@ function drawGraphic(){
         var stateData_white= data.filter(function(d) { 
           return d.white == 1 && d.black == 0 && d.hispanic == 0 && d.asian == 0 && d.american_indian == 0 && d.alaskan_native == 0 && d.native_hawaiian == 0;
         })
-   
+   d3.select("#city-select-button").append("span").attr("class", "hello")
+
       var svg = d3.select("#graph-container")
         .append("svg")
         .attr("width", graphWidth)
@@ -55,7 +56,8 @@ function drawGraphic(){
       gCity.append("text")
         .text("Teachers")
         .attr("x", function(d) {
-          return width - margin.right*1.9
+          var textWidth = this.getBoundingClientRect().width
+          return width - margin.right - textWidth/3
         })
         .attr("y", height*.92)
         .attr("class", "sideline-label-text")
@@ -68,14 +70,15 @@ function drawGraphic(){
         .text("Students")
         .attr("x", function(d) {
           var textWidth = this.getBoundingClientRect().width
-          return margin.left - textWidth/3
+          return margin.left - textWidth/2.5
         })        
         .attr("y", height*.92)
         .attr("class", "sideline-label-text")
       gState.append("text")
         .text("Teachers")
         .attr("x", function(d) {
-          return width - margin.right*1.9
+          var textWidth = this.getBoundingClientRect().width
+          return width - margin.right - textWidth/2.5 
         })        
         .attr("y", height*.92)
         .attr("class", "sideline-label-text")
@@ -180,6 +183,7 @@ function drawGraphic(){
       }
       
 
+
       $("#state-select")
         .selectmenu({
 
@@ -201,6 +205,9 @@ function drawGraphic(){
         })     
         .selectmenu( "menuWidget" )
         .addClass( "ui-menu-icons customicons" );
+
+        // $(".ui-selectmenu-text").insertBefore($("span"))
+
       $("#city-select")
         .selectmenu({
            open: function( event, ui ) {  
@@ -224,6 +231,9 @@ function drawGraphic(){
         })     
         .selectmenu( "menuWidget" )
         .addClass( "ui-menu-icons customicons" );
+        // $(".ui-icon-triangle-1-s").insertAfter($(".ui-selectmenu-text"))
+        // d3.select("#state-menu").select(".ui-selectmenu-icon").remove()
+        // d3.select("#city-menu").select(".ui-selectmenu-icon").remove()
 
       var sort = function() { 
         // choose target dropdown
@@ -866,13 +876,13 @@ function drawGraphic(){
 
           //TRANSITION LEFT CIRCLES
           elements.select("." + geography + "-circle-left")
+            .attr("cx", function() {
+              return margin.left
+            })
             .transition()
             .duration(800)
             .attr("cy", function(d) { 
               return leftScale(d[geography + "_k12"])
-            })
-            .attr("cx", function() {
-              return margin.left
             })
             .attr("r", 5)
             .attr("class", function(d) { 
@@ -892,6 +902,9 @@ function drawGraphic(){
             })
           //TRANSITION RIGHT CIRCLES
           elements.select("." + geography + "-circle-right")
+            .attr("cx", function() {
+                return width - margin.right
+            })
             .transition()
             .duration(800)
             .attr("cy", function(d) {
@@ -902,9 +915,7 @@ function drawGraphic(){
               //   return (d3.select(this).attr("class").search("right") > 0) ? rightScale(d['state_teacher']) : leftScale(d['state_k12']);
               // }
             })
-            .attr("cx", function() {
-              return width - margin.right
-            })
+ 
             .attr("r", 5)
             .attr("class", function(d) { 
               if (geography == "city") { 
@@ -1064,6 +1075,9 @@ function drawGraphic(){
               }
             })
             .merge(elements)
+            .attr("cx", function() {   
+               return margin.left 
+            })  
             .transition()
             .duration(800)
             .attr("cy", function(d) {
@@ -1072,9 +1086,6 @@ function drawGraphic(){
               }else {
                 return leftScale(d['state_k12']) 
               }
-            })  
-            .attr("cx", function() {   
-               return margin.left 
             })   
             .attr("r", 5) 
 
@@ -1095,6 +1106,9 @@ function drawGraphic(){
               }
             })
             .merge(elements)
+            .attr("cx", function() {   
+               return width - margin.right   
+            }) 
             .transition()
             .duration(800)
             .attr("cy", function(d) {
@@ -1103,10 +1117,7 @@ function drawGraphic(){
               }else {
                 return rightScale(d['state_teacher']);
               }
-            })  
-            .attr("cx", function() {   
-               return width - margin.right   
-            })   
+            })    
             .attr("r", 5)    
           linesG
             .append("text")

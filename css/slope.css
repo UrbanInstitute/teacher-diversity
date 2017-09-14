@@ -33,8 +33,8 @@ select {
     font-weight: 600;
     font-family: Lato, sans-serif;
     text-align: center !important;
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
+    padding: 10px 88px 10px 88px !important;
+    width: auto !important;
 
 }
 
@@ -44,6 +44,10 @@ select {
 }
 .ui-selectmenu-icon .ui-icon .ui-icon-triangle-1-s {
     color: #fff;
+}
+.ui-selectmenu-icon.ui-icon {
+    margin-top: 3px !important;
+    margin-left: 3px !important;
 }
 .ui-widget-header {
     border: 1px solid #dddddd;
@@ -72,6 +76,9 @@ select {
     margin: 0 auto;
 }
 
+/*.ui-selectmenu-text:nth-child(3n) {
+
+}*/
 
 
 
