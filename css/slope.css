@@ -140,7 +140,7 @@ hr {
 
 .data-label{
     font-size: 13px;
-    font-weight: 300;
+    font-weight: 500;
     stroke: none !important;
     opacity: 0;
 }
@@ -151,7 +151,7 @@ hr {
 
 }
 .data-label.selected {
-    font-weight: 900;
+    font-weight: 700;
 }
 
 
@@ -162,7 +162,7 @@ hr {
 
 .sideline-label {
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 700;
 }
 .sideline-label-text {
     font-size: 12px;

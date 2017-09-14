@@ -165,8 +165,8 @@ function drawGraphic(){
             else
                 exist[$(this).val()] = true;
         });
-        $("#city-select").selectmenu("refresh")
-        $("#state-select").selectmenu("refresh")
+        // $("#city-select").selectmenu("refresh")
+        // $("#state-select").selectmenu("refresh")
         sort()
 
         d3.select(".cityText").text(cityDropdown)
