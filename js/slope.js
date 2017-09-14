@@ -340,7 +340,7 @@ function drawGraphic(){
       gCity.append("text")
         .attr("class", "sideline-label")
         .attr("x", margin.left/1.4)
-        .attr("y", leftScale(1) - 3)
+        .attr("y", leftScale(1) - 9)
         .text("100%")
 
       var linesCity = linesCityG.enter()
@@ -430,7 +430,7 @@ function drawGraphic(){
       gState.append("text")
         .attr("class", "sideline-label")
         .attr("x", margin.left/1.4)
-        .attr("y", leftScale(1) - 3)
+        .attr("y", leftScale(1) - 9)
         .text("100%")
       gState
         .append("line")
@@ -563,7 +563,7 @@ function drawGraphic(){
             .attr("transform", function(d){
               var textWidth = (this.getBoundingClientRect().width)
               var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
-              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
             })
             if (selectedCities.length > 1) { 
               d3.select(".cityText")
@@ -572,7 +572,7 @@ function drawGraphic(){
                 .attr("transform", function(d){
                   var textWidth = (this.getBoundingClientRect().width)
                   var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
-                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
                 })  
             }else if (selectedCities.length == 1){
               var city = d3.select(".city-line.selected").size() > 0 ? d3.select(".city-line.selected").datum().city : ""
@@ -582,7 +582,7 @@ function drawGraphic(){
                 .attr("transform", function(d){
                   var textWidth = (this.getBoundingClientRect().width)
                   var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
-                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
                 })
             }else if (selectedCities.length == 0){ 
                d3.select(".cityText")
@@ -591,7 +591,7 @@ function drawGraphic(){
                 .attr("transform", function(d){
                   var textWidth = (this.getBoundingClientRect().width)
                   var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
-                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
                 })
             }
           d3.selectAll(".state-line.selected")
@@ -657,7 +657,7 @@ function drawGraphic(){
             .attr("transform", function(d){
               var textWidth = (this.getBoundingClientRect().width)
               var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
-              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
             })
           d3.select(".cityText")
             .text(function() { 
@@ -673,7 +673,7 @@ function drawGraphic(){
             .attr("transform", function(d){
               var textWidth = (this.getBoundingClientRect().width)
               var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
-              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
             })
           selectedState = d3.select(".state-line.selected").size() > 0 ? d3.select(".state-line.selected").datum().state : []
           if (d3.select(".city-line.selected").size() > 0){ 
@@ -725,7 +725,7 @@ function drawGraphic(){
             .attr("transform", function(d){
               var textWidth = (this.getBoundingClientRect().width)
               var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
-              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
             })
 
           d3.select(".cityText")
@@ -739,7 +739,7 @@ function drawGraphic(){
             .attr("transform", function(d){
               var textWidth = (this.getBoundingClientRect().width)
               var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
-              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",15)"
+              return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
             })
             .classed("no-city", function() {
               return (d.city== "") ? true: false
