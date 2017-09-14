@@ -24,7 +24,7 @@ var currencyFormatter = d3.format("0,.0f");
 function drawGraphic(){
 
 
-    d3.csv('data/slope_data.csv', function(error, data) {
+    d3.csv('data/slope_data2.csv', function(error, data) {
      // data = d;
         var all_data = data
         var cityData_white= data.filter(function(d) { 
