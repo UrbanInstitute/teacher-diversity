@@ -1,6 +1,6 @@
 
 //credits to http://bl.ocks.org/benvandyke/8482820
-var formatPercent = d3.format(".1%");
+var formatPercent = d3.format(".0%");
 var graphWidth = 690;
 var graphHeight = 620;
 var width = 340;

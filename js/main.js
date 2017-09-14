@@ -269,34 +269,25 @@ function drawGraph(container_width, category) {
         
       })
     
-    var labelG = svg.append("g") 
-        .attr("class", "g-x-labels")
-        .selectAll(".label-g")
-        .data(nodeLabels)
-        .enter()
-        .append("g")
-        .attr("class", "label-g")
   // add the rectangles for the nodes
     node.append("rect")
         .attr("height", function(d) { return d.dy; })
         .attr("width", sankey.nodeWidth())
         .attr("class", "node-rect")
-       
+
+  var labelG = svg.append("g") 
+        .attr("class", "g-x-labels")
+        .selectAll(".label-g")
+        .data(nodeLabels)
+        .enter()
+        .append("g")
+        .attr("class", "label-g")      
           //ADD X-AXIS CATEGORY LABELS
+  for (j=0; j<nodeCategories.length; j++){
     labelG
-      .attr("transform", function(d, i) {
+      .attr("transform", function(d, i) { console.log(d3.select(".node-white" + d).size())
         var nodeTransform = d3.select(".node-white" + d).attr("transform").split(",")[0]
         var xLabelTranslate = nodeTransform.split("(")[1]
-        // xLabelTranslate = (dataCategory == 'all') ? [d3.select(".node-white").node().getBoundingClientRect().left, d3.select(".node-white-HS").node().getBoundingClientRect().left, d3.select(".node-white-Bach").node().getBoundingClientRect().left, d3.select(".node-white-Teaching").node().getBoundingClientRect().left, d3.select(".node-white-Teacher").node().getBoundingClientRect().left]: [0, d3.select(".node-white-Bach").node().getBoundingClientRect().left, d3.select(".node-white-Teaching").node().getBoundingClientRect().left, d3.select(".node-white-Teacher").node().getBoundingClientRect().left, 0]
-        // if (isPhone) { console.log('phone') 
-        //   return (dataCategory == 'all') ? "translate(" + ((xLabelTranslate) + (width*.17) - (7*i))+"," + height*1.02+ ")" : "translate(" + ((xLabelTranslate) + (width*.31) - i*10 )+"," + height*1.02+ ")";
-        // } else if (isMobile) { console.log('mobile')
-        //   if (i == teacher) {
-        //     return (dataCategory == 'all') ? "translate(" + ((xLabelTranslate) - (30)) + "," + height*1.02+ ")" :  "translate(" + ((xLabelTranslate) + 75 ) + "," + height*1.02+ ")" ;
-        //   }else { 
-        //     return (dataCategory == 'all') ? "translate(" + ((xLabelTranslate)) + "," + height*1.02+ ")" : "translate(" + ((xLabelTranslate) + (width*.35) - i*50) + "," + height*1.02+ ")";
-        //   }
-        // }else {console.log(xLabelTranslate)
         if (isPhone) {
           if (i > 1) {
             return (dataCategory == 'all') ? "translate(" + (xLabelTranslate -i*6)+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
@@ -304,8 +295,8 @@ function drawGraph(container_width, category) {
         }
         else if (isMobile) { 
           if (i == 4) {
-            return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 20 )+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
-          } return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 10)+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
+            return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 20 )+ "," + height+ ")": "translate(" + ((xLabelTranslate))+ "," + height+ ")";
+          } return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 10)+ "," + height+ ")": "translate(" + ((xLabelTranslate))+ "," + height+ ")";
         }else {
           if (i == 0) {
             return (dataCategory == 'all') ? "translate(" + (xLabelTranslate)+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
@@ -314,7 +305,7 @@ function drawGraph(container_width, category) {
         }
         //}
       })
-
+    }
 
   // add in the title for the nodes
     var xPos = (dataCategory == 'all') ? width*.005 : -120
