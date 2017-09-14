@@ -274,7 +274,10 @@ function drawGraphic(){
             .classed("selected", function(d) { 
               return (d.city == name) ? true : false
             })
-          d3.selectAll(".circle.selected, .city-line.selected, .state-line.selected").moveToFront()
+          var selectedStateLine = d3.select(".state-line.selected")
+          var selectedStateG = d3.select(selectedStateLine.node().parentNode).moveToFront()
+          var selectedCityLine = d3.select(".city-line.selected")
+          var selectedCityG = d3.select(selectedCityLine.node().parentNode).moveToFront()
           var data = (d3.select(".city-line.selected").size() > 0) ? d3.select(".city-line.selected").datum() : ""
           showLineInfo(data, "dropdown", "city")
         }else if (geography == "state"){
@@ -286,7 +289,14 @@ function drawGraphic(){
             .classed("selected", function(d) { 
               return d.state == name ? true : false
             })
-          d3.selectAll(".circle.selected, .city-line.selected, .state-line.selected").moveToFront()
+          var selectedStateLine = d3.select(".state-line.selected")
+          var selectedStateG = d3.select(selectedStateLine.node().parentNode).moveToFront()
+          d3.selectAll(".city-line.selected")
+            .each(function() {
+              var selectedCityLine = d3.select(this)
+              var selectedCityG = d3.select(selectedCityLine.node().parentNode).moveToFront()
+            })
+         
           var data = (d3.select(".state-line.selected").size() > 0) ? d3.select(".state-line.selected").datum() : ""
           showLineInfo(data, "dropdown", "state")
         }
