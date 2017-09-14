@@ -186,10 +186,14 @@ hr {
 
 .city-circle-left, .city-circle-right {
     fill: #fbbe15;
+    cursor: pointer;
+
 }
 
 .state-circle-left, .state-circle-right {
     fill: #1896d2;
+    cursor: pointer;
+
 }
 .highlight, .selected {
     stroke: #000 !important;

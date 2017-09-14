@@ -376,6 +376,11 @@ function drawGraphic(){
         .attr("class", function(d) {
           return "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id
         })
+        .on("mouseover", showLineInfo)
+        .on("mouseout", removeLineInfo)
+        .on('click', function(d) { 
+          showLineInfo(d, "click")
+        })
       linesCity
         .append("circle")
         .attr("cy", function(d) {
@@ -385,6 +390,11 @@ function drawGraphic(){
         .attr("r", 5)
         .attr("class", function(d) {
           return "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
+        })
+        .on("mouseover", showLineInfo)
+        .on("mouseout", removeLineInfo)
+        .on('click', function(d) { 
+          showLineInfo(d, "click")
         })
       linesCity
         .append("text")
@@ -495,6 +505,11 @@ function drawGraphic(){
         .attr("class", function(d) {
           return "circle state-circle-left state-circle-left-" + d.abbr 
         })
+        .on("mouseover", showLineInfo)
+        .on("mouseout", removeLineInfo)
+        .on('click', function(d) { 
+          showLineInfo(d, "click")
+        })
       linesState
         .append("circle")
         .attr("cy", function(d) {
@@ -504,6 +519,11 @@ function drawGraphic(){
         .attr("r", 5)
         .attr("class", function(d) {
           return "circle state-circle-right state-circle-right-" + d.abbr 
+        })
+        .on("mouseover", showLineInfo)
+        .on("mouseout", removeLineInfo)
+        .on('click', function(d) { 
+          showLineInfo(d, "click")
         })
       linesState
         .append("text")
@@ -632,6 +652,8 @@ function drawGraphic(){
                   var data = d3.select(this).datum()
                   selectedCities.push(data.city)
                 })
+              }else {
+                selectedCities = [];
               }       
           }      
         }else if (origin == "dropdown"){ 
@@ -685,10 +707,10 @@ function drawGraphic(){
             })
           } 
         }else { //IF HOVERING OVER CITY
-          if(d3.select(this).attr("class").search("city-line") == 0) { 
+          if(d3.select(this).attr("class").search("city") > -1) { console.log(d.abbr)
             d3.selectAll(".data-label-city." + d.abbr + d.city_id + ", .data-label-state." + d.abbr)
             .classed("highlight", true)
-            d3.select(this)
+            d3.select(".city-line-" + d.abbr + d.city_id)
               .classed("highlight", true)
               .moveToFront()
             d3.selectAll(".state-line-" + d.abbr)
@@ -700,7 +722,7 @@ function drawGraphic(){
           }else { //IF HOVERING OVER STATE 
             d3.selectAll(".data-label-city." + d.abbr + ", .data-label-state." + d.abbr)
               .classed("highlight", true)
-            d3.select(this)
+            d3.select(".state-line-" + d.abbr)
               .classed("highlight", true)
               .moveToFront()
             d3.selectAll(".city-line-" + d.abbr)
@@ -1054,7 +1076,8 @@ function drawGraphic(){
             .attr("cx", function() {   
                return margin.left 
             })   
-            .attr("r", 5)  
+            .attr("r", 5) 
+
          linesG.append("circle")
             .attr("class", function(d) { 
               if (geography == "city") { 
@@ -1155,7 +1178,7 @@ function drawGraphic(){
           });
 
         }
-      d3.selectAll(".city-line, .state-line")
+      d3.selectAll(".city-line, .state-line, .circle")
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
         .on('click', function(d) { 
