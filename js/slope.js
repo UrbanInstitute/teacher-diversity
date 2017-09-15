@@ -11,14 +11,29 @@ var margin = {top: 80, bottom: 20, left: 43, right:43};
 
 var currencyFormatter = d3.format("0,.0f");
 function drawGraphic(container_width){
-  console.log(container_width)
-  var width = container_width/2;
+  var isMobile = (container_width < 500) ? true : false;
+      isPhone = (container_width < 350) ? true : false;
+
+  console.log(isMobile)
+  var width = (isMobile) ? container_width/1.4 : container_width/2;
   var aspect_width = 25,
-  // heightPhone = (dataCategory == 'all') ? 52 : 46,
-  // heightMobile = (dataCategory == 'all') ? 43 : 35,
-  aspect_height = 47,
+  heightPhone = 35,
+    heightMobile = 37,
+    heightNormal = 47,
+    aspect_height = (function(){
+      if (isPhone) {
+        return heightPhone
+      }
+      else if (isMobile) { 
+        return heightMobile
+        // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
+      }else {
+        return heightNormal
+      }
+    })
+    ();
   height = Math.ceil((width * aspect_height) / aspect_width) - margin.top - margin.bottom,
-  graphHeight = height 
+  graphHeight = (isMobile == true) ? height*2 : height;
   var leftScale = d3.scaleLinear()
     .domain([0.0, 1])
     .range([height - margin.top, margin.bottom]);
@@ -48,7 +63,9 @@ function drawGraphic(container_width){
         .attr("width", width)
         .attr("height", height)
         .attr("class", "city-graph")
-        .attr("transform","translate(0," + 20 + ")")
+        .attr("transform", function() {
+          return (isMobile) ? "translate("+ (container_width - width)/2+"," + 20 + ")" : "translate(0," + 20 + ")"
+        })
       gCity.append("text")
         .text("Students")
         .attr("x", function(d) {
@@ -69,7 +86,9 @@ function drawGraphic(container_width){
         .attr("width", width)
         .attr("height", height)
         .attr("class", "state-graph")
-        .attr("transform","translate("+(width*.96)+ "," + 20 + ")")
+        .attr("transform", function() {
+          return (isMobile) ? "translate("+ (container_width - width)/2+"," + height + ")" : "translate(0," + 20 + ")"
+        })
       gState.append("text")
         .text("Students")
         .attr("x", function(d) {
