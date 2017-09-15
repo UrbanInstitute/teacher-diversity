@@ -510,7 +510,7 @@ function drawGraphic(){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-        .on('click', function(d) { console.log(d)
+        .on('click', function(d) { 
           showLineInfo(d, "click")
         })
 
@@ -590,7 +590,7 @@ function drawGraphic(){
       function removeLineInfo() { 
         d3.selectAll(".data-label")
           .classed("highlight", false)
-        if (raceOn.length == 0) {
+        if (raceOn.length == 0) { 
           d3.selectAll(".stateText, .cityText")
             .text("")
         }
@@ -613,7 +613,7 @@ function drawGraphic(){
                 var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
                 return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
               })  
-          }else if (selectedCities.length == 1){
+          }else if (selectedCities.length == 1){ 
             var city = d3.select(".city-line.selected").size() > 0 ? d3.select(".city-line.selected").datum().city : ""
              d3.select(".cityText")
               .classed("no-city", false)
@@ -633,15 +633,15 @@ function drawGraphic(){
                 return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
               })
           }
-          var hoveredStateLine = d3.select(".state-line.selected")
-          var hoveredStateG = d3.select(hoveredStateLine.node().parentNode).moveToFront()
-          d3.select(".city-line.highlight")
+          var selectedStateLine = d3.select(".state-line.selected")
+          var selectedStateG = d3.select(selectedStateLine.node().parentNode).moveToFront()
+          d3.selectAll(".city-line.selected")
             .each(function() {
-              var hoveredCityLine = d3.select(this)
-              var hoveredCityG = d3.select(hoveredCityLine.node().parentNode).moveToFront()
+              var selectedCityLine = d3.select(this)
+              var selectedCityG = d3.select(selectedCityLine.node().parentNode).moveToFront()
             })
         }
-        else {
+        else { 
           d3.selectAll(".stateText, .cityText")
             .text("")
         }
@@ -651,14 +651,14 @@ function drawGraphic(){
       }
       function showLineInfo(d, origin, cities) {  
 
-        if (origin == "click") {console.log(origin)
+        if (origin == "click") {
           //IF LINE IS ALREADY SELECTED AND IS CLICKED ON AGAIN
           if (d3.select(".state-line-" + d.abbr).attr("class").search("selected") > 0){ 
             d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected, .data-label.selected")
               .classed("selected", false)
             selectedState = [];
             selectedCities = [];
-          }else {                 console.log(d3.selectAll(".city-line.highlight").size())
+          }else {                 
 
               d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected, .data-label.selected")
                 .classed("selected", false)
@@ -726,9 +726,11 @@ function drawGraphic(){
               var data = d3.select(this).datum()
               selectedCities.push(data.city)
             })
-          } 
+          }else {
+            selectedCities = [];
+          }
         }else { //IF HOVERING OVER CITY
-          if(d3.select(this).attr("class").search("city") > -1) { console.log(d.abbr)
+          if(d3.select(this).attr("class").search("city") > -1) { 
             d3.selectAll(".data-label-city." + d.abbr + d.city_id + ", .data-label-state." + d.abbr)
               .classed("highlight", true)
          
@@ -842,7 +844,7 @@ function drawGraphic(){
 
 
       function updateLines(dataCity, dataState) { 
-        if (raceOn.length == 0) {
+        if (raceOn.length == 0) { 
           d3.selectAll(".stateText, .cityText")
             .text("")
         }
@@ -877,7 +879,7 @@ function drawGraphic(){
         var state = "state"
         var line = "line"
         moveLines(stateLines, state, selectedStateLine.state, selectedStateLine)
-        modifyDropdownOptions(optionsCity, optionsState, selectedCityLine.city, selectedStateLine.state)
+        // modifyDropdownOptions(optionsCity, optionsState, selectedCityLine.city, selectedStateLine.state)
         function moveLabels(element, d, geography, side) { 
           element.select(".data-label.selected" + ".data-label-" + geography + "-" + side + "-" + d.abbr)
             .attr("y", function(){ 
@@ -973,11 +975,14 @@ function drawGraphic(){
               }
             })
             .on('end', function() {
-              d3.selectAll(".city-line.selected, .state-line.selected")
-                .moveToFront()
-              d3.selectAll(".circle.selected")
-                .moveToFront()
-              removeLineInfo()
+              var selectedStateLine = d3.select(".state-line.selected")
+              var selectedStateG = d3.select(selectedStateLine.node().parentNode).moveToFront()
+              d3.selectAll(".city-line.selected")
+                .each(function() {
+                  var selectedCityLine = d3.select(this)
+                  var selectedCityG = d3.select(selectedCityLine.node().parentNode).moveToFront()
+                })
+              // removeLineInfo()
             }) 
           //ADD RIGHT DATA LABELS
           elements
@@ -1063,10 +1068,13 @@ function drawGraphic(){
               return rightScale(d[geography + '_teacher']);
             })
             .on('end', function() {
-              d3.selectAll(".city-line.selected, .state-line.selected")
-                .moveToFront()
-              d3.selectAll(".circle.selected")
-                .moveToFront()
+              var selectedStateLine = d3.select(".state-line.selected")
+              var selectedStateG = d3.select(selectedStateLine.node().parentNode).moveToFront()
+              d3.selectAll(".city-line.selected")
+                .each(function() {
+                  var selectedCityLine = d3.select(this)
+                  var selectedCityG = d3.select(selectedCityLine.node().parentNode).moveToFront()
+                })
               removeLineInfo()
 
             })
@@ -1185,13 +1193,13 @@ function drawGraphic(){
             .transition()
             .style("opacity", 0)
             .remove()
-            .on('end', function() {
-              d3.selectAll(".city-line.selected, .state-line.selected")
-                .moveToFront()
-              d3.selectAll(".circle.selected")
-                .moveToFront()
-              removeLineInfo()
-            })        
+            // .on('end', function() {
+            //   d3.selectAll(".city-line.selected, .state-line.selected")
+            //     .moveToFront()
+            //   d3.selectAll(".circle.selected")
+            //     .moveToFront()
+            //   removeLineInfo()
+            // })        
           var exist = {};
           d3.selectAll('.data-label-state').each(function() {
               if (exist[$(this).attr("class")])

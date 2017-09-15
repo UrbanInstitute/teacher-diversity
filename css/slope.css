@@ -66,11 +66,18 @@ select {
     width: 50%;
     float: left;
 }
+
+#city-select-menu {
+    width: 263px !important;
+}
 #city-menu {
     display: table;
     margin: 0 auto;
 }
 
+#state-select-menu {
+    width: 263px !important;
+}
 #state-menu {
     display: table;
     margin: 0 auto;
