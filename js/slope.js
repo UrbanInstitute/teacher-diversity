@@ -179,7 +179,6 @@ function drawGraphic(){
         // $('select[id^="state-select"] option[value=stateDropdown]').attr("selected","selected");
           var end = performance.now();
           var elapsed = end - start;
-          console.log("time elapsed:" + elapsed);
       }
       
 
@@ -511,7 +510,7 @@ function drawGraphic(){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-        .on('click', function(d) { 
+        .on('click', function(d) { console.log(d)
           showLineInfo(d, "click")
         })
 
@@ -605,41 +604,42 @@ function drawGraphic(){
               var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
             })
-            if (selectedCities.length > 1) { 
-              d3.select(".cityText")
-                .classed("no-city", false)
-                .text("multiple cities") 
-                .attr("transform", function(d){
-                  var textWidth = (this.getBoundingClientRect().width)
-                  var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
-                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
-                })  
-            }else if (selectedCities.length == 1){
-              var city = d3.select(".city-line.selected").size() > 0 ? d3.select(".city-line.selected").datum().city : ""
-               d3.select(".cityText")
-                .classed("no-city", false)
-                .text(city) 
-                .attr("transform", function(d){
-                  var textWidth = (this.getBoundingClientRect().width)
-                  var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
-                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
-                })
-            }else if (selectedCities.length == 0){ 
-               d3.select(".cityText")
-                .text("No city data for this state") 
-                .classed("no-city", true)
-                .attr("transform", function(d){
-                  var textWidth = (this.getBoundingClientRect().width)
-                  var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
-                  return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
-                })
-            }
-          d3.selectAll(".state-line.selected")
-            .moveToFront()
-          d3.selectAll(".city-line.selected")
-            .moveToFront()
-          d3.selectAll(".circle.selected")
-            .moveToFront()
+          if (selectedCities.length > 1) { 
+            d3.select(".cityText")
+              .classed("no-city", false)
+              .text("multiple cities") 
+              .attr("transform", function(d){
+                var textWidth = (this.getBoundingClientRect().width)
+                var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
+                return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
+              })  
+          }else if (selectedCities.length == 1){
+            var city = d3.select(".city-line.selected").size() > 0 ? d3.select(".city-line.selected").datum().city : ""
+             d3.select(".cityText")
+              .classed("no-city", false)
+              .text(city) 
+              .attr("transform", function(d){
+                var textWidth = (this.getBoundingClientRect().width)
+                var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
+                return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
+              })
+          }else if (selectedCities.length == 0){ 
+             d3.select(".cityText")
+              .text("No city data for this state") 
+              .classed("no-city", true)
+              .attr("transform", function(d){
+                var textWidth = (this.getBoundingClientRect().width)
+                var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
+                return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
+              })
+          }
+          var hoveredStateLine = d3.select(".state-line.selected")
+          var hoveredStateG = d3.select(hoveredStateLine.node().parentNode).moveToFront()
+          d3.select(".city-line.highlight")
+            .each(function() {
+              var hoveredCityLine = d3.select(this)
+              var hoveredCityG = d3.select(hoveredCityLine.node().parentNode).moveToFront()
+            })
         }
         else {
           d3.selectAll(".stateText, .cityText")
@@ -649,23 +649,24 @@ function drawGraphic(){
           .classed("highlight", false)
 
       }
-      function showLineInfo(d, origin, cities) { 
+      function showLineInfo(d, origin, cities) {  
 
-        if (origin == "click") { 
+        if (origin == "click") {console.log(origin)
           //IF LINE IS ALREADY SELECTED AND IS CLICKED ON AGAIN
           if (d3.select(".state-line-" + d.abbr).attr("class").search("selected") > 0){ 
             d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected, .data-label.selected")
               .classed("selected", false)
             selectedState = [];
             selectedCities = [];
-          }else { 
+          }else {                 console.log(d3.selectAll(".city-line.highlight").size())
+
               d3.selectAll(".city-line.selected, .state-line.selected, .circle.selected, .data-label.selected")
                 .classed("selected", false)
               d3.selectAll(".city-line.highlight, .state-line.highlight, .circle.highlight, .data-label.highlight")
                 .classed("selected", true) 
                 .classed("highlight", false) 
               selectedState = d3.select(".state-line.selected").datum().state
-              if (d3.select(".city-line.selected").size() > 0){ 
+              if (d3.select(".city-line.selected").size() > 0){                 
                 selectedCities = [];
                 d3.selectAll(".city-line.selected")
                 .each(function() {
@@ -729,16 +730,18 @@ function drawGraphic(){
         }else { //IF HOVERING OVER CITY
           if(d3.select(this).attr("class").search("city") > -1) { console.log(d.abbr)
             d3.selectAll(".data-label-city." + d.abbr + d.city_id + ", .data-label-state." + d.abbr)
-            .classed("highlight", true)
+              .classed("highlight", true)
+         
             d3.select(".city-line-" + d.abbr + d.city_id)
               .classed("highlight", true)
-              .moveToFront()
             d3.selectAll(".state-line-" + d.abbr)
               .classed("highlight", true)
-              .moveToFront()
             d3.selectAll(".city-circle-left-" + d.abbr + d.city_id + ", .city-circle-right-" + d.abbr + d.city_id + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
               .classed("highlight", true)
-              .moveToFront()
+            var hoveredStateLine = d3.select(".state-line.highlight")
+            var hoveredStateG = d3.select(hoveredStateLine.node().parentNode).moveToFront()
+            var hoveredCityLine = d3.select(".city-line.highlight")
+            var hoveredCityG = d3.select(hoveredCityLine.node().parentNode).moveToFront()
           }else { //IF HOVERING OVER STATE 
             d3.selectAll(".data-label-city." + d.abbr + ", .data-label-state." + d.abbr)
               .classed("highlight", true)
@@ -751,14 +754,13 @@ function drawGraphic(){
             d3.selectAll(".city-circle-left-" + d.abbr + ", .city-circle-right-" + d.abbr + ", .state-circle-left-" + d.abbr + ", .state-circle-right-" + d.abbr)
               .classed("highlight", true)
               .moveToFront()
-            //IF MULTIPLE CITIES
-            if (d3.selectAll(".city-line.highlight").size() > 1) {
-              // d3.selectAll(".city-line.highlight").each(function(d) { console.log(d)
-          // })   
-              // })
-            }else {
-             
-              }
+            var hoveredStateLine = d3.select(this)
+            var hoveredStateG = d3.select(hoveredStateLine.node().parentNode).moveToFront()
+            d3.select(".city-line.highlight")
+              .each(function() {
+                var hoveredCityLine = d3.select(this)
+                var hoveredCityG = d3.select(hoveredCityLine.node().parentNode).moveToFront()
+              })
           }
           d3.select(".stateText")
             .text(function() { 
