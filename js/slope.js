@@ -1,28 +1,31 @@
 
 //credits to http://bl.ocks.org/benvandyke/8482820
-var container_width = parseFloat(d3.select("#graph-container").style("width"))
+// var container_width = parseFloat(d3.select("#chart").style("width"))
 var formatPercent = d3.format(".0%");
-var graphHeight = 620;
-var width = container_width/2;
-var height = 550;
+// var height = 550;
 var raceOn = ["white"];
 var raceOff = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"];
 var selectedCities = [];
 var selectedState = [];
-console.log(container_width)
 var margin = {top: 80, bottom: 20, left: 43, right:43};
-
-var leftScale = d3.scaleLinear()
-  .domain([0.0, 1])
-  .range([height - margin.top, margin.bottom]);
-
-var rightScale = d3.scaleLinear()
-  .domain([0.0, 1])
-  .range([height - margin.top, margin.bottom]); 
 
 var currencyFormatter = d3.format("0,.0f");
 function drawGraphic(container_width){
+  console.log(container_width)
+  var width = container_width/2;
+  var aspect_width = 25,
+  // heightPhone = (dataCategory == 'all') ? 52 : 46,
+  // heightMobile = (dataCategory == 'all') ? 43 : 35,
+  aspect_height = 47,
+  height = Math.ceil((width * aspect_height) / aspect_width) - margin.top - margin.bottom,
+  graphHeight = height 
+  var leftScale = d3.scaleLinear()
+    .domain([0.0, 1])
+    .range([height - margin.top, margin.bottom]);
 
+  var rightScale = d3.scaleLinear()
+    .domain([0.0, 1])
+    .range([height - margin.top, margin.bottom]); 
 
     d3.csv('data/slope_data2.csv', function(error, data) {
      // data = d;
@@ -66,7 +69,7 @@ function drawGraphic(container_width){
         .attr("width", width)
         .attr("height", height)
         .attr("class", "state-graph")
-        .attr("transform","translate("+width+ "," + 20 + ")")
+        .attr("transform","translate("+(width*.96)+ "," + 20 + ")")
       gState.append("text")
         .text("Students")
         .attr("x", function(d) {
@@ -234,6 +237,12 @@ function drawGraphic(container_width){
         })     
         .selectmenu( "menuWidget" )
         .addClass( "ui-menu-icons customicons" );
+        var paddingTopBottom = .0145*container_width;
+        var paddingLeftRight = .108*container_width;
+
+          ($("#city-select-button").css("padding", paddingTopBottom + " " + paddingLeftRight));
+          ($("#state-select-button").css("padding", paddingTopBottom + " " + paddingLeftRight));
+
         // $(".ui-icon-triangle-1-s").insertAfter($(".ui-selectmenu-text"))
         // d3.select("#state-menu").select(".ui-selectmenu-icon").remove()
         // d3.select("#city-menu").select(".ui-selectmenu-icon").remove()
@@ -1232,11 +1241,11 @@ function drawGraphic(container_width){
     });
 }
 
-drawGraphic(container_width)
-$(window).on('resize', function () {
-      var container_width = parseFloat(d3.select("#graph-container").style("width"))
-      drawGraphic(container_width)
-});
+// drawGraphic(container_width)
+// $(window).on('resize', function () {
+//       var container_width = parseFloat(d3.select("#chart").style("width"))
+//       drawGraphic(container_width)
+// });
 
-// var pymChild = new pym.Child({ renderCallback: drawGraphic, polling: 500 });
+var pymChild = new pym.Child({ renderCallback: drawGraphic, polling: 500 });
 

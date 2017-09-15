@@ -1,7 +1,13 @@
 body {
-    font-family: Lato, sans-serif;
+    font-family: "Lato", sans-serif;
+/*    margin: 8px;
+*/    overflow: hidden;
 }
 
+#chart {
+/*    max-width: 690px;
+    width: 100%;  */
+}
 /*SELECT MENU */
 
 select {
@@ -24,8 +30,8 @@ select {
     text-align: center !important;
 }
 .ui-button {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+/*    padding-left: 0 !important;
+    padding-right: 0 !important;*/
 }
 .ui-selectmenu-button.ui-button {
     background: #332d2f !important;
@@ -33,7 +39,6 @@ select {
     font-weight: 600;
     font-family: Lato, sans-serif;
     text-align: center !important;
-    padding: 10px 88px 10px 88px !important;
     width: auto !important;
 
 }
@@ -92,18 +97,15 @@ select {
 /*SELECT MENU END */
 
 
-body {
-    max-width: 690px;
-}
-
 #switch-div {
     max-width: 609px;
+    width: 88%;
     margin: 0 auto;
 }
 
 #graph-container {
-    max-width: 690px;
-    width: 100%;
+/*    max-width: 690px;
+    width: 100%;*/
 }
 
 .long-name {
@@ -258,4 +260,11 @@ hr {
     -moz-transition: background-position .1s ease-in;
     -o-transition: background-position .1s ease-in;
     transition: background-position .1s ease-in;
+}
+
+@media screen and (max-width: 680px) {
+/*    #slope-div {
+        max-width: 100% !important;
+        width: 50%;  
+    }*/
 }

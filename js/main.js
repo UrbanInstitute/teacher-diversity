@@ -1,3 +1,5 @@
+console.log($(window).width())
+
 var container_width = parseFloat(d3.select("#chart").style("width"))
 var numberFormat = d3.format(",");
 var numberShortFormat = d3.format(".2s");

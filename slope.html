@@ -25,66 +25,67 @@
 
 <html>
 <body>
-  <div id="switch-div">
-    <div class="urban-switch blue large">
-      <div class="switch-label">White</div>
-      <div class="lo button_toggle switch large on" id="white">
+  <div id="chart">
+    <div id="switch-div">
+      <div class="urban-switch blue large">
+        <div class="switch-label">White</div>
+        <div class="lo button_toggle switch large on" id="white">
+        </div>
       </div>
-    </div>
-    <div class="urban-switch blue large">
-      <div class="switch-label">Black</div>
-      <div class="lo button_toggle switch large off" id="black">
+      <div class="urban-switch blue large">
+        <div class="switch-label">Black</div>
+        <div class="lo button_toggle switch large off" id="black">
+        </div>
       </div>
-    </div>
-    <div class="urban-switch blue large">
-      <div class="switch-label">Hispanic</div>
-      <div class="lo button_toggle switch large off" id="hispanic">
+      <div class="urban-switch blue large">
+        <div class="switch-label">Hispanic</div>
+        <div class="lo button_toggle switch large off" id="hispanic">
+        </div>
       </div>
-    </div>
-    <div class="urban-switch blue large">
-      <div class="switch-label">Asian</div>
-      <div class="lo button_toggle switch large off" id="asian">
+      <div class="urban-switch blue large">
+        <div class="switch-label">Asian</div>
+        <div class="lo button_toggle switch large off" id="asian">
+        </div>
       </div>
-    </div>
-    <div class="urban-switch blue large long-name">
-      <div class="switch-label">American Indian</div>
-      <div class="lo button_toggle switch large off" id="american_indian">
+      <div class="urban-switch blue large long-name">
+        <div class="switch-label">American Indian</div>
+        <div class="lo button_toggle switch large off" id="american_indian">
+        </div>
       </div>
-    </div>
-    <div class="urban-switch blue large long-name">
-      <div class="switch-label alaskan">Alaskan Native</div>
-      <div class="lo button_toggle switch large off" id="alaskan_native">
+      <div class="urban-switch blue large long-name">
+        <div class="switch-label alaskan">Alaskan Native</div>
+        <div class="lo button_toggle switch large off" id="alaskan_native">
+        </div>
       </div>
-    </div>
-    <div class="urban-switch blue large long-name">
-      <div class="switch-label hawaiian">Native Hawaiian</div>
-      <div class="lo button_toggle switch large off" id="native_hawaiian">
+      <div class="urban-switch blue large long-name">
+        <div class="switch-label hawaiian">Native Hawaiian</div>
+        <div class="lo button_toggle switch large off" id="native_hawaiian">
+        </div>
       </div>
+      <hr>
     </div>
-    <hr>
+    <div class="city-menu-div">
+      <div id ="city-menu"></div>
+    </div>
+    <div class="state-menu-div">
+      <div id ="state-menu"></div>
+    </div>
+    <div id="graph-container">
+    </div>
   </div>
-  <div class="city-menu-div">
-    <div id ="city-menu"></div>
-  </div>
-  <div class="state-menu-div">
-    <div id ="state-menu"></div>
-  </div>
-  <div id="graph-container">
-  </div>
-  <div class="footer">
   <script type="text/javascript" src="js/vendor/pym.min.js"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="js/vendor/jquery-1.12.4.min.js"></script>
   <script src="js/vendor/jquery-ui.min.js"></script>
   <script src="js/slope.js"></script>
   <script>
+        // var pym1 = new pym.Parent('graph', 'child_chart.html', {});
 
     $(window).load(function () {
       pymChild = new pym.Child({});
 
         
     });
-    
     var pymChild = new pym.Child();
   </script>
 
