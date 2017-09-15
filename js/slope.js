@@ -975,6 +975,7 @@ function drawGraphic(){
               }
             })
             .on('end', function() {
+              if (d3.select(".state-line.selected").size() > 0){
               var selectedStateLine = d3.select(".state-line.selected")
               var selectedStateG = d3.select(selectedStateLine.node().parentNode).moveToFront()
               d3.selectAll(".city-line.selected")
@@ -982,6 +983,7 @@ function drawGraphic(){
                   var selectedCityLine = d3.select(this)
                   var selectedCityG = d3.select(selectedCityLine.node().parentNode).moveToFront()
                 })
+              }
               // removeLineInfo()
             }) 
           //ADD RIGHT DATA LABELS
@@ -1068,6 +1070,8 @@ function drawGraphic(){
               return rightScale(d[geography + '_teacher']);
             })
             .on('end', function() {
+              if (d3.select(".state-line.selected").size() > 0){
+
               var selectedStateLine = d3.select(".state-line.selected")
               var selectedStateG = d3.select(selectedStateLine.node().parentNode).moveToFront()
               d3.selectAll(".city-line.selected")
@@ -1075,7 +1079,8 @@ function drawGraphic(){
                   var selectedCityLine = d3.select(this)
                   var selectedCityG = d3.select(selectedCityLine.node().parentNode).moveToFront()
                 })
-              removeLineInfo()
+              // removeLineInfo()
+              }
 
             })
           linesG.append("circle")
