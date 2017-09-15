@@ -1,15 +1,15 @@
 
 //credits to http://bl.ocks.org/benvandyke/8482820
+var container_width = parseFloat(d3.select("#graph-container").style("width"))
 var formatPercent = d3.format(".0%");
-var graphWidth = 690;
 var graphHeight = 620;
-var width = 340;
+var width = container_width/2;
 var height = 550;
 var raceOn = ["white"];
 var raceOff = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"];
 var selectedCities = [];
 var selectedState = [];
-
+console.log(container_width)
 var margin = {top: 80, bottom: 20, left: 43, right:43};
 
 var leftScale = d3.scaleLinear()
@@ -21,7 +21,7 @@ var rightScale = d3.scaleLinear()
   .range([height - margin.top, margin.bottom]); 
 
 var currencyFormatter = d3.format("0,.0f");
-function drawGraphic(){
+function drawGraphic(container_width){
 
 
     d3.csv('data/slope_data2.csv', function(error, data) {
@@ -33,11 +33,12 @@ function drawGraphic(){
         var stateData_white= data.filter(function(d) { 
           return d.white == 1 && d.black == 0 && d.hispanic == 0 && d.asian == 0 && d.american_indian == 0 && d.alaskan_native == 0 && d.native_hawaiian == 0;
         })
-   d3.select("#city-select-button").append("span").attr("class", "hello")
+
+      $("#graph-container").empty()
 
       var svg = d3.select("#graph-container")
         .append("svg")
-        .attr("width", graphWidth)
+        .attr("width", container_width)
         .attr("height", graphHeight)
 
       var gCity= svg.append("g")
@@ -82,7 +83,11 @@ function drawGraphic(){
         })        
         .attr("y", height*.92)
         .attr("class", "sideline-label-text")
+      
       //DROPDOWN MENUS
+
+      $("#city-menu").empty()
+      $("#state-menu").empty()
       var selectCity = d3.select("#city-menu")
         .append("select")
         .attr("id", "city-select")
@@ -181,7 +186,6 @@ function drawGraphic(){
           var elapsed = end - start;
       }
       
-
 
       $("#state-select")
         .selectmenu({
@@ -1227,5 +1231,12 @@ function drawGraphic(){
 
     });
 }
-var pymChild = new pym.Child({ renderCallback: drawGraphic, polling: 500 });
+
+drawGraphic(container_width)
+$(window).on('resize', function () {
+      var container_width = parseFloat(d3.select("#graph-container").style("width"))
+      drawGraphic(container_width)
+});
+
+// var pymChild = new pym.Child({ renderCallback: drawGraphic, polling: 500 });
 

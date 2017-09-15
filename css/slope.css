@@ -102,7 +102,8 @@ body {
 }
 
 #graph-container {
-    max-width: 680px;
+    max-width: 690px;
+    width: 100%;
 }
 
 .long-name {
