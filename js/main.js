@@ -7,6 +7,7 @@ var percentFormat = d3.format(".1%");
 function drawGraph(container_width, category) {
   console.log(container_width)
   var isMobile = (container_width <= 570) ? true : false;
+  var is675 = (container_width <= 675) ? true: false;
   var isPhone = (container_width <= 400) ? true : false;
   var dataCategory = document.getElementById('chart').className
   var units = "of students";
@@ -27,8 +28,20 @@ function drawGraph(container_width, category) {
       teacherSubTextPercentTop = (dataCategory == 'all') ? ["2.0%", "1.1%", "0.9%", "1.6%"] : ["5.1%", "5.3%", "5.4%", "2.5%"], 
       teacherSubTextNumberBottom = (dataCategory == 'all') ? ["580k", "40k", "57k", "15k"] : ["580k", "40k", "57k", "15k"],
       teacherSubTextNumberTop = (dataCategory == 'all') ? ["505k", "64k", "78k", "47k"] : ["505k", "64k", "78k", "47k"],
-      wrapWidthDescription = (isMobile) ? container_width*.99 : container_width*.65; 
-      wrapWidthDescriptionPhone = container_width*.8, 
+      // wrapWidthDescription = (isMobile) ? container_width*.99 : container_width*.65; 
+      wrapWidthDescription = (function(){
+        if (isPhone) {
+          return container_width*.8
+        }
+        else if (is675) { 
+          return container_width*.98
+          // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
+        }else {
+          return container_width*.65
+        }
+      })
+      (),
+      // wrapWidthDescriptionPhone = container_width*.8, 
       wrapWidth = (isMobile) ? 80 : 100,
       nodeLabels = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
       xLabels = (dataCategory == 'all') ? ["All young adults (ages 25-34)", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["", "Bachelor's Degree", "Teaching Degree", "Teacher"],
@@ -147,9 +160,11 @@ function drawGraph(container_width, category) {
   var statsSvg = d3.select("#stats-div")
     .append("svg")
     .attr("width", function() { 
-      if (isMobile) {
-        return container_width*.99
-      }else {
+      if (isPhone) {
+        return container_width*.8
+      }else if (is675) { 
+        return container_width*.98
+      }else { console.log('hi')
         return container_width*.65
       }
      // return width/1.9
