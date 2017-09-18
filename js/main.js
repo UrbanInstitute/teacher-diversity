@@ -1,11 +1,11 @@
-console.log($(window).width())
 
-var container_width = parseFloat(d3.select("#chart").style("width"))
+// var container_width = parseFloat(d3.select("#chart").style("width"))
 var numberFormat = d3.format(",");
 var numberShortFormat = d3.format(".2s");
 var percentFormat = d3.format(".1%");
 
 function drawGraph(container_width, category) {
+  console.log(container_width)
   var isMobile = (container_width <= 570) ? true : false;
   var isPhone = (container_width <= 400) ? true : false;
   var dataCategory = document.getElementById('chart').className
@@ -286,7 +286,7 @@ function drawGraph(container_width, category) {
         .append("g")
         .attr("class", "label-g")      
           //ADD X-AXIS CATEGORY LABELS
-  for (j=0; j<nodeCategories.length; j++){
+  // for (j=0; j<nodeCategories.length; j++){
     labelG
       .attr("transform", function(d, i) { 
         var nodeTransform = d3.select(".node-white" + d).attr("transform").split(",")[0]
@@ -308,7 +308,7 @@ function drawGraph(container_width, category) {
         }
         //}
       })
-    }
+    // }
 
   // add in the title for the nodes
     var xPos = (dataCategory == 'all') ? width*.005 : -120
@@ -1299,13 +1299,14 @@ function drawGraph(container_width, category) {
   });
   }
 
-drawGraph(container_width)
+// drawGraph(container_width)
 
-$(window).on('resize', function () {
-      var container_width = parseFloat(d3.select("#chart").style("width"))
-      var category = 'percent'
-      drawGraph(container_width, category)
-});
+// $(window).on('resize', function () {
+//       var container_width = parseFloat(d3.select("#chart").style("width"))
+//       var category = 'percent'
+//       drawGraph(container_width, category)
+// });
 
 
- 
+ var pymChild = new pym.Child({ renderCallback: drawGraph, polling: 500 });
+
