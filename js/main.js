@@ -828,7 +828,7 @@ function drawGraph(container_width, category) {
         }else{ 
           if (dataCategory != 'all') { 
             if (degree.search("bachelor") > 0 && category !='percent') {
-              return " college graduates in 2016."
+              return " " + HEADERS2[i] + " college graduates in 2016."
             }else{
               return (category == 'percent') ? " of " + HEADERS2[i] + " " + degree : " " + HEADERS2[i] + " " + degree;
             }
