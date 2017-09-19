@@ -19,6 +19,11 @@
   width: 100%;
 }
 
+.x-label-notes {
+  font-size: 11px;
+  fill:  #696969;
+  font-style: italic;
+}
 .label {
   float: left;
   margin-left: 55px;
@@ -214,6 +219,9 @@ hr {
 
 @media screen and (max-width: 416px) {
   hr {
+    display: none;
+  }
+  #stats-div {
     display: none;
   }
 

@@ -11,7 +11,7 @@ function drawGraph(container_width, category) {
   var isPhone = (container_width <= 400) ? true : false;
   var dataCategory = document.getElementById('chart').className
   var units = "of students";
-  var steps = (dataCategory == 'all') ? ["All young adults (ages 25-34)", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["Bachelor's Degree", "Teaching Degree", "Teacher"]
+  var steps = (dataCategory == 'all') ? ["All young adults", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["Bachelor's Degree", "Teaching Degree", "Teacher"]
   var numberSteps = (dataCategory == 'all') ? 5 : 3;
   var HEADERS2= ["white", "black", "Hispanic", "Asian"],
       HEADERS1= ["SOURCE", "TARGET"],
@@ -30,7 +30,7 @@ function drawGraph(container_width, category) {
       teacherSubTextNumberTop = (dataCategory == 'all') ? ["505k", "64k", "78k", "47k"] : ["505k", "64k", "78k", "47k"],
       // wrapWidthDescription = (isMobile) ? container_width*.99 : container_width*.65; 
       wrapWidthDescription = (function(){
-        if (isPhone) {
+        if (isPhone) { console.log('phon')
           return container_width*.8
         }
         else if (is675) { 
@@ -42,9 +42,9 @@ function drawGraph(container_width, category) {
       })
       (),
       // wrapWidthDescriptionPhone = container_width*.8, 
-      wrapWidth = (isMobile) ? 80 : 100,
+      wrapWidth = (isMobile) ? 80 : 90,
       nodeLabels = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
-      xLabels = (dataCategory == 'all') ? ["All young adults (ages 25-34)", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["", "Bachelor's Degree", "Teaching Degree", "Teacher"],
+      xLabels = (dataCategory == 'all') ? ["All young adults", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["", "Bachelor's Degree", "Teaching Degree", "Teacher"],
       xLabelNumber = (dataCategory == 'all') ? 5 : 4,
       teacher = (dataCategory == 'all') ? 4 : 3;
       // color = d3.scale.ordinal()
@@ -64,7 +64,7 @@ function drawGraph(container_width, category) {
         }
       })
       ();
-  var nodePadding = 45;
+  var nodePadding = (isPhone) ? 43 : 35;
   var margin = {top: 30, right: 10, bottom: 30, left: 10},
       width = (function(){
         if (isPhone) {
@@ -78,8 +78,8 @@ function drawGraph(container_width, category) {
       })
       ();
   var aspect_width = 35,
-      heightPhone = (dataCategory == 'all') ? 52 : 46,
-      heightMobile = (dataCategory == 'all') ? 43 : 35,
+      heightPhone = (dataCategory == 'all') ? 51 : 46,
+      heightMobile = (dataCategory == 'all') ? 39 : 35,
       heightNormal = (dataCategory == 'all') ? 32 : 27,
       aspect_height = (function(){
         if (isPhone) {
@@ -190,9 +190,9 @@ function drawGraph(container_width, category) {
       .append("g")
       .attr("transform", function() {
         if (isPhone) {
-          return (dataCategory == 'all') ? "translate("+ -width*.19 +"," + margin.top*2 + ")" : "translate(" + -width*.31+ "," + margin.top + ")"
+          return (dataCategory == 'all') ? "translate("+ -width*.19 +"," + margin.top* 1.5+ ")" : "translate(" + -width*.31+ "," + margin.top+ ")"
         }else if (isMobile) {
-          return (dataCategory == 'all') ? "translate("+ -width*.07 +"," + margin.top + ")" : "translate(" + -width*.2+ "," + margin.top + ")"
+          return (dataCategory == 'all') ? "translate("+ -width*.03 +"," + margin.top + ")" : "translate(" + -width*.22+ "," + margin.top + ")"
         }else {
           return (dataCategory == 'all') ? "translate("+ -width*.07 +"," + margin.top + ")" : "translate(" + -width*.21+ "," + margin.top + ")"
         }
@@ -299,7 +299,9 @@ function drawGraph(container_width, category) {
         .data(nodeLabels)
         .enter()
         .append("g")
-        .attr("class", "label-g")      
+        .attr("class", function(i) {
+          return "label-g label" + i
+        })      
           //ADD X-AXIS CATEGORY LABELS
   // for (j=0; j<nodeCategories.length; j++){
     labelG
@@ -338,7 +340,7 @@ function drawGraph(container_width, category) {
     for (j=0; j<nodeCategories.length; j++){
       for (i=0; i<HEADERS2.length; i++){
         if (isPhone){
-        var yPos = d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top-31
+        var yPos = d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top + 10
         yLabelG.append("g") 
           .attr("class", "linkTextPhone linkTextPhone-" + HEADERS2[i] + nodeNames[j])
           .data(graph_percent.filter(function(d) { 
@@ -352,7 +354,6 @@ function drawGraph(container_width, category) {
           })        
           .attr("x", width*.2)
           .attr("y", function(d) {
-            
             return yPos
           })
           .attr("transform", "translate(0,"+ (-170) +")")
@@ -394,7 +395,7 @@ function drawGraph(container_width, category) {
     //MOBILE TEXT
     for (i=0; i<HEADERS2.length; i++) {
       if (isPhone){
-      var yPos = (dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i] + "-All").node().getBoundingClientRect().top - 178 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 178
+      var yPos = d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top- 140 
       var textRect = d3.select(".linkTextPhone-race-" + HEADERS2[i]).node().getBoundingClientRect()
       yLabelGDescription = yLabelG
         .append("g")
@@ -471,17 +472,17 @@ function drawGraph(container_width, category) {
             if (isPhone) {
               return (dataCategory == 'all') ? 75 + sankey.nodeWidth() : sankey.nodeWidth() - 20
             }else if (container_width < 440){
-              return (dataCategory == 'all') ? sankey.nodeWidth() : -53
+              return (dataCategory == 'all') ? sankey.nodeWidth() - 12 : -53
             } else if (isMobile) {
-              return (dataCategory == 'all') ? 9 + sankey.nodeWidth() : -57
+              return (dataCategory == 'all') ? sankey.nodeWidth() : -57
             }return (dataCategory == 'all') ? 9 + sankey.nodeWidth() : -75
           }else {
             if (isPhone) {
               return (dataCategory == 'all') ? 75 + sankey.nodeWidth() : sankey.nodeWidth() - 20
             }else if (container_width < 440) {
-              return (dataCategory == 'all') ? 14 + sankey.nodeWidth() : -33
+              return (dataCategory == 'all') ? 3 + sankey.nodeWidth() : -33
             }else if (isMobile) {
-              return (dataCategory == 'all') ? 9 + sankey.nodeWidth() : -38
+              return (dataCategory == 'all') ? 14 + sankey.nodeWidth() : -38
             }return (dataCategory == 'all') ? 27 + sankey.nodeWidth() : -55
           }
         })
@@ -503,9 +504,14 @@ function drawGraph(container_width, category) {
       .call(wrapText, wrapWidth)
     d3.select(".g-x-labels")
       .attr("transform", function(d, i) { 
-        return "translate(" + 0 + ",0)";
+        return "translate(" + 0 + ","+ (-height*.03) +")";
       })
-
+    var xLabelNotes = d3.select(".label-g.label")
+      .append("text")
+      .text("(ages 25-34)")
+      .attr("y", 33)
+      .attr("x", 0)
+      .attr("class", "x-label-notes")
     labelG
       .append("rect")
       .attr("x", function(d, i) { 
@@ -1064,7 +1070,7 @@ function drawGraph(container_width, category) {
           if (isPhone){
             for (j=0; j<nodeCategories.length; j++){
               for (i=0; i<HEADERS2.length; i++){
-                var yPos = d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top-31
+                var yPos =  d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top + 10
                 yLabelG
                   .data(linkData.filter(function(d) { 
                     return (d.target.name) == HEADERS2[i] + nodeCategories[j]
@@ -1091,7 +1097,7 @@ function drawGraph(container_width, category) {
             }
             //TRANSITION DESCRIPTION LABELS
             for (i=0; i<HEADERS2.length; i++) {
-                var yPos = d3.select(".node-" + HEADERS2[i] + "-All").node().getBoundingClientRect().top - 178
+                var yPos =  d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top -130
                 var textRect = d3.select(".linkTextPhone-race-" + HEADERS2[i]).node().getBoundingClientRect()
                 d3.selectAll(".teacherStatsPhoneG-" + i) 
                   .attr("transform", function() { 

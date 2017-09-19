@@ -75,10 +75,10 @@ select {
 #city-select-menu {
     width: 263px !important;
 }
-#city-menu {
+/*#city-menu {
     display: table;
     margin: 0 auto;
-}
+}*/
 
 #state-select-menu {
     width: 263px !important;
@@ -97,6 +97,7 @@ select {
 /*SELECT MENU END */
 
 
+
 #switch-div {
     max-width: 609px;
     width: 88%;
@@ -107,6 +108,7 @@ select {
 /*    max-width: 690px;
     width: 100%;*/
 }
+
 
 .long-name {
     line-height: 14px !important;
@@ -262,9 +264,7 @@ hr {
     transition: background-position .1s ease-in;
 }
 
-@media screen and (max-width: 680px) {
-/*    #slope-div {
-        max-width: 100% !important;
-        width: 50%;  
-    }*/
+@media screen and (max-width: 539px) {
+
+
 }
