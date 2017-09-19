@@ -315,7 +315,7 @@ hr {
 }
 @media screen and (max-width: 539px) {
     .ui-selectmenu-text {
-        margin-left: 30px !important;
+        margin-left: 40px !important;
     }
     #isMobile {
         display: block;
@@ -396,11 +396,11 @@ hr {
         margin-left: 8px !important;
     }
     .ui-selectmenu-text {
-        margin-left: calc(35%) !important;
+        margin-left: calc(15vw + 10px) !important;
     }
-    .ui-selectmenu-icon.ui-icon {
-        margin-left: 120px !important;
-    }
+/*    .ui-selectmenu-icon.ui-icon {
+        margin-left: 130px !important;
+    }*/
     #switch-div {
         width: 88%;
     }
@@ -456,6 +456,9 @@ hr {
     }
 }
 @media screen and (max-width: 325px) {
+    .state-menu-div {
+        margin-top: calc(122vw + 70px);
+    }
     .urban-switch.large.alaskan{
         margin-left: 18px !important;
     }
@@ -468,6 +471,10 @@ hr {
     .urban-switch.large.hawaiian {
         margin-left: 0px !important;
         margin-bottom: 20px;
+    }
+
+    .ui-selectmenu-text {
+        margin-left: calc(3vw + 10px) !important;
     }
     .urban-switch.large {
         margin-left: 18px;

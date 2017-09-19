@@ -89,7 +89,7 @@ function drawGraphic(container_width){
           return margin.left - textWidth/3
         })
         .attr("y", function() {
-          return (isMobile && !isPhone) ? height*.88 : height*.91
+          return (isMobile && !isPhone) ? height*.9 : height*.91
         })
         .attr("class", "sideline-label-text")
       gCity.append("text")
@@ -99,7 +99,7 @@ function drawGraphic(container_width){
           return width - margin.right - textWidth/3
         })
         .attr("y", function() {
-          return (isMobile && !isPhone) ? height*.88 : height*.91
+          return (isMobile && !isPhone) ? height*.9 : height*.91
         })        
         .attr("class", "sideline-label-text")
       var gState= svg.append("g")
@@ -118,7 +118,7 @@ function drawGraphic(container_width){
           return margin.left - textWidth/2.5
         })        
         .attr("y", function() {
-          return (isMobile && !isPhone) ? height*.88 : height*.91
+          return (isMobile && !isPhone) ? height*.9 : height*.91
         })
         .attr("class", "sideline-label-text")
       gState.append("text")
@@ -128,7 +128,7 @@ function drawGraphic(container_width){
           return width - margin.right - textWidth/2.5 
         })        
         .attr("y", function() {
-          return (isMobile && !isPhone) ? height*.88 : height*.91
+          return (isMobile && !isPhone) ? height*.9 : height*.91
         })        
         .attr("class", "sideline-label-text")
       
@@ -241,8 +241,11 @@ function drawGraphic(container_width){
            open: function( event, ui ) { 
             $("ul#state-select-menu").css("width", width - margin.left - margin.right)
             changeDropdown()
-            console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.35)
-              d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.35) + "px")
+              if (isMobile) {
+                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.38) + "px")
+              }else {
+                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.13) + "px")
+              }
               pymChild.sendHeight();
             },
             close: function(event, ui){
@@ -269,7 +272,11 @@ function drawGraphic(container_width){
             console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height)
               d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22) + "px")
               // d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open:first-child").style("height",  "300px")
-              console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22)
+              if (isMobile) {
+                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.28) + "px")
+              }else {
+                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22) + "px")
+              }
               pymChild.sendHeight();
             },
             close: function(event, ui){
