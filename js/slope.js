@@ -87,7 +87,7 @@ function drawGraphic(container_width){
         .attr("height", height)
         .attr("class", "state-graph")
         .attr("transform", function() {
-          return (isMobile) ? "translate("+ (container_width - width)/2+"," + height + ")" : "translate(0," + 20 + ")"
+          return (isMobile) ? "translate("+ (container_width - width)/2+"," + height + ")" : "translate("+width*.96+"," + 20 + ")"
         })
       gState.append("text")
         .text("Students")
