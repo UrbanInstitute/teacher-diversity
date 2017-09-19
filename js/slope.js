@@ -15,10 +15,12 @@ function drawGraphic(container_width){
   //     isPhone = (container_width < 350) ? true : false;
   var isMobile = d3.select("#isMobile").style("display") == "block"
   var isPhone = d3.select("#isPhone").style("display") == "block"
+  var isPhoneSmall = d3.select("#isPhoneSmall").style("display") == "block"
+
   console.log(isMobile)
   var width = (function() {
     if (isPhone) {
-      return container_width*.95
+      return container_width*1.04
     }else if (isMobile) {
       return container_width/1.35
     }else {
@@ -27,11 +29,15 @@ function drawGraphic(container_width){
   })
   ();
   var aspect_width = 25,
-  heightPhone = 35,
+    heightSmallPhone = 41,
+    heightPhone = 36,
     heightMobile = 37,
     heightNormal = 47,
     aspect_height = (function(){
-      if (isPhone) { console.log('phone')
+      if (isPhoneSmall) { console.log('small phone')
+        return heightSmallPhone;
+      }
+      else if (isPhone) { console.log('phone')
         return heightPhone
       }
       else if (isMobile) { console.log('mobile')
@@ -83,7 +89,7 @@ function drawGraphic(container_width){
           return margin.left - textWidth/3
         })
         .attr("y", function() {
-          return (isMobile) ? height*.88 : height*.92
+          return (isMobile && !isPhone) ? height*.88 : height*.91
         })
         .attr("class", "sideline-label-text")
       gCity.append("text")
@@ -93,7 +99,7 @@ function drawGraphic(container_width){
           return width - margin.right - textWidth/3
         })
         .attr("y", function() {
-          return (isMobile) ? height*.88 : height*.92
+          return (isMobile && !isPhone) ? height*.88 : height*.91
         })        
         .attr("class", "sideline-label-text")
       var gState= svg.append("g")
@@ -112,7 +118,7 @@ function drawGraphic(container_width){
           return margin.left - textWidth/2.5
         })        
         .attr("y", function() {
-          return (isMobile) ? height*.88 : height*.92
+          return (isMobile && !isPhone) ? height*.88 : height*.91
         })
         .attr("class", "sideline-label-text")
       gState.append("text")
@@ -122,7 +128,7 @@ function drawGraphic(container_width){
           return width - margin.right - textWidth/2.5 
         })        
         .attr("y", function() {
-          return (isMobile) ? height*.88 : height*.92
+          return (isMobile && !isPhone) ? height*.88 : height*.91
         })        
         .attr("class", "sideline-label-text")
       
@@ -233,6 +239,7 @@ function drawGraphic(container_width){
         .selectmenu({
 
            open: function( event, ui ) { 
+            $("ul#state-select-menu").css("width", width - margin.left - margin.right)
             changeDropdown()
             console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.35)
               d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.35) + "px")
@@ -257,6 +264,7 @@ function drawGraphic(container_width){
       $("#city-select")
         .selectmenu({
            open: function( event, ui ) {  
+            $("ul#city-select-menu").css("width", width - margin.left - margin.right)
               changeDropdown()     
             console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height)
               d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22) + "px")

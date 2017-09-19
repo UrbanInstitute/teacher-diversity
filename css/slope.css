@@ -64,26 +64,34 @@ select {
         font-size: 18px !important;
         text-align: center;
         color: #fff;
+        overflow: visible !important;
+        margin-right: 27px !important;
+        margin-left: 15px !important;
     }
 
-.city-menu-div, .state-menu-div {
-    width: 50%;
+.city-menu-div {
+    width: 49%;
     float: left;
+    padding-left: 8px;
 }
-
+.state-menu-div {
+    width: 49%;
+    float: left;
+    padding-left: -5px;
+}
 
 #city-select-menu {
-    width: 263px !important;
 }
 #city-menu {
+    background: #332d2f;
     display: table;
     margin: 0 auto;
 }
 
 #state-select-menu {
-    width: 263px !important;
 }
 #state-menu {
+    background: #332d2f;
     display: table;
     margin: 0 auto;
 }
@@ -110,14 +118,14 @@ select {
 }
 
 
-.long-name {
-    line-height: 14px !important;
-    margin-left: 0px !important;
+.urban-switch.large.long-name {
+    line-height: 14px;
+    margin-left: -2px;
 
 }
-.switch-label.alaskan {
-    margin-left: -7px;
-}
+
+
+
 
 .switch-label.hawaiian {
     margin-left: 14px;
@@ -133,7 +141,7 @@ select {
     text-align: right;
     border-radius: 10px;
     margin-top: 18px;
-    margin-right: 7px;
+    margin-right: 3px;
     margin-left: 24px;
 }
 
@@ -202,6 +210,9 @@ hr {
     stroke-width: 1px;
     cursor: pointer;
 }
+    #isPhoneSmall {
+        display: none;
+    }
 
 .city-circle-left, .city-circle-right {
     fill: #fbbe15;
@@ -269,28 +280,63 @@ hr {
 #isPhone {
     display: none;
 }
+@media screen and (max-width: 670px) {
+    .long-name {
+        margin-left: inherit;
+    }
+    .urban-switch.large.white {
+        margin-left: 24px;
+    }
+    .urban-switch.large {
+        margin-left: 5px;
+        margin-right: 2px;
+    }
+    .urban-switch.large.alaskan {
+        margin-left: -22px !important;
+    }
+     .urban-switch.large.hawaiian {
+        margin-left: -20px !important;
+     }
+}
+@media screen and (max-width: 600px) {
+    .urban-switch.large {
+        margin-left: 18px;
+        margin-right: 10px;
+    }
+    .urban-switch.large.asian {
+        margin-left: 23px
+    }
+    .urban-switch.large.alaskan {
+        margin-left: 6px !important;
+    }
+    .urban-switch.large.american_indian {
+        margin-left: -7px !important;
+    }
+}
 @media screen and (max-width: 539px) {
-
+    .ui-selectmenu-text {
+        margin-left: 30px !important;
+    }
     #isMobile {
         display: block;
     }
         #switch-div {
             width: 100%;
         }
-    .state-menu-div {
-        position: absolute;
-    }
+
     .state-menu-div {
         margin-top: calc(105vw - 45px);
         left: 50%;
         width: 100%;
-
+        position: absolute;
+        padding: 0;
     }
 
     .city-menu-div {
         top: 15%;
         left: 50%;
         width: 100%;
+        padding: 0;
 
     }
     #city-menu {
@@ -304,8 +350,15 @@ hr {
         left: -51%;
         background: #332d2f;
     }
+    .urban-switch.large.american_indian{
+        margin-left: -14px !important;
+    }
+    .urban-switch.large.alaskan{
+        margin-left: -2px !important;
+    }
     .urban-switch.large {
-        margin-left: 18px;
+        margin-left: 10px;
+        margin-right: 5px
     }
     .urban-switch.american_indian {
         margin-left: -7px !important;
@@ -322,36 +375,102 @@ hr {
 
 }
 @media screen and (max-width: 480px) {
-    .urban-switch.large {
-        margin-left: 12px;
+    .ui-selectmenu-text {
+        margin-left: 20px !important;
     }
+    .urban-switch-large {
+        margin-left: 18px;
+        margin-right: 5px;
+    }
+
 
 }
 @media screen and (max-width: 430px) {
-
+    .urban-switch.large.american_indian{
+        margin-left: 0px !important;
+    }
+    .urban-switch.large.asian{
+        margin-left: 10px;
+    }
+    .urban-switch.large.alaskan {
+        margin-left: 8px !important;
+    }
+    .ui-selectmenu-text {
+        margin-left: calc(35%) !important;
+    }
+    .ui-selectmenu-icon.ui-icon {
+        margin-left: 120px !important;
+    }
     #switch-div {
         width: 88%;
+    }
+    .switch-label {
+        float: inherit;
+        margin-bottom: 3px;
     }
      #isPhone {
             display: block;
         }
-    .urban-switch.large {
-        margin-left: 0px;
-        margin-right: 4px;
+    .urban-switch.white, .urban-switch.american_indian {
+        margin-left: 0px !important
     }
-    .urban-switch.alaskan {
-        margin-left: -28px !important;
+    .urban-switch.large.hawaiian {
+        margin-left: 9px !important;
+    }
+     .urban-switch.large {
+        text-align: center;
+        line-height: normal;
+     }
+    .switch.large {
+        margin-left: 0px;
+        margin-right: 0px;
+        line-height: inherit;
+        text-align: center;
+    }
+
+
+    .switch-label.alaskan, .switch-label.hawaiian {
+        margin-left: 0px;
     }
     .switch-label {
         font-size: 12px;
     }
     .state-menu-div {
-        margin-top: calc(105vw + 40px);
+        margin-top: calc(125vw + 30px);
     }
 }
 @media screen and (max-width: 350px) {
-
+    .urban-switch.large {
+        margin-right: 5px;
+        margin-left: 4px;
+        margin-top: 15px;
+    }
+    #isPhoneSmall {
+        display: block;
+    }
     .state-menu-div {
-        margin-top: calc(110vw);
+        margin-top: calc(130vw + 70px);
+    }
+    .switch.large {
+        margin-left: 0;
+    }
+}
+@media screen and (max-width: 325px) {
+    .urban-switch.large.alaskan{
+        margin-left: 18px !important;
+    }
+    .urban-switch.large.asian {
+        margin-left: 0px !important;
+    }
+    .urban-switch.large.american_indian {
+        margin-left: 18px !important;
+    }
+    .urban-switch.large.hawaiian {
+        margin-left: 0px !important;
+        margin-bottom: 20px;
+    }
+    .urban-switch.large {
+        margin-left: 18px;
+        margin-right: 2px;
     }
 }
