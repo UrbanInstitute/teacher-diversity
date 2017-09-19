@@ -1,196 +1,40 @@
 <!DOCTYPE html>
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-  <title>Of college graduates, who becomes a teacher?</title>
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic,900" rel="stylesheet" type="text/css">  
-  <link rel="stylesheet" type="text/css" href="css/sankey.css"/>
-
-  <style>
- 
-body, html {
-  font-family: "Lato", sans-serif;
- }
-/*#chart {
-  max-width: 680px;
-}
-.node rect {
-  cursor: move;
-  fill-opacity: .9;
-  shape-rendering: crispEdges;
-  cursor: pointer;
-}
-
-.node text {
-  pointer-events: none;
-  text-shadow: 0 1px 0 #fff;
-  fill: #000;
-}
-
-.node {
-  fill: #1696d2;
-}
-
-.node.hover {
-  fill: #0a4c6a;
-}
-.link {
-  fill: none;
-  stroke: #696969;
-  stroke-opacity: .4;
-}
-
-.stats-text, #source-div {
-  font-weight: 700;
-  text-transform: uppercase;
-}
-.hover {
-  stroke-opacity: 1;
-}
- 
-
-#toggles {
-  width: 100%;
-  padding-top: 10px;
-  float: left;
-}
-
-.link {
-  cursor: pointer
-}
-.toggle_button{
-    margin-bottom: 30px;
-    padding: 5 10 5 10px;
-    float: left;
-    margin-right: 10px;
-    color: #404041;
-    cursor: pointer;
-}
-
-.toggle_button.active span{
-  background-color: #1696d2;
-  color: white;
-}
-.toggle_button span:hover{
-  background-color: #231f20;
-  color: white;
-}
-
-.toggle_button span{
-    color:#333;
-    background-color: #f2f2f2;
-    padding: 12px;
-    text-align: center;
-    text-transform: uppercase;
-    font-size:15px;
-    border:solid 1px #e1e1e1;
-}
-
-#source-div {
-  float: left;
-}
-
-.description {
-  font-size: 16px;
-  fill:  #1696d2;
-}
-
-#stats-div {
-  text-transform: uppercase;
-}
-*/
-
-.link.diploma  {
-  opacity: 0;
-}
-
-.linkText-white-Teaching, .linkText-black-Teaching, .linkText-Asian-Teaching, .linkText-Hispanic-Teaching {
-  fill: #000;
-}
-
-/*.node-white-Bach, .node-black-Bach, .node-Asian-Bach, .node-Hispanic-Bach {
-  fill: #1896d2;
-}*/
-/*
-.link-white-Bach, .link-black-Bach, .link-Asian-Bach, .link-Hispanic-Bach {
-  stroke: #1896d2;
-  stroke-opacity: .77;
-  fill: none;
-}
-.node-white-Teaching, .node-black-Teaching, .node-Asian-Teaching, .node-Hispanic-Teaching {
-  fill: #11719f;
-}
-.link-white-Teaching, .link-black-Teaching, .link-Asian-Teaching, .link-Hispanic-Teaching {
-  stroke: #11719f;
-  stroke-opacity: .77;
-  fill: none;
-}
-.link-white-Bach.no-TD, .link-black-Bach.no-TD, .link-Asian-Bach.no-TD, .link-Hispanic-Bach.no-TD {
-  stroke: #1896d2;
-  stroke-opacity: .77;
-  fill: none;
-}*/
-/*.node-white-Teacher, .node-black-Teacher, .node-Asian-Teacher, .node-Hispanic-Teacher {
-  fill: #062635;
-}
-.node-white-HS, .node-black-HS, .node-Hispanic-HS, .node-Asian-HS {
-  opacity: 0;
-}*/
-
-.label-Bach {
-  margin-left: 70px;
-}
-
-.label-Teaching {
- margin-left: 130px;
-}
-.label-Teacher {
-  padding-left: 100px;
-}
-
- 
-  </style>
-  </head>
-<body>
- 
-<div id="chart" class="bachelor">
-  <div id="title">Teachers with Bachelor's Degrees, Breakdown by Race</div>
-  <div id="toggles">
-    <div id="percent_button" class="toggle_button active"><span>Percent</span></div>
-    <div id="numbers_button" class="toggle_button"><span>Numbers</span></div>
-  </div>
-  <div id="stats-div">
-  </div>
-  <hr>
-</div>
-<!-- <div class="label-div">
-  <div class= "label label-Bach">
-    <p>Bachelor's</p>
-  </div>
-  <div class= "label label-Teaching">
-    <p>Teaching Degree</p>
-  </div>
-  <div class= "label label-Teacher">
-    <p>Teacher</p>
-  </div>
-</div> -->
-<script type="text/javascript" src="js/vendor/pym.min.js"></script>
-<script src="js/vendor/jquery-1.12.4.min.js"></script>
-<script src="js/vendor/jquery-ui.min.js"></script>
-<script src="https://d3js.org/d3.v4.js"></script>
-<script src="js/teacher-diversity_sankey.js"></script>
-<script src="js/main.js"></script>
-<script>
-    $(window).load(function () {
-      pymChild = new pym.Child({});
-        
-    });
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic,900" rel="stylesheet" type="text/css">  
+  <style type="text/css">
+   body {
+            margin: 20px;
+        }
     
-    var pymChild = new pym.Child();
-</script>
-
- 
+    .pym {
+        max-width: 680px;
+    }
+    .graphtitle {
+        font-size: 18px;
+        color: #333;
+        font-weight: 700;
+        margin-left: .5em;
+        text-align: 30%;
+    }
+  /*@media  (min-width: 800px) {
+      #left-side {
+          width: 35%;
+      }
+     
+  } */
+  </style>
+</head>
+<body>
+<div id ="graph" class="pym"></div>
+  <script type="text/javascript" src="js/vendor/pym.min.js"></script>
+  <script>
+        var pym1 = new pym.Parent('graph', 'child-bachelor.html', {});
+   </script>
 </body>
 </html>

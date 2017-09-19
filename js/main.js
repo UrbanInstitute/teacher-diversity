@@ -70,7 +70,7 @@ function drawGraph(container_width, category) {
         if (isPhone) {
           return (dataCategory == 'all') ? container_width*1.2 : container_width*1.35
         } else if (isMobile) { 
-          return (dataCategory == 'all') ? container_width*1.08 : container_width*1.25
+          return (dataCategory == 'all') ? container_width*1.08 : container_width*1.21
           // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
         }else {
           return (dataCategory == 'all') ? container_width*1.02 : container_width*1.23
@@ -192,7 +192,7 @@ function drawGraph(container_width, category) {
         if (isPhone) {
           return (dataCategory == 'all') ? "translate("+ -width*.19 +"," + margin.top*2 + ")" : "translate(" + -width*.31+ "," + margin.top + ")"
         }else if (isMobile) {
-          return (dataCategory == 'all') ? "translate("+ -width*.07 +"," + margin.top + ")" : "translate(" + -width*.19+ "," + margin.top + ")"
+          return (dataCategory == 'all') ? "translate("+ -width*.07 +"," + margin.top + ")" : "translate(" + -width*.2+ "," + margin.top + ")"
         }else {
           return (dataCategory == 'all') ? "translate("+ -width*.07 +"," + margin.top + ")" : "translate(" + -width*.21+ "," + margin.top + ")"
         }
@@ -312,9 +312,9 @@ function drawGraph(container_width, category) {
           } return (dataCategory == 'all') ? "translate(" + (xLabelTranslate)+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
         }
         else if (isMobile) { 
-          if (i == 4) {
+          if (i == 4) {  console.log(i)
             return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 20 )+ "," + height+ ")": "translate(" + ((xLabelTranslate))+ "," + height+ ")";
-          } return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 10)+ "," + height+ ")": "translate(" + ((xLabelTranslate))+ "," + height+ ")";
+          } return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 10)+ "," + height+ ")": "translate(" + ((xLabelTranslate - 10))+ "," + height+ ")";
         }else {
           if (i == 0) {
             return (dataCategory == 'all') ? "translate(" + (xLabelTranslate)+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
@@ -471,14 +471,18 @@ function drawGraph(container_width, category) {
             if (isPhone) {
               return (dataCategory == 'all') ? 75 + sankey.nodeWidth() : sankey.nodeWidth() - 20
             }else if (container_width < 440){
-              return (dataCategory == 'all') ? sankey.nodeWidth() : -75
-            } return (dataCategory == 'all') ? 9 + sankey.nodeWidth() : -75
+              return (dataCategory == 'all') ? sankey.nodeWidth() : -53
+            } else if (isMobile) {
+              return (dataCategory == 'all') ? 9 + sankey.nodeWidth() : -57
+            }return (dataCategory == 'all') ? 9 + sankey.nodeWidth() : -75
           }else {
             if (isPhone) {
               return (dataCategory == 'all') ? 75 + sankey.nodeWidth() : sankey.nodeWidth() - 20
             }else if (container_width < 440) {
-              return (dataCategory == 'all') ? 14 + sankey.nodeWidth() : -55
-            } return (dataCategory == 'all') ? 27 + sankey.nodeWidth() : -55
+              return (dataCategory == 'all') ? 14 + sankey.nodeWidth() : -33
+            }else if (isMobile) {
+              return (dataCategory == 'all') ? 9 + sankey.nodeWidth() : -38
+            }return (dataCategory == 'all') ? 27 + sankey.nodeWidth() : -55
           }
         })
         .attr("text-anchor", "start")
@@ -1097,38 +1101,6 @@ function drawGraph(container_width, category) {
                       return "translate("+ width * .28 +","+ (yPos ) +")"
                     }
                   })  
-                // .attr("dy", 0)
-                // .attr("transform", function() { 
-                //   console.log(i)
-                //   if (i == 2) {
-                //     return "translate("+ width * .325 +","+ (-140) +")"
-                //   }else {
-                //     return "translate("+ width * .3 +","+ (-140) +")"
-                //   }
-                // })
-                // .attr("class", function(d) {
-                //     return "teacherStatsPhone-text teacherStatsPhone-text-" + HEADERS2[i] 
-                // }) 
-              //   // .call(wrapText, wrapWidthDescriptionPhone)
-              // var textRect = d3.select(".teacherStatsPhone-text-" + HEADERS2[i]).node().getBoundingClientRect()
-              // yLabelG.select(".teacherStatsPhoneG-" + i).append("rect")
-              //   .attr("x",0)
-              //   .attr("y", function(d) { 
-              //     return yPos
-              //   })        
-              //   .attr("width", textRect.width * 1.1)
-              //   .attr("height", textRect.height * 1.4)
-              //   .attr("transform", function() { 
-              //     console.log(i)
-              //     if (i == 2) {
-              //       return "translate("+ width * .305 +","+ (-155) +")"
-              //     }else {
-              //       return "translate("+ width * .28 +","+ (-155) +")"
-              //     }
-              //   })        .style("fill","#fff")
-              //   .style("opacity", .34)
-              //   .attr("class", "teacherStatRect-" + i)
-              // d3.select(".teacherStatRect-" + i).moveToBack()
             }
 
           }
@@ -1227,7 +1199,7 @@ function drawGraph(container_width, category) {
 
     };
 
-    function transitionTeacherText() { console.log('hi')
+    function transitionTeacherText() { 
           for (i=0; i<4; i++){ 
 
       // var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0];
@@ -1242,32 +1214,9 @@ function drawGraph(container_width, category) {
         var teacherNodeData = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").data()[0];
         var teachingNodeData = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").data()[0]
         var teacherNodeY = teacherNodeData.y;
-
-      //  var teacherSubTextG1 = teacherSubTextG.append("g")
-      //   .attr("class", "teacherSubG1-" + i)
-      //   .attr("transform", function() {
-      //     if (isMobile) {
-      //       return "translate(" + (teacherNodeX-20) + "," + (teacherNodeY + translateY + 5)+ ")";
-      //     }else {
-      //       return "translate(" + (teacherNodeX) + "," + (teacherNodeY - translateYPercent) + ")";
-      //     }
-      //   })
-
-      // var teacherSubTextG2 = teacherSubTextG.append("g")
-      //   .attr("class", "teacherSubG2-" + i)
-      //   .attr("transform", function() {
-      //      if (isMobile) {
-      //       return (dataCategory == 'all') ? "translate(" + (teacherNodeX - 20) + "," + (teacherNodeY - translateY)+ ")" : "translate(" + (teacherNodeX - 20) + "," + (teacherNodeY - translateY)+ ")";
-      //     }else {
-      //       return "translate(" + (teacherNodeX) + "," + (teacherNodeY + translateYPercent + 8) + ")" 
-      //     }
-         
-      //   })
-
-
         teacherSubTextG.select(".teacherSubG1-" + HEADERS2[i])
           .attr("transform", function() { console.log(teacherNodeY)
-            if (isMobile) {
+            if (isPhone) {
               return "translate(" + (teacherNodeX-20) + "," + (teacherNodeY + translateY + 5)+ ")";
             }else { 
                if ((i == 0) && category != 'percent'){
@@ -1281,7 +1230,7 @@ function drawGraph(container_width, category) {
 
         teacherSubTextG.select(".teacherSubG2-" + HEADERS2[i])
           .attr("transform", function() { console.log(teacherNodeY)
-            if (isMobile) {
+            if (isPhone) {
               return "translate(" + (teacherNodeX-20) + "," + (teacherNodeY + translateY + 5)+ ")";
             }else { 
               if ((i == 0) && category != 'percent'){

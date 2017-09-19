@@ -1,93 +1,40 @@
-<title>Share of Students vs. Teachers by Race</title>
-<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic,900" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="css/slope.css"/>
- <link rel="stylesheet" type = "text/css" href="css/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<style>
-  .left-labels,
-  .labels {
-    font-family: sans-serif;
-    font-size: 8px;
-  }
-  
-  .chart-title {
-    font-family:sans-serif;
-    font-size: 16px;
-    text-anchor: middle;
-    font-weight: bold;
-  }
-  
-  .footer {
-    font-family:sans-serif;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
 
-<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic,900" rel="stylesheet" type="text/css">  
+  <style type="text/css">
+   body {
+            margin: 20px;
+        }
+    
+    .pym {
+        max-width: 680px;
+    }
+    .graphtitle {
+        font-size: 18px;
+        color: #333;
+        font-weight: 700;
+        margin-left: .5em;
+        text-align: 30%;
+    }
+  /*@media  (min-width: 800px) {
+      #left-side {
+          width: 35%;
+      }
+     
+  } */
+  </style>
+</head>
 <body>
-  <div id="chart">
-    <div id="switch-div">
-      <div class="urban-switch blue large">
-        <div class="switch-label">White</div>
-        <div class="lo button_toggle switch large on" id="white">
-        </div>
-      </div>
-      <div class="urban-switch blue large">
-        <div class="switch-label">Black</div>
-        <div class="lo button_toggle switch large off" id="black">
-        </div>
-      </div>
-      <div class="urban-switch blue large">
-        <div class="switch-label">Hispanic</div>
-        <div class="lo button_toggle switch large off" id="hispanic">
-        </div>
-      </div>
-      <div class="urban-switch blue large">
-        <div class="switch-label">Asian</div>
-        <div class="lo button_toggle switch large off" id="asian">
-        </div>
-      </div>
-      <div class="urban-switch blue large long-name">
-        <div class="switch-label">American Indian</div>
-        <div class="lo button_toggle switch large off" id="american_indian">
-        </div>
-      </div>
-      <div class="urban-switch blue large long-name">
-        <div class="switch-label alaskan">Alaskan Native</div>
-        <div class="lo button_toggle switch large off" id="alaskan_native">
-        </div>
-      </div>
-      <div class="urban-switch blue large long-name">
-        <div class="switch-label hawaiian">Native Hawaiian</div>
-        <div class="lo button_toggle switch large off" id="native_hawaiian">
-        </div>
-      </div>
-      <hr>
-    </div>
-    <div class="city-menu-div">
-      <div id ="city-menu"></div>
-    </div>
-    <div class="state-menu-div">
-      <div id ="state-menu"></div>
-    </div>
-    <div id="graph-container">
-    </div>
-  </div>
+<div id ="graph" class="pym"></div>
   <script type="text/javascript" src="js/vendor/pym.min.js"></script>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="js/vendor/jquery-1.12.4.min.js"></script>
-  <script src="js/vendor/jquery-ui.min.js"></script>
-  <script src="js/slope.js"></script>
   <script>
-        // var pym1 = new pym.Parent('graph', 'child_chart.html', {});
-
-    $(window).load(function () {
-      pymChild = new pym.Child({});
-
-        
-    });
-    var pymChild = new pym.Child();
-  </script>
-
+        var pym1 = new pym.Parent('graph', 'child-slope.html', {});
+   </script>
 </body>
 </html>

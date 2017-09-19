@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
+  <title>Teacher Diversity</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic,900" rel="stylesheet" type="text/css">  
+  <link rel="stylesheet" type="text/css" href="css/sankey.css"/>
+  <style>
+
+ 
+body, html {
+  font-family: "Lato", sans-serif;
+ }
+
+.label-HS {
+  margin-left: 35px;
+}
+
+.label-Bach {
+ margin-left: 45px;
+}
+.label-Teaching {
+  margin-left: 25px;
+}
+
+.label-Teacher {
+  margin-left: 40px;
+}
+.node-white-All rect, .node-Asian-All rect, .node-Hispanic-All rect, .node-black-All rect{
+  opacity: 0;
+}
+
+.link-white-All, .link-Asian-All, .link-Hispanic-All, .link-black-All{
+  opacity: 0;
+}
+
+.linkText-white-Teaching, .linkText-black-Teaching, .linkText-Asian-Teaching, .linkText-Hispanic-Teaching {
+  fill: #000;
+}
+
+
+
+
+  </style>
+  </head>
+<body>
+<div id="chart" class="all">
+  <div id="title">Who becomes a teacher?</div>
+  <div id="toggles">
+    <div id="percent_button" class="toggle_button active"><span>Percent</span></div>
+    <div id="numbers_button" class="toggle_button"><span>Numbers</span></div>
+  </div>
+  <div id="stats-div">
+  </div>
+  <hr>
+</div>
+
+<script type="text/javascript" src="js/vendor/pym.min.js"></script>
+<script src="js/vendor/jquery-1.12.4.min.js"></script>
+<script src="js/vendor/jquery-ui.min.js"></script>
+<script src="http://d3js.org/d3.v4.js"></script>
+<script src="js/teacher-diversity_sankey.js"></script>
+<script src="js/main.js"></script>
+<script>
+    $(window).load(function () {
+      pymChild = new pym.Child({});
+        
+    });
+
+    var pymChild = new pym.Child();
+</script>
+</body>
+</html>
