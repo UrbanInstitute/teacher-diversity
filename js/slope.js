@@ -11,20 +11,30 @@ var margin = {top: 80, bottom: 20, left: 43, right:43};
 
 var currencyFormatter = d3.format("0,.0f");
 function drawGraphic(container_width){
-  var isMobile = (container_width < 500) ? true : false;
-      isPhone = (container_width < 350) ? true : false;
-
+  // var isMobile = (container_width < 500) ? true : false;
+  //     isPhone = (container_width < 350) ? true : false;
+  var isMobile = d3.select("#isMobile").style("display") == "block"
+  var isPhone = d3.select("#isPhone").style("display") == "block"
   console.log(isMobile)
-  var width = (isMobile) ? container_width/1.4 : container_width/2;
+  var width = (function() {
+    if (isPhone) {
+      return container_width*.95
+    }else if (isMobile) {
+      return container_width/1.35
+    }else {
+      return container_width/2
+    }
+  })
+  ();
   var aspect_width = 25,
   heightPhone = 35,
     heightMobile = 37,
     heightNormal = 47,
     aspect_height = (function(){
-      if (isPhone) {
+      if (isPhone) { console.log('phone')
         return heightPhone
       }
-      else if (isMobile) { 
+      else if (isMobile) { console.log('mobile')
         return heightMobile
         // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
       }else {
@@ -64,7 +74,7 @@ function drawGraphic(container_width){
         .attr("height", height)
         .attr("class", "city-graph")
         .attr("transform", function() {
-          return (isMobile) ? "translate("+ (container_width - width)/2+"," + 30 + ")" : "translate(0," + 20 + ")"
+          return (isMobile) ? "translate("+ (container_width - width)/2+"," + 20 + ")" : "translate(0," + 20 + ")"
         })
       gCity.append("text")
         .text("Students")
@@ -93,7 +103,7 @@ function drawGraphic(container_width){
         .attr("transform", function() {
           var heightCityG = Number(d3.select(".city-graph").attr("height"))
           console.log(heightCityG)
-          return (isMobile) ? "translate("+ (container_width - width)/2+"," + (heightCityG + 55) + ")" : "translate("+width*.96+"," + 20 + ")"
+          return (isMobile) ? "translate("+ (container_width - width)/2+"," + (heightCityG + 45) + ")" : "translate("+width*.96+"," + 20 + ")"
         })
       gState.append("text")
         .text("Students")

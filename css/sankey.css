@@ -161,14 +161,13 @@ hr {
   font-weight: 700;
 }
 .labelRect {
-  opacity: 0;
-  fill: #fdbf11;
+  fill: #ececec;
 }
 .label.highlight {
   font-weight: 700;
 }
 .labelRect.highlight{
-  opacity: 1;
+  fill: #fdbf11;
 }
 .node.highlight {
   fill: #fdbf11 !important;

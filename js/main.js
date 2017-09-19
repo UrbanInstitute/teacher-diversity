@@ -80,7 +80,7 @@ function drawGraph(container_width, category) {
   var aspect_width = 35,
       heightPhone = (dataCategory == 'all') ? 51 : 46,
       heightMobile = (dataCategory == 'all') ? 39 : 35,
-      heightNormal = (dataCategory == 'all') ? 32 : 27,
+      heightNormal = (dataCategory == 'all') ? 34 : 27,
       aspect_height = (function(){
         if (isPhone) {
           return heightPhone
@@ -194,7 +194,7 @@ function drawGraph(container_width, category) {
         }else if (isMobile) {
           return (dataCategory == 'all') ? "translate("+ -width*.03 +"," + margin.top + ")" : "translate(" + -width*.22+ "," + margin.top + ")"
         }else {
-          return (dataCategory == 'all') ? "translate("+ -width*.07 +"," + margin.top + ")" : "translate(" + -width*.21+ "," + margin.top + ")"
+          return (dataCategory == 'all') ? "translate("+ -width*.07 +"," + 20 + ")" : "translate(" + -width*.21+ "," + margin.top + ")"
         }
 
       })
@@ -509,24 +509,24 @@ function drawGraph(container_width, category) {
     var xLabelNotes = d3.select(".label-g.label")
       .append("text")
       .text("(ages 25-34)")
-      .attr("y", 33)
+      .attr("y", 43)
       .attr("x", 0)
       .attr("class", "x-label-notes")
     labelG
       .append("rect")
       .attr("x", function(d, i) { 
-          return (labelG.select(".label" + nodeNames[i]).node().getBBox().x) - 7
+          return (labelG.select(".label" + nodeNames[i]).node().getBBox().x) - 10
       }) 
       .attr("y",  function(d, i) { 
-        return (labelG.select(".label" + nodeNames[i]).node().getBBox().y) -2
+        return (labelG.select(".label" + nodeNames[i]).node().getBBox().y) -10
       })
       .attr("width", function(d, i) { 
-        return (labelG.select(".label" + nodeNames[i]).node().getBBox().width) + 14
+        return (labelG.select(".label" + nodeNames[i]).node().getBBox().width) + 20
 
         // return (isMobile) ? xLabelsRectMobile[i] : xLabelsRect[i]
       })
       .attr("height", function(d, i){ 
-        return (labelG.select(".label" + nodeNames[i]).node().getBBox().height) + 3
+        return (labelG.select(".label" + nodeNames[i]).node().getBBox().height) + 20
       })
       .attr("class", function(d, i) {
         return "labelRect labelRect" + nodeLabels[i] 
