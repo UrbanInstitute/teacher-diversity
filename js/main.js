@@ -70,7 +70,7 @@ function drawGraph(container_width, category) {
         if (isPhone) {
           return (dataCategory == 'all') ? container_width*1.2 : container_width*1.35
         } else if (isMobile) { 
-          return (dataCategory == 'all') ? container_width*1.08 : container_width*1.21
+          return (dataCategory == 'all') ? container_width : container_width*1.21
           // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
         }else {
           return (dataCategory == 'all') ? container_width*1.02 : container_width*1.23
@@ -981,7 +981,7 @@ function drawGraph(container_width, category) {
              // return (category == 'percent') ? teacherTextPercent[0] : teacherTextNumber[0]
             })
             .attr("dy", 0)
-            // .call(wrapText, wrapWidth)
+            .call(wrapText, width*.7)
 
           var textRect = d3.select(".teacherStatsPhone-text-" + HEADERS2[number]).node().getBoundingClientRect()
           yLabelG.select(".teacherStatRect-" + number)
