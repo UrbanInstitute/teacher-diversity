@@ -394,7 +394,7 @@ function drawGraph(container_width, category) {
     //MOBILE TEXT
     for (i=0; i<HEADERS2.length; i++) {
       if (isPhone){
-      var yPos = d3.select(".node-" + HEADERS2[i] + "-All").node().getBoundingClientRect().top - 178
+      var yPos = (dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i] + "-All").node().getBoundingClientRect().top - 178 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 178
       var textRect = d3.select(".linkTextPhone-race-" + HEADERS2[i]).node().getBoundingClientRect()
       yLabelGDescription = yLabelG
         .append("g")
