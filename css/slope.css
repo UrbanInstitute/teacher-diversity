@@ -21,7 +21,6 @@ select {
     display: none !important;
 }
 .ui-selectmenu-menu {
-    height: 300px !important;
 
 }
 .ui-menu-item {
@@ -72,13 +71,14 @@ select {
     float: left;
 }
 
+
 #city-select-menu {
     width: 263px !important;
 }
-/*#city-menu {
+#city-menu {
     display: table;
     margin: 0 auto;
-}*/
+}
 
 #state-select-menu {
     width: 263px !important;
@@ -265,6 +265,35 @@ hr {
 }
 
 @media screen and (max-width: 539px) {
+    #switch-div {
+        width: 100%;
+    }
+.state-menu-div, .city-menu-div {
+    position: absolute;
+}
+.state-menu-div {
+    top: 610px;
+    left: 50%;
+
+}
+
+.city-menu-div {
+    top: 182px;
+    left: 50%;
+
+}
+#city-menu {
+    display: block;
+    position: relative;
+    left: -51%;
+    background: #332d2f;
+}
+#state-menu {
+    display: block;
+    position: relative;
+    left: -51%;
+    background: #332d2f;
+}
 
 
 }

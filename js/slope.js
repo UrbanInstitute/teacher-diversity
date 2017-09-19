@@ -64,7 +64,7 @@ function drawGraphic(container_width){
         .attr("height", height)
         .attr("class", "city-graph")
         .attr("transform", function() {
-          return (isMobile) ? "translate("+ (container_width - width)/2+"," + 20 + ")" : "translate(0," + 50 + ")"
+          return (isMobile) ? "translate("+ (container_width - width)/2+"," + 30 + ")" : "translate(0," + 20 + ")"
         })
       gCity.append("text")
         .text("Students")
@@ -72,7 +72,9 @@ function drawGraphic(container_width){
           var textWidth = this.getBoundingClientRect().width
           return margin.left - textWidth/3
         })
-        .attr("y", height*.92)
+        .attr("y", function() {
+          return (isMobile) ? height*.88 : height*.92
+        })
         .attr("class", "sideline-label-text")
       gCity.append("text")
         .text("Teachers")
@@ -80,14 +82,18 @@ function drawGraphic(container_width){
           var textWidth = this.getBoundingClientRect().width
           return width - margin.right - textWidth/3
         })
-        .attr("y", height*.92)
+        .attr("y", function() {
+          return (isMobile) ? height*.88 : height*.92
+        })        
         .attr("class", "sideline-label-text")
       var gState= svg.append("g")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "state-graph")
         .attr("transform", function() {
-          return (isMobile) ? "translate("+ (container_width - width)/2+"," + height + ")" : "translate("+width*.96+"," + 50 + ")"
+          var heightCityG = Number(d3.select(".city-graph").attr("height"))
+          console.log(heightCityG)
+          return (isMobile) ? "translate("+ (container_width - width)/2+"," + (heightCityG + 55) + ")" : "translate("+width*.96+"," + 20 + ")"
         })
       gState.append("text")
         .text("Students")
@@ -95,7 +101,9 @@ function drawGraphic(container_width){
           var textWidth = this.getBoundingClientRect().width
           return margin.left - textWidth/2.5
         })        
-        .attr("y", height*.92)
+        .attr("y", function() {
+          return (isMobile) ? height*.88 : height*.92
+        })
         .attr("class", "sideline-label-text")
       gState.append("text")
         .text("Teachers")
@@ -103,60 +111,36 @@ function drawGraphic(container_width){
           var textWidth = this.getBoundingClientRect().width
           return width - margin.right - textWidth/2.5 
         })        
-        .attr("y", height*.92)
+        .attr("y", function() {
+          return (isMobile) ? height*.88 : height*.92
+        })        
         .attr("class", "sideline-label-text")
       
       //DROPDOWN MENUS
 
       $("#city-menu").empty()
       $("#state-menu").empty()
-      var cityDropdownG = svg.append("g")
-        .attr("transform", function() {
-          return (isMobile) ? "translate("+ (container_width - width)/2+"," + 20 + ")" : "translate("+margin.left+"," + 0 + ")"
-        })
-        .attr("class", "city-menu-div")
-      var cityDropdown = cityDropdownG.append("g")
-        .attr("id", "city-menu")
-      cityDropdown.append("rect")
-        .attr("width", width-margin.left-margin.right)
-        .attr("height", 40)
-        .style("fill", "#000")
-      var selectCity = cityDropdown
+      var selectCity = d3.select("#city-menu")
         .append("select")
         .attr("id", "city-select")
       var optionsCity = selectCity
         .selectAll('option')
         .data(cityData_white)
-        .enter()
-        .append('option')
-        .text(function (d) { return d.city; })
-        .attr('value', function(d){ 
-          return d.city
-        })
-      var stateDropdownG = svg.append("g")
-        .attr("transform", function() {
-          return (isMobile) ? "translate("+ (container_width - width)/2+"," + 20 + ")" : "translate("+(width*.96 + margin.left)+"," + 0 + ")"
-        })
-        .attr("class", "state-menu-div")
-      var stateDropdown = stateDropdownG.append("g")
-        .attr("id", "state-menu")
-      stateDropdown.append("rect")
-        .attr("width", width-margin.left-margin.right)
-        .attr("height", 40)
-        .style("fill", "#000")
       var selectState = d3.select("#state-menu")
         .append("select")
         .attr("id", "state-select")
       var optionsState = selectState
         .selectAll('option')
         .data(stateData_white)
-        .enter()
-        .append('option')
-        .text(function (d) { return d.state; })
-        .attr('value', function(d){ 
-          return d.state
-        })
 
+      optionsCity.enter()
+        .append('option')
+        .text(function (d) { return d.city; })
+        .attr('value', function(d){ 
+          return d.city
+        })
+        .merge(optionsCity)
+      optionsCity.exit().remove()
       selectCity
         .append("option")
         .text("CITIES")
@@ -165,7 +149,14 @@ function drawGraphic(container_width){
         .attr("disabled", "disabled")
         .attr("hidden", "hidden")
         .attr("class", "dropdown-default")
-     
+      optionsState.enter()
+        .append('option')
+        .text(function (d) { return d.state; })
+        .attr('value', function(d){
+          return d.state
+        })
+        .merge(optionsState)
+      optionsState.exit().remove()
       selectState
         .append("option")
         .text("STATES")
@@ -227,19 +218,20 @@ function drawGraphic(container_width){
           var elapsed = end - start;
       }
       
-
+      var chartHeight = d3.select("#chart").style("height")
       $("#state-select")
-        .selectmenu({ 
+        .selectmenu({
 
-           open: function( event, ui ) { console.log(event)
+           open: function( event, ui ) { 
             changeDropdown()
-              // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*6) + "px")
-              // pymChild.sendHeight();
+            console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.35)
+              d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.35) + "px")
+              pymChild.sendHeight();
             },
             close: function(event, ui){
               changeDropdown()
-              // d3.select("body").style("height", null)
-              // pymChild.sendHeight();
+              d3.select("body").style("height", chartHeight)
+              pymChild.sendHeight();
             },
            change: function(event, d){ 
               changeDropdown()
@@ -256,15 +248,15 @@ function drawGraphic(container_width){
         .selectmenu({
            open: function( event, ui ) {  
               changeDropdown()     
-  //console.log($("#city-menu option:selected").val())
-              d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*2) + "px")
+            console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height)
+              d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22) + "px")
               // d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open:first-child").style("height",  "300px")
-              console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*2)
+              console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22)
               pymChild.sendHeight();
             },
             close: function(event, ui){
               changeDropdown()
-              d3.select("body").style("height", null)
+              d3.select("body").style("height", chartHeight)
               pymChild.sendHeight();
             },
            change: function(event, d){ 
@@ -276,22 +268,16 @@ function drawGraphic(container_width){
         .selectmenu( "menuWidget" )
         .addClass( "ui-menu-icons customicons" );
         var paddingTopBottom = .0145*container_width;
-        var paddingLeftRight = .108*container_width;
+        var paddingLeftRight = (isMobile) ? .14*container_width : .108*container_width;
 
           ($("#city-select-button").css("padding", paddingTopBottom + " " + paddingLeftRight));
           ($("#state-select-button").css("padding", paddingTopBottom + " " + paddingLeftRight));
+          $("#state-menu").css("width", width - margin.left - margin.right)
+          $("#city-menu").css("width", width - margin.left - margin.right)
 
         // $(".ui-icon-triangle-1-s").insertAfter($(".ui-selectmenu-text"))
         // d3.select("#state-menu").select(".ui-selectmenu-icon").remove()
         // d3.select("#city-menu").select(".ui-selectmenu-icon").remove()
-        d3.select("#city-menu")
-          .on("click", function() {
-            $( "#city-select" ).selectmenu( "open" )
-          })
-        d3.select("#state-menu")
-          .on("click", function() {
-            $( "#state-select" ).selectmenu( "open" )
-          })
 
       var sort = function() { 
         // choose target dropdown
