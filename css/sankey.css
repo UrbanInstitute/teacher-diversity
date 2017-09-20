@@ -240,7 +240,10 @@ hr {
 
   .labelRect {
   fill: none;
-}
+  }
+  .labelRect-phone {
+    fill: ;
+  }
   hr {
     display: none;
   }
@@ -264,6 +267,7 @@ hr {
   .linkTextPhone.highlight * {
     font-weight: 700;
     fill: #000 !important;
+    opacity: 1;
   }
   .label, .node text {
     font-size: 12px;

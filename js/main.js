@@ -323,7 +323,7 @@ function drawGraph(container_width, category) {
     labelG
       .attr("transform", function(d, i) { 
         if (isPhone) {
-         return (dataCategory == 'all') ? "translate(" + (width*.19 + width*.175*i)+ "," + height*.9+ ")": "translate(" + ( width*.305*i)+ "," + height+ ")";
+         return (dataCategory == 'all') ? "translate(" + (width*.19 + width*.175*i)+ "," + height*.99+ ")": "translate(" + (1+ width*.305*i)+ "," + height+ ")";
         }
         else if (isMobile) { 
           return (dataCategory == 'all') ? "translate(" + (width*.17 + width*.17*i)+ "," + height*.99+ ")" : "translate(" + ( width*.29*i)+ "," + height*.99+ ")"
@@ -513,11 +513,18 @@ function drawGraph(container_width, category) {
       })
       .attr("width", function(d, i) { 
         //return (labelG.select(".label" + nodeNames[i]).node().getBBox().width) + 40
-        return (isMobile) ? width*.15 : width*.14
+        if (isPhone) {
+          return 45
+          // console.log(labelG.select(".label" + nodeNames[i]).node().getBBox().width)
+        }else if (isMobile){
+          return width*.15
+        }else {
+          return width*.14
+        }
         // return (isMobile) ? xLabelsRectMobile[i] : xLabelsRect[i]
       })
       .attr("height", function(d, i){ 
-        return 55;
+        return (isPhone) ? 2.6 : 55;
       }) 
       .attr("class", function(d, i) {
         return "labelRect labelRect" + nodeLabels[i] 
@@ -542,6 +549,23 @@ function drawGraph(container_width, category) {
         }
       })
       .call(wrapText, wrapWidth)
+   
+   if (isPhone) {
+    d3.selectAll(".labelRect")
+      .each(function(d, i) { 
+        var label = d3.select(".label" + nodeNames[i]).node().getBBox()
+        console.log(d)
+        d3.select(this)
+          .attr("y", function() {
+            if (i == 0) {console.log(i)
+              return label.height/2 + label.y + 2
+            }else {
+            return label.height + label.y + 2
+            }
+          })
+      })
+   }
+
     d3.selectAll("text.label")
       .each(function() {
         d3.select(this)
@@ -850,12 +874,12 @@ function drawGraph(container_width, category) {
                   .classed("showText", true)
                  highlightSelected("-HS", "", "young adults held high school diplomas.")
 
-            }else if (event.clientX <= rectBreaksX[0] && event.clientX > all.getBoundingClientRect().left) {
+            }else if (event.clientX <= rectBreaksX[0] && event.clientX > all.getBoundingClientRect().left) { console.log('hello')
                 d3.select(".labelRect")
                   .classed("highlight", true)
                 d3.select(".label")
                   .classed("highlight", true)
-                d3.select(".linkText-" + HEADERS2[i])
+                d3.select(".linkText-" + HEADERS2[i]+ ", .linkTextPhone-" + HEADERS2[i])
                   .classed("showText", true)
                 highlightSelected("")
             }
@@ -1010,7 +1034,9 @@ function drawGraph(container_width, category) {
             .classed("highlight", true)
           yLabelG.select(".teacherStatsPhone-text-" + HEADERS2[number])
             .text(function() { 
-              if (degree.search("teacher") > 0) {
+              if (degree == undefined) {
+                return ""
+              }else if (degree.search("teacher") > 0) {
                 var teacherStats = (category == 'percent') ? teacherTextPercent[number] : teacherTextNumber[number]
                 return "In 2015, " + description(degree, number) + " " + teacherStats
               }else {
