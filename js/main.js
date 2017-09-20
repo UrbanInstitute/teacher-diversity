@@ -5,11 +5,9 @@ var numberShortFormat = d3.format(".2s");
 var percentFormat = d3.format(".1%");
 
 function drawGraph(container_width, category) {
-  console.log(container_width)
   var isMobile = d3.select("#isMobile").style("display") == "block"
   var isPhone = d3.select("#isPhone").style("display") == "block"
   var is675 = d3.select("#is675").style("display") == "block"
-  console.log(is675)
   console.log(isMobile)
   var dataCategory = document.getElementById('chart').className
   var units = "of students";
@@ -21,7 +19,7 @@ function drawGraph(container_width, category) {
       xRectHeight = (dataCategory == 'all') ? [65, 65, 65, 65, 25,] : [0, 65, 65, 25, 0,]
       xLabelsRect = (dataCategory == 'all') ? [95, 85, 75, 70, 60,] : [0, 76, 70, 62, 0,],
       xLabelsRectMobile = (dataCategory == 'all') ? [65, 55, 75, 62, 60,] : [0, 76, 62, 62, 0,],
-      nodeCategories = (dataCategory == 'all') ? ["", "-HS diploma", "-Bach", "-Teaching degree", "-Teacher"] : ["-Bach", "-Teaching degree", "-Teacher"],
+      nodeCategories = (dataCategory == 'all') ? ["", "-HS diploma", "-Bach", "-Teaching degree", "-Teacher"] : ["", "-Bach", "-Teaching degree", "-Teacher"],
       nodeNames = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
       numberStats = (dataCategory == 'all') ? [92338890, 19560471, 25434140,10383460] : [92338890, 19560471, 25434140,10383460],
       teacherTextPercent = (dataCategory == 'all') ? ["2.3% of white young adults became teachers after earning teaching degrees. 2.0% became teachers without earning a teaching degree.", "0.7% of black young adults became teachers after earning teaching degrees. 1.1% became teachers without earning a teaching degree.", "0.6% of Hispanic young adults became teachers after earning teaching degrees. 0.9% became teachers without earning a teaching degree.", "0.5% of Asian young adults became teachers after earning teaching degrees. 1.6% became teachers without earning a teaching degree."] : ["5.8% of white college graduates became teachers after earning teaching degrees. 5.1% became teachers without earning a teaching degree.", "3.3% of black college graduates became teachers after earning teaching degrees. 5.3% became teachers without earning a teaching degree.", "4.0% of Hispanic college graduates became teachers after earning teaching degrees. 5.4% became teachers without earning a teaching degree.", "0.8% of Asian college graduates became teachers after earning teaching degrees. 2.5% became teachers without earning a teaching degree."] 
@@ -32,7 +30,7 @@ function drawGraph(container_width, category) {
       teacherSubTextNumberTop = (dataCategory == 'all') ? ["505k", "64k", "78k", "47k"] : ["505k", "64k", "78k", "47k"],
       // wrapWidthDescription = (isMobile) ? container_width*.99 : container_width*.65; 
       wrapWidthDescription = (function(){
-        if (isPhone) { console.log('phon')
+        if (isPhone) { 
           return container_width*.8
         }
         else if (is675) { 
@@ -142,7 +140,7 @@ function drawGraph(container_width, category) {
           line = [word];
           tspan = text.append("tspan")
             .attr("y", y)
-            .attr("dy", function() { console.log(lineNumber + ' ' + word)
+            .attr("dy", function() { 
               if (lineNumber == 1 && word == 'Diploma') {
                 return "1.1em"
               }else {
@@ -152,7 +150,6 @@ function drawGraph(container_width, category) {
             .text(word)
             .attr("x", function() {  
               var bottomTextWidth = (d3.select(this).node().getComputedTextLength())
-              console.log(word)
                 if (word == "Diploma") {
                   return 0
                 }else if (word == "School"){
@@ -179,7 +176,7 @@ function drawGraph(container_width, category) {
         return container_width*.8
       }else if (is675) { 
         return container_width*.98
-      }else { console.log('hi')
+      }else { 
         return container_width*.65
       }
      // return width/1.9
@@ -345,7 +342,7 @@ function drawGraph(container_width, category) {
 
    var yLabelG = svg.append("g") 
         .attr("class", "g-y-labels")
-    for (j=0; j<nodeCategories.length; j++){
+    for (j=1; j<nodeCategories.length; j++){
       for (i=0; i<HEADERS2.length; i++){
         if (isPhone){
         var yPos = (dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top + 10 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 11
@@ -371,7 +368,10 @@ function drawGraph(container_width, category) {
       yLabelG.select(".linkTextPhone-" + HEADERS2[i] + nodeNames[j])
           .append("text")
           .text(function(d) { 
-            if (d.target.name == HEADERS2[i] + "-Teacher") {
+            if (d == undefined) {
+              return ""
+            }
+            else if (d.target.name == HEADERS2[i] + "-Teacher") {
               return " " + percentFormat(d.target.value)
             }else { 
               return " " + percentFormat(d.value)
@@ -513,7 +513,6 @@ function drawGraph(container_width, category) {
         //return (labelG.select(".label" + nodeNames[i]).node().getBBox().width) + 40
         if (isPhone) {
           return 45
-          // console.log(labelG.select(".label" + nodeNames[i]).node().getBBox().width)
         }else if (isMobile){
           return width*.15
         }else {
@@ -552,10 +551,9 @@ function drawGraph(container_width, category) {
     d3.selectAll(".labelRect")
       .each(function(d, i) { 
         var label = d3.select(".label" + nodeNames[i]).node().getBBox()
-        console.log(d)
         d3.select(this)
           .attr("y", function() {
-            if (i == 0) {console.log(i)
+            if (i == 0) {
               return label.height/2 + label.y + 2
             }else {
             return label.height + label.y + 2
@@ -568,9 +566,8 @@ function drawGraph(container_width, category) {
       .each(function() {
         d3.select(this)
           .attr("x", function() {
-            var rectWidth = d3.select(".labelRect").node().getBoundingClientRect().width
-            var labelWidth = d3.select(this).node().getBBox().width
-            console.log(rectWidth-labelWidth)
+            // var rectWidth = d3.select(".labelRect").node().getBoundingClientRect().width
+            // var labelWidth = d3.select(this).node().getBBox().width
             return 0
           })
       })
@@ -791,7 +788,6 @@ function drawGraph(container_width, category) {
       if (d3.select(".link.highlight").node() != undefined) {
       var className = $(".link.highlight").attr("class").split(" ")[1]
         return className.split("-")[1]
-      // console.log(race)
        }else {
         return "white"
        }
