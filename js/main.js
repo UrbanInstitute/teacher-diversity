@@ -407,6 +407,21 @@ function drawGraph(container_width, category) {
           })
           .attr("transform", "translate(0,"+ (-170) +")")
           // .style("opacity", 0)
+        var statsCategory = d3.select(".linkTextPhone-stats-category" + i + j).node().getBBox()
+        console.log(statsCategory)
+        yLabelG.select(".linkTextPhone-" + HEADERS2[i] + nodeNames[j])
+          .append("rect")
+          .attr("height", 2.6)
+          .attr("width", statsCategory.width)  
+          .attr("class", function(d) {
+              return " linkTextPhone-stats-category-rect linkTextPhone-stats-category-rect" + i + j
+          })      
+          .attr("x", (dataCategory == 'all') ? width*.22 + textRect.width + statsRect.width + 10 : width*.34 + + statsRect.width + textRect.width + 10)
+          .attr("y", function(d) {
+            return yPos + 3
+          })
+          .attr("transform", "translate(0,"+ (-170) +")")
+          // .style("opacity", 0)
         }
       }
     }
@@ -439,9 +454,6 @@ function drawGraph(container_width, category) {
         })   
       yLabelGDescription
         .append("text")
-        .text(function() {
-         // return (category == 'percent') ? teacherTextPercent[i] : teacherTextNumber[i]
-        })
         .attr("class", function(d) {
             return "teacherStatsPhone-text teacherStatsPhone-text-" + HEADERS2[i] 
         }) 
@@ -450,20 +462,9 @@ function drawGraph(container_width, category) {
         // .call(wrapText, wrapWidthDescriptionPhone)
       yLabelGDescription.append("rect")
         .attr("x",0)
-        .attr("y", -textRect.height)
-        // .attr("y", function(d) { 
-        //   return yPos
-        // })        
+        .attr("y", -textRect.height)       
         .attr("width", textRect.width * 1.1)
-        .attr("height", textRect.height * 1.4)
-        // .attr("transform", function() { 
-        //   console.log(i)
-        //   if (i == 2) {
-        //     return "translate("+ width * .305 +","+ (-155) +")"
-        //   }else {
-        //     return "translate("+ width * .28 +","+ (-155) +")"
-        //   }
-        // })        
+        .attr("height", textRect.height * 1.4)      
         .style("fill","#fff")
         .style("opacity", .34)
         .attr("class", "teacherStatRect-" + i)
@@ -1167,17 +1168,13 @@ function drawGraph(container_width, category) {
                           return " " + linkTextFormat(d.value)
                         }
                       })   
-                      .attr("y", function(d) {
-                        return yPos
-                      })
+                      .attr("y", yPos)
+                    d3.select(this).select(".linkTextPhone-stats-category-rect")
+                      .attr("y", yPos + 3)
                    d3.select(this).select(".linkTextPhone-stats-category")  
-                      .attr("y", function(d) {
-                        return yPos
-                      })
+                      .attr("y", yPos)
                     yLabelG.select(".linkTextPhone-" + HEADERS2[i] + nodeNames[j]).select(".linkTextPhone-race")
-                      .attr("y", function(d) {
-                        return yPos
-                      })
+                      .attr("y", yPos)
                   })
               }
             }

@@ -144,7 +144,14 @@ hr {
   display: none;
 }
 
+.linkTextPhone-stats-category-rect {
+  fill: #fdbf11;
+  opacity: 0;
+}
 
+.linkTextPhone-stats-category {
+  opacity: 0;
+}
 .teacherSubText {
   fill: #46abdb;
   font-size: 13px;
@@ -264,11 +271,17 @@ hr {
   .linkTextPhone.showText, .teacherStatsPhoneG.showText {
     opacity: 1 !important;
   }
-  .linkTextPhone.highlight * {
+   .linkTextPhone.showText, .teacherStatsPhoneG.showText {
+    opacity: 1 !important;
+  }
+  .linkTextPhone.highlight > text {
     font-weight: 700;
     fill: #000 !important;
     opacity: 1;
   }
+    .linkTextPhone.highlight > rect {
+      opacity: 1;
+    }
   .label, .node text {
     font-size: 12px;
   }
