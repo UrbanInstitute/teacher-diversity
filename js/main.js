@@ -117,9 +117,8 @@ function drawGraph(container_width, category) {
       return numberShortFormat(d)
     }
   };
-  function wrapText(text, width) { console.log(text.text())
+  function wrapText(text, width) { 
     var width = (text.text().search("All young adults") > -1 && isPhone) ? 35 : width;
-    console.log(width)
     text.each(function() {
       //(d3.select(this).node().getBBox().width) 
       var text = d3.select(this),
@@ -401,7 +400,7 @@ function drawGraph(container_width, category) {
             if (d == undefined) {
               return steps[j-startNumber]
             }
-            else { console.log(steps[j])
+            else { 
               return steps[j-startNumber]
               //return " " + percentFormat(d.value)
             }
@@ -416,7 +415,6 @@ function drawGraph(container_width, category) {
           .attr("transform", "translate(0,"+ (-170) +")")
           // .style("opacity", 0)
         var statsCategory = d3.select(".linkTextPhone-stats-category" + i + j).node().getBBox()
-        console.log(statsCategory)
         yLabelG.select(".linkTextPhone-" + HEADERS2[i] + nodeNames[j])
           .append("rect")
           .attr("height", 2.6)
@@ -754,7 +752,7 @@ function drawGraph(container_width, category) {
     //TEACHER STATS
     var teacherSubTextG = svg.append("g")
       .attr("class", "teacherSubTextG")
-    for (i=0; i<4; i++){ 
+    for (i=0; i<4; i++){ console.log(d3.select(".node-" + HEADERS2[i] + "-Teacher rect"))
       // var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
       var translateYPercent = (dataCategory == 'all') ? 7 :13 //-width * .3 : -width*.26
       var translateYNumber = (dataCategory == 'all') ? -width * .292 : -width*.25
@@ -763,7 +761,7 @@ function drawGraph(container_width, category) {
       var teachingNode = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").node();
       var teacherNodeData = d3.select(".node-" + HEADERS2[i] + "-Teacher rect").data()[0];
       var teachingNodeData = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").data()[0]
-      var teacherNodeY = teacherNodeData.y;
+      var teacherNodeY =  teacherNodeData.y;
       var teacherNodeX = (dataCategory == 'all') ? (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left)/2 + teachingNode.getBoundingClientRect().right : (teacherNode.getBoundingClientRect().left - teachingNode.getBoundingClientRect().left) + teachingNode.getBoundingClientRect().right
       var teacherTextSvg = d3.select("#stats-div svg").append("g")
         .attr("transform", function() {
