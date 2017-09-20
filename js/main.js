@@ -152,17 +152,17 @@ function drawGraph(container_width, category) {
               var bottomTextWidth = (d3.select(this).node().getComputedTextLength())
                 if (isMobile) {
                   if (word == "Diploma") {
-                    return 0
+                    return 0 + parseFloat(x)
                   }else if (word == "School"){
-                    return 5
+                    return 5 + parseFloat(x)
                   }
                 }else {
                 if (topTextWidth < 40){ 
-                  return (-(bottomTextWidth - topTextWidth) / 2)
+                  return (-(bottomTextWidth - topTextWidth) / 2) + parseFloat(x)
                 }else if (topTextWidth < 80) {
-                  return ((topTextWidth - bottomTextWidth) / 2)
+                  return ((topTextWidth - bottomTextWidth) / 2) + parseFloat(x)
                 }else { 
-                  return 0
+                  return 0 + parseFloat(x)
                 }
               }
             });
@@ -556,6 +556,7 @@ function drawGraph(container_width, category) {
       .moveToBack()
     labelG
       .append("text")
+      .attr("x", 30)
       .text(function(d, i) { 
         return xLabels[i]
       })
