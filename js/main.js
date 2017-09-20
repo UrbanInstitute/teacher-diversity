@@ -6,9 +6,11 @@ var percentFormat = d3.format(".1%");
 
 function drawGraph(container_width, category) {
   console.log(container_width)
-  var isMobile = (container_width <= 570) ? true : false;
-  var is675 = (container_width <= 675) ? true: false;
-  var isPhone = (container_width <= 400) ? true : false;
+  var isMobile = d3.select("#isMobile").style("display") == "block"
+  var isPhone = d3.select("#isPhone").style("display") == "block"
+  var is675 = d3.select("#is675").style("display") == "block"
+  console.log(is675)
+  console.log(isMobile)
   var dataCategory = document.getElementById('chart').className
   var units = "of students";
   var steps = (dataCategory == 'all') ? ["All young adults", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["Bachelor's Degree", "Teaching Degree", "Teacher"]
@@ -42,7 +44,7 @@ function drawGraph(container_width, category) {
       })
       (),
       // wrapWidthDescriptionPhone = container_width*.8, 
-      wrapWidth = (isMobile) ? 80 : 90,
+      wrapWidth = (isMobile) ? 63 : 90,
       nodeLabels = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
       xLabels = (dataCategory == 'all') ? ["All young adults", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["", "Bachelor's Degree", "Teaching Degree", "Teacher"],
       xLabelNumber = (dataCategory == 'all') ? 5 : 4,
@@ -140,16 +142,29 @@ function drawGraph(container_width, category) {
           line = [word];
           tspan = text.append("tspan")
             .attr("y", y)
-            .attr("dy", ++lineNumber * lineHeight + dy + "em")
+            .attr("dy", function() { console.log(lineNumber + ' ' + word)
+              if (lineNumber == 1 && word == 'Diploma') {
+                return "1.1em"
+              }else {
+                return ++lineNumber * lineHeight + dy + "em"
+              }
+            })
             .text(word)
-            .attr("x", function() { 
+            .attr("x", function() {  
               var bottomTextWidth = (d3.select(this).node().getComputedTextLength())
-              if (topTextWidth < 40){ 
-                return (-(bottomTextWidth - topTextWidth) / 2)
-              }else if (topTextWidth < 80) {
-                return ((topTextWidth - bottomTextWidth) / 2)
-              }else { 
-                return 0
+              console.log(word)
+                if (word == "Diploma") {
+                  return 0
+                }else if (word == "School"){
+                  return 5
+                }else {
+                if (topTextWidth < 40){ 
+                  return (-(bottomTextWidth - topTextWidth) / 2)
+                }else if (topTextWidth < 80) {
+                  return ((topTextWidth - bottomTextWidth) / 2)
+                }else { 
+                  return 0
+                }
               }
             });
         }
@@ -207,7 +222,7 @@ function drawGraph(container_width, category) {
       .nodeWidth(nodeWidth)
       .nodePadding(nodePadding)
       .dataCategory(dataCategory)
-      .size([width, height*.95]);
+      .size([width, height*.85]);
    
   var path = sankey.link();
    
@@ -309,19 +324,16 @@ function drawGraph(container_width, category) {
         var nodeTransform = d3.select(".node-white" + d).attr("transform").split(",")[0]
         var xLabelTranslate = nodeTransform.split("(")[1]
         if (isPhone) {
-          if (i > 1) {
-            return (dataCategory == 'all') ? "translate(" + (xLabelTranslate -i*6)+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
-          } return (dataCategory == 'all') ? "translate(" + (xLabelTranslate)+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
+         return (dataCategory == 'all') ? "translate(" + (width*.19 + width*.175*i)+ "," + height*.9+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
         }
         else if (isMobile) { 
-          if (i == 4) {  console.log(i)
-            return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 20 )+ "," + height+ ")": "translate(" + ((xLabelTranslate))+ "," + height+ ")";
-          } return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 10)+ "," + height+ ")": "translate(" + ((xLabelTranslate - 10))+ "," + height+ ")";
+          return (isMobile) ? "translate(" + (width*.17 + width*.17*i)+ "," + height*.91+ ")" : "translate(" + (width*.17 + width*.17*i)+ "," + height*.91+ ")"
+          // return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 10)+ "," + height*.91+ ")": "translate(" + ((xLabelTranslate - 10))+ "," + height+ ")";
         }else {
           if (i == 0) {
-            return (dataCategory == 'all') ? "translate(" + (xLabelTranslate)+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
+            return (dataCategory == 'all') ? "translate(" + (xLabelTranslate)+ "," + height*.93+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
           }
-          return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 6)+ "," + height*1.02+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
+          return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 6)+ "," + height*.93+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
         }
         //}
       })
@@ -491,7 +503,33 @@ function drawGraph(container_width, category) {
             return "raceLabels raceLabels-" + d.name.split(" ")[0] 
         })
 
-
+    var xLabelNotes = d3.select(".label-g.label")
+      .append("text")
+      .text("ages 25-34")
+      .attr("y", 48)
+      .attr("x", 0)
+      .attr("class", "x-label-notes")
+    labelG
+      .append("rect")
+      .attr("y",  function(d, i) { 
+        return -23
+        // return (labelG.select(".label-Bach").node().getBBox().y) -10
+      })
+      .attr("width", function(d, i) { 
+        //return (labelG.select(".label" + nodeNames[i]).node().getBBox().width) + 40
+        return (isMobile) ? width*.15 : width*.14
+        // return (isMobile) ? xLabelsRectMobile[i] : xLabelsRect[i]
+      })
+      .attr("height", function(d, i){ 
+        return 55;
+      }) 
+      .attr("class", function(d, i) {
+        return "labelRect labelRect" + nodeLabels[i] 
+      })
+      .attr("x", function(d, i) { 
+        return 0
+      })
+      .moveToBack()
     labelG
       .append("text")
       .text(function(d, i) { 
@@ -500,39 +538,37 @@ function drawGraph(container_width, category) {
       .attr("class", function(d,i){
         return "label label" + nodeLabels[i]
       })
-      .attr("dy", 0)
+      .attr("dy", function(d, i) {
+        if (d == "-Teacher") {
+          return .5
+        }else {
+          return 0
+        }
+      })
       .call(wrapText, wrapWidth)
+    d3.selectAll("text.label")
+      .each(function() {
+        d3.select(this)
+          .attr("x", function() {
+            var rectWidth = d3.select(".labelRect").node().getBoundingClientRect().width
+            var labelWidth = d3.select(this).node().getBBox().width
+            console.log(rectWidth-labelWidth)
+            return 0
+          })
+      })
+
+
+    d3.select("text.label.label-HS")
+      .attr("y", function() {
+        return (isMobile) ? -5 : 0
+      })
+      .attr("x", function() {
+        return (isMobile) ? 10 : ""
+      })
     d3.select(".g-x-labels")
       .attr("transform", function(d, i) { 
         return "translate(" + 0 + ","+ (-height*.03) +")";
       })
-    var xLabelNotes = d3.select(".label-g.label")
-      .append("text")
-      .text("(ages 25-34)")
-      .attr("y", 43)
-      .attr("x", 0)
-      .attr("class", "x-label-notes")
-    labelG
-      .append("rect")
-      .attr("x", function(d, i) { 
-          return (labelG.select(".label" + nodeNames[i]).node().getBBox().x) - 10
-      }) 
-      .attr("y",  function(d, i) { 
-        return (labelG.select(".label" + nodeNames[i]).node().getBBox().y) -10
-      })
-      .attr("width", function(d, i) { 
-        return (labelG.select(".label" + nodeNames[i]).node().getBBox().width) + 20
-
-        // return (isMobile) ? xLabelsRectMobile[i] : xLabelsRect[i]
-      })
-      .attr("height", function(d, i){ 
-        return (labelG.select(".label" + nodeNames[i]).node().getBBox().height) + 20
-      })
-      .attr("class", function(d, i) {
-        return "labelRect labelRect" + nodeLabels[i] 
-      })
-      .moveToBack()
-
     var linkG = svg.append("g")
       .attr("class", "g-text")
     //ADD HIDDEN TEXT FOR TEACHER LINKS

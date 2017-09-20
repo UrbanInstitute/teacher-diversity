@@ -16,7 +16,6 @@ function drawGraphic(container_width){
   var isMobile = d3.select("#isMobile").style("display") == "block"
   var isPhone = d3.select("#isPhone").style("display") == "block"
   var isPhoneSmall = d3.select("#isPhoneSmall").style("display") == "block"
-
   console.log(isMobile)
   var width = (function() {
     if (isPhone) {
