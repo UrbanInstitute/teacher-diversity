@@ -117,8 +117,9 @@ function drawGraph(container_width, category) {
       return numberShortFormat(d)
     }
   };
-  function wrapText(text, width) {
-    var width = (text.text().search("All young adults") > 0 && isPhone) ? 35 : width;
+  function wrapText(text, width) { console.log(text.text())
+    var width = (text.text().search("All young adults") > -1 && isPhone) ? 35 : width;
+    console.log(width)
     text.each(function() {
       //(d3.select(this).node().getBBox().width) 
       var text = d3.select(this),
@@ -327,7 +328,7 @@ function drawGraph(container_width, category) {
     labelG
       .attr("transform", function(d, i) { 
         if (isPhone) {
-         return (dataCategory == 'all') ? "translate(" + (width*.19 + width*.18*i)+ "," + height*.99+ ")": "translate(" + (1+ width*.305*i)+ "," + height+ ")";
+         return (dataCategory == 'all') ? "translate(" + (width*.19 + width*.17*i)+ "," + height*.99+ ")": "translate(" + (2+ width*.305*i)+ "," + height+ ")";
         }
         else if (isMobile) { 
           return (dataCategory == 'all') ? "translate(" + (width*.17 + width*.17*i)+ "," + height*.99+ ")" : "translate(" + ( width*.29*i)+ "," + height*.99+ ")"
