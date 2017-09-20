@@ -30,7 +30,7 @@ function drawGraphic(container_width){
   var aspect_width = 25,
     heightSmallPhone = 41,
     heightPhone = 36,
-    heightMobile = 37,
+    heightMobile = 38,
     heightNormal = 47,
     aspect_height = (function(){
       if (isPhoneSmall) { console.log('small phone')
@@ -48,7 +48,7 @@ function drawGraphic(container_width){
     })
     ();
   height = Math.ceil((width * aspect_height) / aspect_width) - margin.top - margin.bottom,
-  graphHeight = (isMobile == true) ? height*2 : height;
+  graphHeight = (isMobile) ? height*2.1 : height;
   var leftScale = d3.scaleLinear()
     .domain([0.0, 1])
     .range([height - margin.top, margin.bottom]);
@@ -88,7 +88,7 @@ function drawGraphic(container_width){
           return margin.left - textWidth/3
         })
         .attr("y", function() {
-          return (isMobile && !isPhone) ? height*.88 : height*.91
+          return (isMobile && !isPhone) ? height*.9 : height*.91
         })
         .attr("class", "sideline-label-text")
       gCity.append("text")
@@ -98,7 +98,7 @@ function drawGraphic(container_width){
           return width - margin.right - textWidth/3
         })
         .attr("y", function() {
-          return (isMobile && !isPhone) ? height*.88 : height*.91
+          return (isMobile && !isPhone) ? height*.9 : height*.91
         })        
         .attr("class", "sideline-label-text")
       var gState= svg.append("g")
@@ -117,7 +117,7 @@ function drawGraphic(container_width){
           return margin.left - textWidth/2.5
         })        
         .attr("y", function() {
-          return (isMobile && !isPhone) ? height*.88 : height*.91
+          return (isMobile && !isPhone) ? height*.9 : height*.91
         })
         .attr("class", "sideline-label-text")
       gState.append("text")
@@ -127,7 +127,7 @@ function drawGraphic(container_width){
           return width - margin.right - textWidth/2.5 
         })        
         .attr("y", function() {
-          return (isMobile && !isPhone) ? height*.88 : height*.91
+          return (isMobile && !isPhone) ? height*.9 : height*.91
         })        
         .attr("class", "sideline-label-text")
       
