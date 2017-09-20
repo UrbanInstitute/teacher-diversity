@@ -364,9 +364,7 @@ function drawGraph(container_width, category) {
             return yPos
           })
           .attr("transform", "translate(0,"+ (-170) +")")
-          console.log(j)
       var textRect = d3.select(".linkTextPhone-race-" + HEADERS2[i]).node().getBoundingClientRect()
-      console.log(textRect)
       yLabelG.select(".linkTextPhone-" + HEADERS2[i] + nodeNames[j])
           .append("text")
           .text(function(d) { 
@@ -383,6 +381,27 @@ function drawGraph(container_width, category) {
               return " linkTextPhone-stats linkTextPhone-stats" + i + j
           })      
           .attr("x", (dataCategory == 'all') ? width*.22 + textRect.width : width*.34 + textRect.width)
+          .attr("y", function(d) {
+            return yPos
+          })
+          .attr("transform", "translate(0,"+ (-170) +")")
+          // .style("opacity", 0)
+        var statsRect = d3.select(".linkTextPhone-stats" + i + j).node().getBoundingClientRect()
+        yLabelG.select(".linkTextPhone-" + HEADERS2[i] + nodeNames[j])
+          .append("text")
+          .text(function(d) { 
+            if (d == undefined) {
+              return steps[j-startNumber]
+            }
+            else { console.log(steps[j])
+              return steps[j-startNumber]
+              //return " " + percentFormat(d.value)
+            }
+          })   
+          .attr("class", function(d) {
+              return " linkTextPhone-stats-category linkTextPhone-stats-category" + i + j
+          })      
+          .attr("x", (dataCategory == 'all') ? width*.22 + textRect.width + statsRect.width + 10 : width*.34 + + statsRect.width + textRect.width + 10)
           .attr("y", function(d) {
             return yPos
           })
@@ -870,7 +889,7 @@ function drawGraph(container_width, category) {
                   .classed("showText", true)
                  highlightSelected("-HS", "", "young adults held high school diplomas.")
 
-            }else if (event.clientX <= rectBreaksX[0] && event.clientX > all.getBoundingClientRect().left) { console.log('hello')
+            }else if (event.clientX <= rectBreaksX[0] && event.clientX > all.getBoundingClientRect().left) { 
                 d3.select(".labelRect")
                   .classed("highlight", true)
                 d3.select(".label")
@@ -1062,7 +1081,7 @@ function drawGraph(container_width, category) {
         }else {
           var selectedNode = d3.select(".node-" + HEADERS2[number] + node).datum()
           var text  = d3.select(".node-" + HEADERS2[number] + node).datum().value
-          statsSvg.text(function() { console.log(HEADERS2[number])
+          statsSvg.text(function() { 
             if (text == 1) {
               return ""
             }else if ((category != 'percent') && (selectedNode.name == HEADERS2[number])) { 
@@ -1148,6 +1167,10 @@ function drawGraph(container_width, category) {
                           return " " + linkTextFormat(d.value)
                         }
                       })   
+                      .attr("y", function(d) {
+                        return yPos
+                      })
+                   d3.select(this).select(".linkTextPhone-stats-category")  
                       .attr("y", function(d) {
                         return yPos
                       })
@@ -1280,7 +1303,7 @@ function drawGraph(container_width, category) {
         var teachingNodeData = d3.select(".node-" + HEADERS2[i] + "-Teaching rect").data()[0]
         var teacherNodeY = teacherNodeData.y;
         teacherSubTextG.select(".teacherSubG1-" + HEADERS2[i])
-          .attr("transform", function() { console.log(teacherNodeY)
+          .attr("transform", function() { 
             if (isPhone) {
               return "translate(" + (teacherNodeX-20) + "," + (teacherNodeY + translateY + 5)+ ")";
             }else { 
@@ -1294,7 +1317,7 @@ function drawGraph(container_width, category) {
 
 
         teacherSubTextG.select(".teacherSubG2-" + HEADERS2[i])
-          .attr("transform", function() { console.log(teacherNodeY)
+          .attr("transform", function() { 
             if (isPhone) {
               return "translate(" + (teacherNodeX-20) + "," + (teacherNodeY + translateY + 5)+ ")";
             }else { 
