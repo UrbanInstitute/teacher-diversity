@@ -81,7 +81,7 @@ function drawGraph(container_width, category) {
       ();
   var aspect_width = 35,
       heightPhone = (dataCategory == 'all') ? 51 : 46,
-      heightMobile = (dataCategory == 'all') ? 39 : 35,
+      heightMobile = (dataCategory == 'all') ? 48 : 35,
       heightNormal = (dataCategory == 'all') ? 34 : 27,
       aspect_height = (function(){
         if (isPhone) {
@@ -218,11 +218,12 @@ function drawGraph(container_width, category) {
    // var defs = svg.append("defs");
 
   // Set the sankey diagram properties
+  var size = (isMobile) ? [width, height*.93] : [width, height*.85]
   var sankey = d3.sankey()
       .nodeWidth(nodeWidth)
       .nodePadding(nodePadding)
       .dataCategory(dataCategory)
-      .size([width, height*.85]);
+      .size(size);
    
   var path = sankey.link();
    
@@ -321,19 +322,14 @@ function drawGraph(container_width, category) {
   // for (j=0; j<nodeCategories.length; j++){
     labelG
       .attr("transform", function(d, i) { 
-        var nodeTransform = d3.select(".node-white" + d).attr("transform").split(",")[0]
-        var xLabelTranslate = nodeTransform.split("(")[1]
         if (isPhone) {
-         return (dataCategory == 'all') ? "translate(" + (width*.19 + width*.175*i)+ "," + height*.9+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
+         return (dataCategory == 'all') ? "translate(" + (width*.19 + width*.175*i)+ "," + height*.9+ ")": "translate(" + ( width*.305*i)+ "," + height+ ")";
         }
         else if (isMobile) { 
-          return (isMobile) ? "translate(" + (width*.17 + width*.17*i)+ "," + height*.91+ ")" : "translate(" + (width*.17 + width*.17*i)+ "," + height*.91+ ")"
+          return (dataCategory == 'all') ? "translate(" + (width*.17 + width*.17*i)+ "," + height*.99+ ")" : "translate(" + ( width*.29*i)+ "," + height*.99+ ")"
           // return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 10)+ "," + height*.91+ ")": "translate(" + ((xLabelTranslate - 10))+ "," + height+ ")";
         }else {
-          if (i == 0) {
-            return (dataCategory == 'all') ? "translate(" + (xLabelTranslate)+ "," + height*.93+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
-          }
-          return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 6)+ "," + height*.93+ ")": "translate(" + ((xLabelTranslate))+ "," + height*1.02+ ")";
+          return (dataCategory == 'all') ? "translate(" + (width*.16 + width*.175*i)+ "," + height*.93+ ")": "translate(" + (width*.29*i)+ "," + height*.92+ ")";
         }
         //}
       })

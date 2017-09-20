@@ -220,7 +220,7 @@ hr {
     display: block;
   }
 }
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 500px) {
   #isMobile {
     display: block;
   }
