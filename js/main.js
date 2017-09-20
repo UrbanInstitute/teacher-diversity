@@ -339,10 +339,10 @@ function drawGraph(container_width, category) {
     var xPosMobile2 = (dataCategory == 'all') ? width*.055 : -100;
 
     //ADD Y-AXIS RACE LABELS
-
+    var startNumber = (dataCategory == 'all') ? 0 : 1;
    var yLabelG = svg.append("g") 
         .attr("class", "g-y-labels")
-    for (j=1; j<nodeCategories.length; j++){
+    for (j=startNumber; j<nodeCategories.length; j++){
       for (i=0; i<HEADERS2.length; i++){
         if (isPhone){
         var yPos = (dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top + 10 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 11
@@ -364,7 +364,9 @@ function drawGraph(container_width, category) {
             return yPos
           })
           .attr("transform", "translate(0,"+ (-170) +")")
+          console.log(j)
       var textRect = d3.select(".linkTextPhone-race-" + HEADERS2[i]).node().getBoundingClientRect()
+      console.log(textRect)
       yLabelG.select(".linkTextPhone-" + HEADERS2[i] + nodeNames[j])
           .append("text")
           .text(function(d) { 
@@ -1020,6 +1022,7 @@ function drawGraph(container_width, category) {
 
       function statText(degree, number, node) { 
         if (isPhone) { 
+          var text  = d3.select(".node-" + HEADERS2[number] + node).datum().value
           d3.selectAll(".linkTextPhone")
             .classed("highlight", false)
           d3.selectAll(".teacherStatsPhoneG")
@@ -1029,12 +1032,20 @@ function drawGraph(container_width, category) {
           yLabelG.select(".teacherStatsPhone-text-" + HEADERS2[number])
             .text(function() { 
               if (degree == undefined) {
-                return ""
+                if ( dataCategory == 'all' && category != 'percent'){
+                  return "There were " + format(text) + " adults ages 25–34 in 2015."
+                }
+              }else if ( dataCategory != 'all' && degree.search("bachelor") > 0) { 
+                if (category == 'percent'){
+                  return ""
+                }else{
+                  return "There were " + format(text) + description(degree, number)
+                }
               }else if (degree.search("teacher") > 0) {
                 var teacherStats = (category == 'percent') ? teacherTextPercent[number] : teacherTextNumber[number]
-                return "In 2015, " + description(degree, number) + " " + teacherStats
+                return "In 2015, " + format(text) + description(degree, number) + " " + teacherStats
               }else {
-                return "In 2015, " + description(degree, number)
+              return "In 2015, " + format(text) + description(degree, number)
               }
              // return (category == 'percent') ? teacherTextPercent[0] : teacherTextNumber[0]
             })
