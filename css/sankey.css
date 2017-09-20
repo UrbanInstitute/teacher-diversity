@@ -233,7 +233,7 @@ hr {
 
 }
 
-@media screen and (max-width: 416px) {
+@media screen and (max-width: 400px) {
     #isPhone {
     display: block;
   }
