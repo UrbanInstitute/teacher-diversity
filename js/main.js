@@ -1055,12 +1055,12 @@ function drawGraph(container_width, category) {
         }else {
           var selectedNode = d3.select(".node-" + HEADERS2[number] + node).datum()
           var text  = d3.select(".node-" + HEADERS2[number] + node).datum().value
-          statsSvg.text(function() { 
+          statsSvg.text(function() { console.log(HEADERS2[number])
             if (text == 1) {
               return ""
             }else if ((category != 'percent') && (selectedNode.name == HEADERS2[number])) { 
               return "There were " + format(text) + " adults ages 25–34 in 2015."
-            }else if (dataCategory != 'all' && category !='percent') { 
+            }else if (dataCategory != 'all' && category !='percent' && selectedNode.name == HEADERS2[number] + "-Bach") { 
               return "There were " + format(text) + description(degree, number)
             }else { 
               return "In 2015, " + format(text) + description(degree, number)
