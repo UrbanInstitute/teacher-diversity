@@ -149,6 +149,7 @@ function drawGraph(container_width, category) {
             })
             .text(word)
             .attr("x", function() {  
+              var x = (x == null) ? 0 : text.attr("x");
               var bottomTextWidth = (d3.select(this).node().getComputedTextLength())
                 if (isMobile) {
                   if (word == "Diploma") {
@@ -551,12 +552,12 @@ function drawGraph(container_width, category) {
         return "labelRect labelRect" + nodeLabels[i] 
       })
       .attr("x", function(d, i) { 
-        return 0
+        return 5
       })
       .moveToBack()
     labelG
       .append("text")
-      .attr("x", 30)
+      .attr("x", 0)
       .text(function(d, i) { 
         return xLabels[i]
       })
@@ -571,6 +572,16 @@ function drawGraph(container_width, category) {
         }
       })
       .call(wrapText, wrapWidth)
+    d3.selectAll("text.label")
+      .each(function() {
+        d3.select(this)
+          .attr("x", function() {
+            var textWidth = d3.select(this).node().getBBox().width
+            var rectWidth = d3.select(".labelRect").node().getBBox().width
+            return ((rectWidth-textWidth)/2)
+          })
+          .call(wrapText, wrapWidth)
+      })
    
    if (isPhone) {
     d3.selectAll(".labelRect")
