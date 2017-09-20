@@ -150,10 +150,12 @@ function drawGraph(container_width, category) {
             .text(word)
             .attr("x", function() {  
               var bottomTextWidth = (d3.select(this).node().getComputedTextLength())
-                if (word == "Diploma") {
-                  return 0
-                }else if (word == "School"){
-                  return 5
+                if (isMobile) {
+                  if (word == "Diploma") {
+                    return 0
+                  }else if (word == "School"){
+                    return 5
+                  }
                 }else {
                 if (topTextWidth < 40){ 
                   return (-(bottomTextWidth - topTextWidth) / 2)
