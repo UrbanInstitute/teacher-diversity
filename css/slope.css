@@ -282,6 +282,14 @@ hr {
 #isPhone {
     display: none;
 }
+@-moz-document url-prefix() {    
+    .state-menu-div {
+        width: 46%;
+    }
+    .city-menu-div {
+        width: 48%;
+    }
+}
 @media screen and (max-width: 670px) {
     .long-name {
         margin-left: inherit;
@@ -376,6 +384,7 @@ hr {
     }
 
 }
+
 @media screen and (max-width: 480px) {
     .ui-selectmenu-text {
         margin-left: 20px !important;
