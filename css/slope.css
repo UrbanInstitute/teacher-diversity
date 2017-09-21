@@ -450,6 +450,12 @@ hr {
         margin-top: calc(125vw + 30px);
     }
 }
+@media screen and (max-width: 400px) {
+    .ui-selectmenu-text {
+        margin-left: calc(15vw + 0px) !important;
+    }
+
+}
 @media screen and (max-width: 350px) {
     .urban-switch.large {
         margin-right: 5px;
@@ -485,7 +491,7 @@ hr {
     }
 
     .ui-selectmenu-text {
-        margin-left: calc(3vw + 10px) !important;
+        margin-left: calc(3vw + 18px) !important;
     }
     .urban-switch.large {
         margin-left: 18px;
