@@ -42,7 +42,18 @@ function drawGraph(container_width, category) {
       })
       (),
       // wrapWidthDescriptionPhone = container_width*.8, 
-      wrapWidth = (isMobile) ? 63 : 90,
+      wrapWidth = (function(){
+        if (isPhone) { 
+          return 60
+        }
+        else if (isMobile) { 
+          return 63
+          // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
+        }else {
+          return 90
+        }
+      })
+      (),
       nodeLabels = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
       xLabels = (dataCategory == 'all') ? ["All young adults", "High school diploma", "Bachelor's degree", "Teaching degree", "Teacher"] : ["", "Bachelor's degree", "Teaching degree", "Teacher"],
       xLabelNumber = (dataCategory == 'all') ? 5 : 4,
@@ -326,8 +337,11 @@ function drawGraph(container_width, category) {
   // for (j=0; j<nodeCategories.length; j++){
     labelG
       .attr("transform", function(d, i) { 
-        if (isPhone) {
-         return (dataCategory == 'all') ? "translate(" + (width*.19 + width*.17*i)+ "," + height*.99+ ")": "translate(" + (2+ width*.305*i)+ "," + height+ ")";
+        if (container_width < 350){         
+          return (dataCategory == 'all') ? "translate(" + (width*.18 + width*.175*i)+ "," + height*.99+ ")": "translate(" + (2+ width*.305*i)+ "," + height+ ")";
+        }
+        else if (isPhone) {
+         return (dataCategory == 'all') ? "translate(" + (width*.195 + width*.18*i)+ "," + height*.99+ ")": "translate(" + (2+ width*.305*i)+ "," + height+ ")";
         }
         else if (isMobile) { 
           return (dataCategory == 'all') ? "translate(" + (width*.17 + width*.17*i)+ "," + height*.99+ ")" : "translate(" + ( width*.29*i)+ "," + height*.99+ ")"
@@ -578,11 +592,13 @@ function drawGraph(container_width, category) {
     d3.selectAll("text.label")
       .each(function(d, i) {
         d3.select(this)
-          .attr("x", function() {
+          .attr("x", function() { console.log(d)
             var textWidth = d3.select(this).node().getBBox().width
             var rectWidth = d3.select(".labelRect").node().getBBox().width
             if (d == "-Teacher") {
               return (isPhone) ? (rectWidth-textWidth)/2 - 7 : (rectWidth-textWidth)/2 + 2
+            } else if (d == "-HS") {
+              return (isMobile && !isPhone) ? (rectWidth-textWidth)/2 + 13 : (rectWidth-textWidth)/2 + 2
             }else {
               return (isPhone) ? (rectWidth-textWidth)/2 + 7 : (rectWidth-textWidth)/2 + 4
             }
@@ -599,15 +615,7 @@ function drawGraph(container_width, category) {
           })
           .call(wrapText, wrapWidth)
       })
-    //make third line in x-axis labels center-aligned
-    if (isPhone && (dataCategory == 'all')){
-      d3.select(".label.label").select("tspan:nth-child(3)")
-        .attr("x", 0)
-
-
-       
-    }
- 
+    
    
    // if (isPhone) {
    //  d3.selectAll(".labelRect")
@@ -624,12 +632,15 @@ function drawGraph(container_width, category) {
    //    })
    // }
 
+  //make third line in x-axis labels center-aligned
+    if (isPhone && (dataCategory == 'all')){
+      d3.select(".label.label").select("tspan:nth-child(3)")
+        .attr("x", 0)     
+    }
     d3.selectAll("text.label")
       .each(function() {
         d3.select(this)
           .attr("x", function() {
-            // var rectWidth = d3.select(".labelRect").node().getBoundingClientRect().width
-            // var labelWidth = d3.select(this).node().getBBox().width
             return 0
           })
       })
@@ -637,11 +648,20 @@ function drawGraph(container_width, category) {
 
     d3.select("text.label.label-HS")
       .attr("y", function() {
-        return (isMobile) ? -5 : 0
+        return (isMobile && !isPhone) ? -5 : 0
       })
-      .attr("x", function() {
-        return (isMobile) ? 10 : ""
-      })
+    if (isMobile  && (dataCategory == 'all')) {
+      d3.select("text.label.label-HS").select("tspan:nth-child(3)")
+        .attr("dy", "1.1em")
+      d3.select("text.label.label-HS").select("tspan:nth-child(3)")
+        .attr("x", function() {
+          return (isPhone) ? 0 : 17
+        })
+    }
+
+      // .attr("x", function() {
+      //   return (isMobile && !isPhone) ? 10 : ""
+      // })
     d3.select(".g-x-labels")
       .attr("transform", function(d, i) { 
         return (isPhone) ? "translate(" + 0 + ","+ (-height*.02) +")" : "translate(" + 0 + ","+ (-height*.03) +")";
