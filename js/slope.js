@@ -16,7 +16,6 @@ function drawGraphic(container_width){
   var isMobile = d3.select("#isMobile").style("display") == "block"
   var isPhone = d3.select("#isPhone").style("display") == "block"
   var isPhoneSmall = d3.select("#isPhoneSmall").style("display") == "block"
-
   console.log(isMobile)
   var width = (function() {
     if (isPhone) {
@@ -31,7 +30,7 @@ function drawGraphic(container_width){
   var aspect_width = 25,
     heightSmallPhone = 41,
     heightPhone = 36,
-    heightMobile = 37,
+    heightMobile = 38,
     heightNormal = 47,
     aspect_height = (function(){
       if (isPhoneSmall) { console.log('small phone')
@@ -49,7 +48,7 @@ function drawGraphic(container_width){
     })
     ();
   height = Math.ceil((width * aspect_height) / aspect_width) - margin.top - margin.bottom,
-  graphHeight = (isMobile == true) ? height*2 : height;
+  graphHeight = (isMobile) ? height*2.1 : height;
   var leftScale = d3.scaleLinear()
     .domain([0.0, 1])
     .range([height - margin.top, margin.bottom]);
