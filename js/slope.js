@@ -236,7 +236,7 @@ function drawGraphic(container_width){
         .selectmenu({
 
            open: function( event, ui ) { 
-            $("ul#state-select-menu").css("width", width - margin.left - margin.right)
+            $("ul#state-select-menu").css("width", width - margin.left - margin.right - 2)
             changeDropdown()
               if (isMobile) {
                 d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.39) + "px")
@@ -264,7 +264,7 @@ function drawGraphic(container_width){
       $("#city-select")
         .selectmenu({
            open: function( event, ui ) {  
-            $("ul#city-select-menu").css("width", width - margin.left - margin.right)
+            $("ul#city-select-menu").css("width", width - margin.left - margin.right - 2)
               changeDropdown()     
               d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22) + "px")
               // d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open:first-child").style("height",  "300px")
@@ -489,7 +489,7 @@ function drawGraphic(container_width){
         .attr("y", function(d){ 
           return leftScale(d['city_k12'])
         })
-        .attr("x", 8)
+        .attr("x", 9)
         .attr("class", function(d) {
           return "data-label data-label-city data-label-city-left " + d.abbr + " " + d.abbr + d.city_id
         })
@@ -618,7 +618,7 @@ function drawGraphic(container_width){
         .attr("y", function(d){ 
           return leftScale(d['state_k12'])
         })
-        .attr("x", 8)
+        .attr("x", 9)
         .attr("class", function(d) {
           return "data-label data-label-state data-label-state-left " + d.abbr 
         })
@@ -1085,7 +1085,7 @@ function drawGraphic(container_width){
             .attr("y", function(d){ 
               return leftScale(d[geography + '_k12'])
             })
-            .attr("x", 1)
+            .attr("x", 9)
             .attr("class", function(d) { 
               if (geography == "city") { 
                 if (selectedCities.indexOf(d.city) > -1){ 

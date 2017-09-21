@@ -8,7 +8,7 @@ body {
 #title {
   margin-bottom: 10px;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
 }
 /*SELECT MENU */
 
@@ -37,7 +37,7 @@ select {
 .ui-selectmenu-button.ui-button {
     background: #332d2f !important;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 400;
     font-family: Lato, sans-serif;
     text-align: center !important;
     width: auto !important;
