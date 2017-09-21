@@ -365,8 +365,8 @@ function drawGraph(container_width, category) {
         .attr("class", "g-y-labels")
     for (j=startNumber; j<nodeCategories.length; j++){
       for (i=0; i<HEADERS2.length; i++){
-        if (isPhone){
-        var yPos = (dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top + 10 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 11
+        if (isPhone){ console.log(container_width)
+        var yPos = (container_width > 350 && dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top + 10 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 10
         yLabelG.append("g") 
           .attr("class", "linkTextPhone linkTextPhone-" + HEADERS2[i] + nodeNames[j])
           .data(graph_percent.filter(function(d) { 
@@ -461,7 +461,7 @@ function drawGraph(container_width, category) {
     //MOBILE TEXT
     for (i=0; i<HEADERS2.length; i++) {
       if (isPhone){
-      var yPos = (dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top- 140 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 163
+      var yPos = (container_width > 350 && dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top- 140 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 163
       var textRect = d3.select(".linkTextPhone-race-" + HEADERS2[i]).node().getBoundingClientRect()
       yLabelGDescription = yLabelG
         .append("g")
@@ -1213,7 +1213,7 @@ function drawGraph(container_width, category) {
           if (isPhone){
             for (j=0; j<nodeCategories.length; j++){
               for (i=0; i<HEADERS2.length; i++){
-                var yPos = (dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top + 10 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 11
+                var yPos = (container_width > 350 && dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top + 10 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 10
                 yLabelG
                   .data(linkData.filter(function(d) { 
                     return (d.target.name) == HEADERS2[i] + nodeCategories[j]
@@ -1240,7 +1240,7 @@ function drawGraph(container_width, category) {
             }
             //TRANSITION DESCRIPTION LABELS
             for (i=0; i<HEADERS2.length; i++) {
-                var yPos = (dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top- 140 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 163
+                var yPos = (container_width > 350 && dataCategory == 'all') ? d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top- 140 : d3.select(".node-" + HEADERS2[i]).node().getBoundingClientRect().top - 163
                 var textRect = d3.select(".linkTextPhone-race-" + HEADERS2[i]).node().getBoundingClientRect()
                 d3.selectAll(".teacherStatsPhoneG-" + i) 
                   .attr("transform", function() { 
