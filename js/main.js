@@ -13,7 +13,7 @@ function drawGraph(container_width, category) {
   var units = "of students";
   var steps = (dataCategory == 'all') ? ["All young adults", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["Bachelor's Degree", "Teaching Degree", "Teacher"]
   var numberSteps = (dataCategory == 'all') ? 5 : 3;
-  var HEADERS2= ["white", "black", "Hispanic", "Asian"],
+  var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
       HEADERS1= ["SOURCE", "TARGET"],
       category = "percent",
       xRectHeight = (dataCategory == 'all') ? [65, 65, 65, 65, 25,] : [0, 65, 65, 25, 0,]
@@ -701,7 +701,7 @@ function drawGraph(container_width, category) {
         }
         else{
           if ((d.target.name).search("Teaching") > 0) {
-            if ((d.target.name).search("white") == 0) {
+            if ((d.target.name).search("White") == 0) {
               return d.target.y + (d.target.dy) -10
             }
             else if ((d.target.name).search("Asian") < 0) {
@@ -843,7 +843,7 @@ function drawGraph(container_width, category) {
       var className = $(".link.highlight").attr("class").split(" ")[1]
         return className.split("-")[1]
        }else {
-        return "white"
+        return "White"
        }
       })
      ();
@@ -1006,7 +1006,7 @@ function drawGraph(container_width, category) {
           .classed("highlight", true)
         d3.selectAll(".linkText-" + HEADERS2[0] + node + ", .raceLabels-" + HEADERS2[0] + type)
           .classed("highlight", true)
-        d3.selectAll(".teacherSubTextG1-white,.teacherSubTextG2-white")
+        d3.selectAll(".teacherSubTextG1-White,.teacherSubTextG2-White")
           .classed("highlight", function() { 
             return (node == "-Teacher") ? true : false
           })
@@ -1017,7 +1017,7 @@ function drawGraph(container_width, category) {
           .classed("highlight", true)
         d3.selectAll(".linkText-" + HEADERS2[1] + node + ", .raceLabels-" + HEADERS2[1] + type)
           .classed("highlight", true)
-        d3.selectAll(".teacherSubTextG1-black,.teacherSubTextG2-black")
+        d3.selectAll(".teacherSubTextG1-Black,.teacherSubTextG2-Black")
           .classed("highlight", function() {
             return (node == "-Teacher") ? true : false
           })
@@ -1179,7 +1179,7 @@ function drawGraph(container_width, category) {
         })
         .on('end', function(d) {
           //TRANSITION DATA LABELS AND RACE LABELS
-          if ((d.name).search("white-Teacher")> -1){
+          if ((d.name).search("White-Teacher")> -1){
             transitionTeacherText()
           }
           if (isPhone){
@@ -1233,7 +1233,7 @@ function drawGraph(container_width, category) {
         .attr("y", function(d) {
           if (dataCategory == 'all') {
             if ((d.target.name).search("Teaching") > 0) {
-              if ((d.target.name).search("white") == 0) {
+              if ((d.target.name).search("White") == 0) {
                 return (category == 'percent') ? d.target.y + (d.target.dy) -4 :  d.target.y + (d.target.dy) -8
               }
               return (category == 'percent') ? d.target.y + (d.target.dy) -4 :  d.target.y + (d.target.dy) -2
@@ -1243,7 +1243,7 @@ function drawGraph(container_width, category) {
           }
           else{
             if ((d.target.name).search("Teaching") > 0) {
-              if ((d.target.name).search("white") == 0) {
+              if ((d.target.name).search("White") == 0) {
                 return (category == 'percent') ? d.target.y + (d.target.dy) -8 : d.target.y + (d.target.dy) -6 ;
               }
               else if ((d.target.name).search("Asian") < 0) {
