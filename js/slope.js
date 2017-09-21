@@ -3,8 +3,8 @@
 // var container_width = parseFloat(d3.select("#chart").style("width"))
 var formatPercent = d3.format(".0%");
 // var height = 550;
-var raceOn = ["white"];
-var raceOff = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"];
+var raceOff = ["white"];
+var raceOn = ["black", "hispanic", "asian", "native_hawaiian", "alaskan_native", "american_indian"];
 var selectedCities = [];
 var selectedState = [];
 var margin = {top: 80, bottom: 20, left: 43, right:43};
@@ -16,7 +16,6 @@ function drawGraphic(container_width){
   var isMobile = d3.select("#isMobile").style("display") == "block"
   var isPhone = d3.select("#isPhone").style("display") == "block"
   var isPhoneSmall = d3.select("#isPhoneSmall").style("display") == "block"
-  console.log(isMobile)
   var width = (function() {
     if (isPhone) {
       return container_width*1.04
@@ -33,13 +32,13 @@ function drawGraphic(container_width){
     heightMobile = 38,
     heightNormal = 47,
     aspect_height = (function(){
-      if (isPhoneSmall) { console.log('small phone')
+      if (isPhoneSmall) { 
         return heightSmallPhone;
       }
-      else if (isPhone) { console.log('phone')
+      else if (isPhone) { 
         return heightPhone
       }
-      else if (isMobile) { console.log('mobile')
+      else if (isMobile) { 
         return heightMobile
         // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
       }else {
@@ -60,11 +59,11 @@ function drawGraphic(container_width){
     d3.csv('data/slope_data2.csv', function(error, data) {
      // data = d;
         var all_data = data
-        var cityData_white= data.filter(function(d) { 
-          return d.white == 1 && d.black == 0 && d.hispanic == 0 && d.asian == 0 && d.american_indian == 0 && d.alaskan_native == 0 && d.native_hawaiian == 0 && d.city != "";
+        var cityData_nonwhite= data.filter(function(d) { 
+          return d.white == 0 && d.black == 1 && d.hispanic == 1 && d.asian == 1 && d.american_indian == 1 && d.alaskan_native == 1 && d.native_hawaiian == 1 && d.city != "";
         })
-        var stateData_white= data.filter(function(d) { 
-          return d.white == 1 && d.black == 0 && d.hispanic == 0 && d.asian == 0 && d.american_indian == 0 && d.alaskan_native == 0 && d.native_hawaiian == 0;
+        var stateData_nonwhite= data.filter(function(d) { 
+          return d.white == 0 && d.black == 1 && d.hispanic == 1 && d.asian == 1 && d.american_indian == 1 && d.alaskan_native == 1 && d.native_hawaiian == 1;
         })
 
       $("#graph-container").empty()
@@ -107,7 +106,6 @@ function drawGraphic(container_width){
         .attr("class", "state-graph")
         .attr("transform", function() {
           var heightCityG = Number(d3.select(".city-graph").attr("height"))
-          console.log(heightCityG)
           return (isMobile) ? "translate("+ (container_width - width)/2+"," + (heightCityG + 45) + ")" : "translate("+width*.96+"," + 20 + ")"
         })
       gState.append("text")
@@ -140,13 +138,13 @@ function drawGraphic(container_width){
         .attr("id", "city-select")
       var optionsCity = selectCity
         .selectAll('option')
-        .data(cityData_white)
+        .data(cityData_nonwhite)
       var selectState = d3.select("#state-menu")
         .append("select")
         .attr("id", "state-select")
       var optionsState = selectState
         .selectAll('option')
-        .data(stateData_white)
+        .data(stateData_nonwhite)
 
       optionsCity.enter()
         .append('option')
@@ -268,7 +266,6 @@ function drawGraphic(container_width){
            open: function( event, ui ) {  
             $("ul#city-select-menu").css("width", width - margin.left - margin.right)
               changeDropdown()     
-            console.log(d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height)
               d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22) + "px")
               // d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open:first-child").style("height",  "300px")
               if (isMobile) {
@@ -390,7 +387,7 @@ function drawGraphic(container_width){
         .attr("class", "cityText")
 
       var linesCityG = gCity.selectAll("g")
-        .data(cityData_white);
+        .data(cityData_nonwhite);
 
       // var leftCircles = gCity.selectAll("circle")
       //   .data(cityData_white)
@@ -519,7 +516,7 @@ function drawGraphic(container_width){
         .attr("class", "stateText")
 
       var linesStateG = gState.selectAll("g")
-        .data(stateData_white);
+        .data(stateData_nonwhite);
       // var leftCircles2 = gState.selectAll("circle")
       //   .data(stateData_white)
       // var rightCircles2 = gState.selectAll("circle")
@@ -883,7 +880,7 @@ function drawGraphic(container_width){
           }
           raceOff.push(race)
         }
-        if (raceOn.length > 0){
+        if (raceOn.length > 0){ 
           for (i=0; i<raceOn.length; i++){ // filter data by races that are turned on
             newData = all_data.filter(function(d){ 
               return d[raceOn[i]] == 1;
@@ -898,12 +895,16 @@ function drawGraphic(container_width){
 
 
       function updateDataOff(newData) { //pass filtered data from updateDataOn function and filter by races that are turned off
-          for (i=0; i<raceOff.length; i++){  
-            newDataFiltered = newData.filter(function(d){
-              return d[raceOff[i]] == 0
-            })
-            newData = newDataFiltered;
-          } 
+          if (raceOff.length > 0){
+            for (i=0; i<raceOff.length; i++){  
+              newDataFiltered = newData.filter(function(d){
+                return d[raceOff[i]] == 0
+              })
+              newData = newDataFiltered;
+            } 
+          }else {
+            newDataFiltered = newData
+          }
           var dataCity = newDataFiltered.filter(function(d) {
             return d.city != ""
           })
@@ -992,11 +993,6 @@ function drawGraphic(container_width){
             .duration(800)
             .attr("cy", function(d) {
               return rightScale(d[geography + "_teacher"])
-              // if (geography == "city"){ console.log(d3.select(this).attr("class"))
-              //   return (d3.select(this).attr("class").search("left") > 0) ? leftScale(d['city_k12']) : rightScale(d['city_teacher']);
-              // }else {
-              //   return (d3.select(this).attr("class").search("right") > 0) ? rightScale(d['state_teacher']) : leftScale(d['state_k12']);
-              // }
             })
  
             .attr("r", 5)
@@ -1106,174 +1102,6 @@ function drawGraphic(container_width){
               }
             })
 
-          var linesG = elements.enter().append("g")
-            .attr("class", geography + "-g")
-          linesG
-            .append("line")
-            .attr("class", function(d) { 
-              if (elements == cityLines) { 
-                if (selectedCities.indexOf(d.city) > -1){
-                  return "city-line selected city-line-" + d.abbr + " city-line-" + d.abbr + d.city_id
-                }else {
-                  return "city-line city-line-" + d.abbr + " city-line-" + d.abbr + d.city_id
-                }
-              }else{
-                if (elements == stateLines) {
-                  if (selectedState.indexOf(d.state) > -1) {
-                    return "state-line selected state-line-" + d.abbr
-                  }else {
-                    return "state-line state-line-" + d.abbr
-                  }
-                }
-              }
-            })
-            .merge(elements)
-            .transition()
-            .duration(800)
-            .attr("x1", margin.left)
-            .attr("x2", width - margin.right)
-            .attr("y1", function(d) {
-              return leftScale(d[geography + '_k12']);
-            })
-            .attr("y2", function(d) {
-              return rightScale(d[geography + '_teacher']);
-            })
-            .on('end', function() {
-              if (d3.select(".state-line.selected").size() > 0){
-
-              var selectedStateLine = d3.select(".state-line.selected")
-              var selectedStateG = d3.select(selectedStateLine.node().parentNode).moveToFront()
-              d3.selectAll(".city-line.selected")
-                .each(function() {
-                  var selectedCityLine = d3.select(this)
-                  var selectedCityG = d3.select(selectedCityLine.node().parentNode).moveToFront()
-                })
-              // removeLineInfo()
-              }
-
-            })
-          linesG.append("circle")
-            .attr("class", function(d) { 
-              if (geography == "city") {
-                if (selectedCities.indexOf(d.city) > -1){
-                  return "circle selected city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id 
-                }else {
-                  return "circle city-circle-left city-circle-left-" + d.abbr + " city-circle-left-" + d.abbr + d.city_id 
-                }
-              }else {
-                if (selectedState.indexOf(d.state) > -1) {
-                  return "circle selected state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id 
-                }else {
-                  return "circle state-circle-left state-circle-left-" + d.abbr + " state-circle-left-" + d.abbr + d.city_id 
-                }
-              }
-            })
-            .merge(elements)
-            .attr("cx", function() {   
-               return margin.left 
-            })  
-            .transition()
-            .duration(800)
-            .attr("cy", function(d) {
-              if (geography == "city"){
-                return leftScale(d['city_k12']) 
-              }else {
-                return leftScale(d['state_k12']) 
-              }
-            })   
-            .attr("r", 5) 
-
-         linesG.append("circle")
-            .attr("class", function(d) { 
-              if (geography == "city") { 
-                if (selectedCities.indexOf(d.city) > -1){
-                  return "circle selected city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
-                }else{
-                  return "circle city-circle-right city-circle-right-" + d.abbr + " city-circle-right-" + d.abbr + d.city_id
-                }
-              }else if (geography == "state") {
-                if (selectedState.indexOf(d.state) > -1){ 
-                  return "circle selected state-circle-right state-circle-right-" + d.abbr 
-                }else {
-                  return "circle state-circle-right state-circle-right-" + d.abbr 
-                }
-              }
-            })
-            .merge(elements)
-            .attr("cx", function() {   
-               return width - margin.right   
-            }) 
-            .transition()
-            .duration(800)
-            .attr("cy", function(d) {
-              if (geography == "city"){
-                return rightScale(d['city_teacher']);
-              }else {
-                return rightScale(d['state_teacher']);
-              }
-            })    
-            .attr("r", 5)    
-          linesG
-            .append("text")
-            .text(function(d) {
-              return formatPercent(d[geography + "_teacher"])
-            })
-            .attr("y", function(d){ 
-              return rightScale(d[geography + '_teacher'])
-            })
-            .attr("x", width - margin.right + 8)
-            .attr("class", function(d) { 
-              if (geography == "city") { 
-                if (selectedCities.indexOf(d.city) > -1){
-                  return "data-label selected data-label-city data-label-city-right " + d.abbr + " " + d.abbr + d.city_id
-                }else{
-                  return "data-label data-label-city data-label-city-right " + d.abbr + " " + d.abbr + d.city_id
-                }
-              }else if (geography == "state") {
-                if (selectedState.indexOf(d.state) > -1){ 
-                  return "data-label selected data-label-state data-label-state-right " + d.abbr 
-                }else {
-                  return "data-label data-label-state data-label-state-right " + d.abbr 
-                }
-              }
-            })
-          linesG
-            .append("text")
-            .text(function(d) {
-              return formatPercent(d[geography + "_k12"])
-            })
-            .attr("y", function(d){ 
-              return leftScale(d[geography + '_k12'])
-            })
-            .attr("x", 1)
-            .attr("class", function(d) { 
-              if (geography == "city") { 
-                if (selectedCities.indexOf(d.city) > -1){ 
-                  return "data-label selected data-label-city data-label-city-left " + d.abbr + " " + d.abbr + d.city_id
-                }else{
-                  return "data-label data-label-city data-label-city-left " + d.abbr + " " + d.abbr + d.city_id
-                }
-              }else if (geography == "state") {
-                if (selectedState.indexOf(d.state) > -1){
-                  return "data-label selected data-label-state data-label-state-left " + d.abbr 
-                }else {
-                  return "data-label data-label-state data-label-state-left " + d.abbr 
-                }
-              }
-            })
-
-          elements
-            .exit()
-            .transition()
-            .style("opacity", 0)
-            .remove()
-            // .on('end', function() {
-            //   d3.selectAll(".city-line.selected, .state-line.selected")
-            //     .moveToFront()
-            //   d3.selectAll(".circle.selected")
-            //     .moveToFront()
-            //   removeLineInfo()
-            // })        
           var exist = {};
           d3.selectAll('.data-label-state').each(function() {
               if (exist[$(this).attr("class")])
