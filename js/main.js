@@ -8,12 +8,12 @@ function drawGraph(container_width, category) {
   var isMobile = d3.select("#isMobile").style("display") == "block"
   var isPhone = d3.select("#isPhone").style("display") == "block"
   var is675 = d3.select("#is675").style("display") == "block"
-  console.log(isMobile)
   var dataCategory = document.getElementById('chart').className
   var units = "of students";
-  var steps = (dataCategory == 'all') ? ["All young adults", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["Bachelor's Degree", "Teaching Degree", "Teacher"]
+  var steps = (dataCategory == 'all') ? ["All young adults", "High school diploma", "Bachelor's degree", "Teaching degree", "Teacher"] : ["Bachelor's degree", "Teaching degree", "Teacher"]
   var numberSteps = (dataCategory == 'all') ? 5 : 3;
   var HEADERS2= ["White", "Black", "Hispanic", "Asian"],
+      HEADERS3= ["white", "black", "Hispanic", "Asian"],
       HEADERS1= ["SOURCE", "TARGET"],
       category = "percent",
       xRectHeight = (dataCategory == 'all') ? [65, 65, 65, 65, 25,] : [0, 65, 65, 25, 0,]
@@ -44,7 +44,7 @@ function drawGraph(container_width, category) {
       // wrapWidthDescriptionPhone = container_width*.8, 
       wrapWidth = (isMobile) ? 63 : 90,
       nodeLabels = (dataCategory == 'all') ? ["", "-HS", "-Bach", "-Teaching", "-Teacher"] : ["", "-Bach", "-Teaching", "-Teacher"],
-      xLabels = (dataCategory == 'all') ? ["All young adults", "High School Diploma", "Bachelor's Degree", "Teaching Degree", "Teacher"] : ["", "Bachelor's Degree", "Teaching Degree", "Teacher"],
+      xLabels = (dataCategory == 'all') ? ["All young adults", "High school diploma", "Bachelor's degree", "Teaching degree", "Teacher"] : ["", "Bachelor's degree", "Teaching degree", "Teacher"],
       xLabelNumber = (dataCategory == 'all') ? 5 : 4,
       teacher = (dataCategory == 'all') ? 4 : 3;
       // color = d3.scale.ordinal()
@@ -527,7 +527,7 @@ function drawGraph(container_width, category) {
 
     var xLabelNotes = d3.select(".label-g.label")
       .append("text")
-      .text("ages 25-34")
+      .text("ages 25–34")
       .attr("y", 48)
       .attr("x", 0)
       .attr("class", "x-label-notes")
@@ -752,7 +752,7 @@ function drawGraph(container_width, category) {
     //TEACHER STATS
     var teacherSubTextG = svg.append("g")
       .attr("class", "teacherSubTextG")
-    for (i=0; i<4; i++){ console.log(d3.select(".node-" + HEADERS2[i] + "-Teacher rect"))
+    for (i=0; i<4; i++){ 
       // var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
       var translateYPercent = (dataCategory == 'all') ? 7 :13 //-width * .3 : -width*.26
       var translateYNumber = (dataCategory == 'all') ? -width * .292 : -width*.25
@@ -957,12 +957,12 @@ function drawGraph(container_width, category) {
         }else{ 
           if (dataCategory != 'all') { 
             if (degree.search("bachelor") > 0 && category !='percent') {
-              return " " + HEADERS2[i] + " college graduates in 2016."
+              return " " + HEADERS3[i] + " college graduates in 2016."
             }else{
-              return (category == 'percent') ? " of " + HEADERS2[i] + " " + degree : " " + HEADERS2[i] + " " + degree;
+              return (category == 'percent') ? " of " + HEADERS3[i] + " " + degree : " " + HEADERS3[i] + " " + degree;
             }
           }else {
-            return (category == 'percent') ? " of " + HEADERS2[i] + " " + degree : " " + HEADERS2[i] + " " + degree;
+            return (category == 'percent') ? " of " + HEADERS3[i] + " " + degree : " " + HEADERS3[i] + " " + degree;
           }
         }
       }
