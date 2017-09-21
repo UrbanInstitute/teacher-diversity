@@ -241,7 +241,7 @@ function drawGraphic(container_width){
             $("ul#state-select-menu").css("width", width - margin.left - margin.right)
             changeDropdown()
               if (isMobile) {
-                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.38) + "px")
+                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.39) + "px")
               }else {
                 d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.13) + "px")
               }
@@ -492,7 +492,7 @@ function drawGraphic(container_width){
         .attr("y", function(d){ 
           return leftScale(d['city_k12'])
         })
-        .attr("x", 1)
+        .attr("x", 8)
         .attr("class", function(d) {
           return "data-label data-label-city data-label-city-left " + d.abbr + " " + d.abbr + d.city_id
         })
@@ -621,7 +621,7 @@ function drawGraphic(container_width){
         .attr("y", function(d){ 
           return leftScale(d['state_k12'])
         })
-        .attr("x", 1)
+        .attr("x", 8)
         .attr("class", function(d) {
           return "data-label data-label-state data-label-state-left " + d.abbr 
         })

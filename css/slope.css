@@ -4,9 +4,11 @@ body {
 */    overflow: hidden;
 }
 
-#chart {
-/*    max-width: 690px;
-    width: 100%;  */
+
+#title {
+  margin-bottom: 30px;
+  font-size: 18px;
+  font-weight: 600;
 }
 /*SELECT MENU */
 
