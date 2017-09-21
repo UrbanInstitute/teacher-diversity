@@ -152,7 +152,7 @@ function drawGraph(container_width, category) {
             })
             .text(word)
             .attr("x", function() {  
-              var x = (x == null) ? 0 : text.attr("x");
+             // var x = (x == null) ? 0 : text.attr("x");
               var x = text.attr("x");
 
               var bottomTextWidth = (d3.select(this).node().getComputedTextLength())
@@ -163,9 +163,9 @@ function drawGraph(container_width, category) {
                 //     return 5 + parseFloat(x)
                 //   }
                 // }
-                if (topTextWidth < 40){ 
+                if (topTextWidth < 40){ console.log(word)
                   return (-(bottomTextWidth - topTextWidth) / 2) + parseFloat(x)
-                }else if (topTextWidth < 80) {
+                }else if (topTextWidth < 80) { console.log(word)
                   return ((topTextWidth - bottomTextWidth) / 2) + parseFloat(x)
                 }else { 
                   return 0 //+ parseFloat(x)
@@ -467,7 +467,7 @@ function drawGraph(container_width, category) {
         .attr("y", 0)
         // .call(wrapText, wrapWidthDescriptionPhone)
       yLabelGDescription.append("rect")
-        .attr("x",0)
+        .attr("x",-4)
         .attr("y", -textRect.height)       
         .attr("width", textRect.width * 1.1)
         .attr("height", textRect.height * 1.2)      
@@ -525,12 +525,12 @@ function drawGraph(container_width, category) {
             return "raceLabels raceLabels-" + d.name.split(" ")[0] 
         })
 
-    var xLabelNotes = d3.select(".label-g.label")
-      .append("text")
-      .text("ages 25–34")
-      .attr("y", 48)
-      .attr("x", 0)
-      .attr("class", "x-label-notes")
+    // var xLabelNotes = d3.select(".label-g.label")
+    //   .append("text")
+    //   .text("ages 25–34")
+    //   .attr("y", 48)
+    //   .attr("x", 0)
+    //   .attr("class", "x-label-notes")
     labelG
       .append("rect")
       .attr("y",  function(d, i) { 
@@ -591,7 +591,7 @@ function drawGraph(container_width, category) {
             return xLabels[i]
           })
           .attr("dy", function() {
-            if (d == "-Teacher") {
+            if (d == "-Teacher" && !isPhone) {
               return .5
             }else {
               return 0
@@ -599,22 +599,30 @@ function drawGraph(container_width, category) {
           })
           .call(wrapText, wrapWidth)
       })
+    //make third line in x-axis labels center-aligned
+    if (isPhone && (dataCategory == 'all')){
+      d3.select(".label.label").select("tspan:nth-child(3)")
+        .attr("x", 0)
+
+
+       
+    }
  
    
-   if (isPhone) {
-    d3.selectAll(".labelRect")
-      .each(function(d, i) { 
-        var label = d3.select(".label" + nodeNames[i]).node().getBBox()
-        d3.select(this)
-          .attr("y", function() {
-            if (i == 0) {
-              return label.height/2 + label.y + 2
-            }else {
-            return label.height + label.y + 2
-            }
-          })
-      })
-   }
+   // if (isPhone) {
+   //  d3.selectAll(".labelRect")
+   //    .each(function(d, i) { 
+   //      var label = d3.select(".label" + nodeNames[i]).node().getBBox()
+   //      d3.select(this)
+   //        .attr("y", function() {
+   //          if (i == 0) {
+   //            return label.height/2 + label.y + 2
+   //          }else {
+   //          return label.height + label.y + 2
+   //          }
+   //        })
+   //    })
+   // }
 
     d3.selectAll("text.label")
       .each(function() {
@@ -636,7 +644,7 @@ function drawGraph(container_width, category) {
       })
     d3.select(".g-x-labels")
       .attr("transform", function(d, i) { 
-        return (isPhone) ? "translate(" + 0 + ","+ (-height*.015) +")" : "translate(" + 0 + ","+ (-height*.03) +")";
+        return (isPhone) ? "translate(" + 0 + ","+ (-height*.02) +")" : "translate(" + 0 + ","+ (-height*.03) +")";
       })
     var linkG = svg.append("g")
       .attr("class", "g-text")

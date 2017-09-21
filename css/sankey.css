@@ -19,6 +19,10 @@
   width: 100%;
 }
 
+.notes {
+  font-size: 11px;
+}
+
 .x-label-notes {
   font-size: 11px;
   fill:  #696969;
@@ -240,7 +244,7 @@ hr {
 
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 459px) {
     #isPhone {
     display: block;
   }
