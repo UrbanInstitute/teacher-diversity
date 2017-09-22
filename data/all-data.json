@@ -6,7 +6,7 @@
 {"source":"Asian-All","target":"Asian","value":"1", "value2": 2922034},
 {"source":"White","target":"White-HS diploma","value":".9435", "value2": 23408059},
 {"source":"Black","target":"Black-HS diploma","value":".8875", "value2": 5098864},
-{"source":"Hispanic","target":"Hispanic-HS diploma","value":".7575", "value2": 6659753},
+{"source":"Hispanic","target":"Hispanic-HS diploma","value":".7515", "value2": 6659753},
 {"source":"Asian","target":"Asian-HS diploma","value":".9501", "value2": 2776353},
 {"source":"White-HS diploma","target":"White-Bach","value":".4035", "value2": 10010319},
 {"source":"Black-HS diploma","target":"Black-Bach","value":".2095", "value2": 1203903},
