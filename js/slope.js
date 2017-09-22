@@ -129,26 +129,18 @@ function drawGraphic(container_width){
         })        
         .attr("class", "sideline-label-text")
       //VORONOIS
-// var leftScale = d3.scaleLinear()
-//     .domain([0.0, 1])
-//     .range([height - margin.top, margin.bottom]);
 
-//   var rightScale = d3.scaleLinear()
-//     .domain([0.0, 1])
-//     .range([height - margin.top, margin.bottom]); 
-
-
-      var cityVoronoi = d3.voronoi()
-        .x(margin.left)
-        .y(function(d) {console.log(d)  ; return leftScale(d["city_k12"]); })
-        .extent([[-margin.left, -margin.top], [width + margin.right, height + margin.bottom]])
-      var voronoiCityGroup = gCity.append("g")
-            .attr("class", "voronoi-city");
-      voronoiCityGroup.selectAll("path")
-        .data(cityVoronoi.polygons(d3.merge(cityData_nonwhite.map(function(d) { console.log(d)
-         return d.state; 
-        }))))
-        .enter().append("line")
+      // var cityVoronoi = d3.voronoi()
+      //   .x(margin.left)
+      //   .y(function(d) {console.log(d)  ; return leftScale(d["city_k12"]); })
+      //   .extent([[-margin.left, -margin.top], [width + margin.right, height + margin.bottom]])
+      // var voronoiCityGroup = gCity.append("g")
+      //       .attr("class", "voronoi-city");
+      // voronoiCityGroup.selectAll("path")
+      //   .data(cityVoronoi.polygons(d3.merge(cityData_nonwhite.map(function(d) { console.log(d)
+      //    return d.state; 
+      //   }))))
+      //   .enter().append("line")
       //   .attr("x1", margin.left)
       //   .attr("x2", width - margin.right)
       //   .attr("y1", function(d) {console.log(d)
@@ -385,7 +377,6 @@ function drawGraphic(container_width){
               return d.state == name ? true : false
             })
           var selectedStateLine = d3.select(".state-line.selected")
-          console.log(d3.select(".state-line.selected").size())
           var selectedStateG = d3.select(selectedStateLine.node().parentNode).moveToFront()
           d3.selectAll(".city-line.selected")
             .each(function() {
@@ -420,7 +411,6 @@ function drawGraphic(container_width){
 
       var linesCityG = gCity.selectAll("g:not(.cityText-g")
         .data(cityData_nonwhite);
-        console.log(cityData_nonwhite)
 
       gCity
         .append("line")

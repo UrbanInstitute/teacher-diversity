@@ -350,7 +350,7 @@ function drawGraph(container_width, category) {
           return (dataCategory == 'all') ? "translate(" + (width*.21 + width*.175*i)+ "," + height*.99+ ")": "translate(" + (6+ width*.305*i)+ "," + height+ ")";
         }
         else if (isPhone) {
-         return (dataCategory == 'all') ? "translate(" + (width*.195 + width*.18*i)+ "," + height*.99+ ")": "translate(" + (10+ width*.305*i)+ "," + height+ ")";
+         return (dataCategory == 'all') ? "translate(" + (width*.21 + width*.18*i)+ "," + height*.99+ ")": "translate(" + (10+ width*.305*i)+ "," + height+ ")";
         }
         else if (isMobile) { 
           return (dataCategory == 'all') ? "translate(" + (width*.17 + width*.17*i)+ "," + height*.99+ ")" : "translate(" + ( width*.29*i)+ "," + height*.99+ ")"
@@ -588,7 +588,7 @@ function drawGraph(container_width, category) {
         //return (labelG.select(".label" + nodeNames[i]).node().getBBox().width) + 40
         if (isPhone) {
           if (dataCategory == 'all') {
-            if (i > 1) {
+            if (i  == 0) {
               return 30
             }
             return 45
@@ -664,26 +664,28 @@ function drawGraph(container_width, category) {
         var labelTspan = d3.select(".label" + nodeNames[i]).select("tspan").node().getBBox()
         d3.select(this)
           .attr("y", function() {
-            if (i == 0) {
-              return label.height/2 + label.y + 2
-            }else {
-            return label.height + label.y + 2
+            if (dataCategory != 'all') {
+              if (i == 0) {
+                return label.height/2 + label.y + 2
+              }else {
+              return label.height + label.y + 2
+              }
+            }else if (dataCategory == 'all') {
+              if (i == 1) {
+                return label.height + label.y - 12
+              }else {
+              return label.height + label.y
+              } 
             }
           })
-          .attr("x", function() {
-            if (i == 1) {
-              return 10
-            }else{
-              return labelTspan.x
-            }
-          })
+          .attr("x", labelTspan.x)
       })
    }
 
   //make third line in x-axis labels center-aligned
     if (isPhone && (dataCategory == 'all')){
       d3.select(".label.label").select("tspan:nth-child(3)")
-        .attr("x", -7)     
+        .attr("x", -6)     
     }
     d3.selectAll("text.label")
       .each(function() {
