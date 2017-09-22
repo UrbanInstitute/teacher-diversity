@@ -83,7 +83,7 @@ function drawGraph(container_width, category) {
           return 35
           // return (dataCategory == 'all') ? container_width - margin.left - margin.right : 900 - margin.left - margin.right
         }else {
-          return 20
+          return 25
         }
       })
       ()
