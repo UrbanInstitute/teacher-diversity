@@ -355,6 +355,7 @@ function drawGraphic(container_width){
               return d.state == name ? true : false
             })
           var selectedStateLine = d3.select(".state-line.selected")
+          console.log(d3.select(".state-line.selected").size())
           var selectedStateG = d3.select(selectedStateLine.node().parentNode).moveToFront()
           d3.selectAll(".city-line.selected")
             .each(function() {
@@ -382,18 +383,14 @@ function drawGraphic(container_width){
       var cityText = gCity.append("g")
         .attr("width", width)
         .attr("height", 100)
+        .attr("class", "cityText-g")
+      cityText
         .append("text")
-        // .attr("transform","translate("+width/3.2+",15)")
         .attr("class", "cityText")
 
-      var linesCityG = gCity.selectAll("g")
+      var linesCityG = gCity.selectAll("g:not(.cityText-g")
         .data(cityData_nonwhite);
-
-      // var leftCircles = gCity.selectAll("circle")
-      //   .data(cityData_white)
-
-      // var rightCircles = gCity.selectAll("circle")
-      //   .data(cityData_white)
+        console.log(cityData_nonwhite)
 
       gCity
         .append("line")
@@ -402,7 +399,7 @@ function drawGraphic(container_width){
         .attr("y1", function(d) {
           return leftScale(0)
         })
-        .attr("y2", function(d) {
+        .attr("y2", function(d) { 
           return leftScale(1)
         })
         .attr("class", "sideline")
@@ -435,7 +432,7 @@ function drawGraphic(container_width){
       linesCity.append("line")
         .attr("x1", margin.left)
         .attr("x2", width - margin.right)
-        .attr("y1", function(d) {
+        .attr("y1", function(d) {//console.log(d.city)
           return leftScale(d['city_k12']);
         })
         .attr("y2", function(d) { 
@@ -511,16 +508,13 @@ function drawGraphic(container_width){
       var stateText = gState.append("g")
         .attr("width", width)
         .attr("height", 100)
+        .attr("class", "stateText-g")
+      stateText
         .append("text")
-        // .attr("transform","translate("+width/3+",15)")
         .attr("class", "stateText")
 
-      var linesStateG = gState.selectAll("g")
+      var linesStateG = gState.selectAll("g:not(.stateText-g)")
         .data(stateData_nonwhite);
-      // var leftCircles2 = gState.selectAll("circle")
-      //   .data(stateData_white)
-      // var rightCircles2 = gState.selectAll("circle")
-      //   .data(stateData_white)
 
       gState.append("text")
         .attr("class", "sideline-label")
