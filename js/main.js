@@ -185,9 +185,9 @@ function drawGraph(container_width, category) {
                 //     return 5 + parseFloat(x)
                 //   }
                 // }
-                if (topTextWidth < 40){ console.log(word)
+                if (topTextWidth < 40){ 
                   return (-(bottomTextWidth - topTextWidth) / 2) + parseFloat(x)
-                }else if (topTextWidth < 80) { console.log(word)
+                }else if (topTextWidth < 80) { 
                   return ((topTextWidth - bottomTextWidth) / 2) + parseFloat(x)
                 }else { 
                   return 0 //+ parseFloat(x)
@@ -345,7 +345,7 @@ function drawGraph(container_width, category) {
           //ADD X-AXIS CATEGORY LABELS
   // for (j=0; j<nodeCategories.length; j++){
     labelG
-      .attr("transform", function(d, i) { console.log(container_width)
+      .attr("transform", function(d, i) { 
         if (container_width < 350){         
           return (dataCategory == 'all') ? "translate(" + (width*.21 + width*.175*i)+ "," + height*.99+ ")": "translate(" + (6+ width*.305*i)+ "," + height+ ")";
         }
@@ -632,7 +632,7 @@ function drawGraph(container_width, category) {
     d3.selectAll("text.label")
       .each(function(d, i) {
         d3.select(this)
-          .attr("x", function() { console.log(d)
+          .attr("x", function() { 
             var textWidth = d3.select(this).node().getBBox().width
             var rectWidth = d3.select(".labelRect").node().getBBox().width
             if (d == "-Teacher") {
