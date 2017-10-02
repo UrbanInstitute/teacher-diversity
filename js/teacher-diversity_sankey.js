@@ -6,6 +6,7 @@ d3.sankey = function() {
       size = [1, 1],
       nodes = [],
       links = [];
+
  
   sankey.nodeWidth = function(_) {
     if (!arguments.length) return nodeWidth;
@@ -213,7 +214,7 @@ d3.sankey = function() {
           node = nodes[i];
           dy = y0 - node.y;
           if (dy > 0) node.y += dy;
-          y0 = node.y + node.dy + nodePadding + 20;
+          y0 = node.y + node.dy + nodePadding + 0;
         }
  
         // If the bottommost node goes outside the bounds, push it back up.

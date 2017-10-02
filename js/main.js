@@ -87,7 +87,7 @@ function drawGraph(container_width, category) {
         }
       })
       ()
-  var margin = {top: 30, right: 10, bottom: 30, left: 10},
+  var margin = {top: 30, right: 10, bottom: 70, left: 10},
       width = (function(){
         if (isPhone) {
           return (dataCategory == 'all') ? container_width*1.2 : container_width*1.35
@@ -353,10 +353,10 @@ function drawGraph(container_width, category) {
          return (dataCategory == 'all') ? "translate(" + (width*.21 + width*.18*i)+ "," + height*.99+ ")": "translate(" + (10+ width*.305*i)+ "," + height+ ")";
         }
         else if (isMobile) { 
-          return (dataCategory == 'all') ? "translate(" + (width*.17 + width*.17*i)+ "," + height*.99+ ")" : "translate(" + ( width*.29*i)+ "," + height*.99+ ")"
+          return (dataCategory == 'all') ? "translate(" + (width*.17 + width*.17*i)+ "," + height*1.05+ ")" : "translate(" + ( width*.29*i)+ "," + height*1.05+ ")"
           // return (dataCategory == 'all') ? "translate(" + (xLabelTranslate - 10)+ "," + height*.91+ ")": "translate(" + ((xLabelTranslate - 10))+ "," + height+ ")";
         }else {
-          return (dataCategory == 'all') ? "translate(" + (width*.16 + width*.175*i)+ "," + height*.93+ ")": "translate(" + (width*.29*i)+ "," + height*.92+ ")";
+          return (dataCategory == 'all') ? "translate(" + (width*.16 + width*.175*i)+ "," + height*.98+ ")": "translate(" + (width*.29*i)+ "," + height*.98+ ")";
         }
         //}
       })
@@ -820,7 +820,7 @@ function drawGraph(container_width, category) {
     var mouseoverRect = svg.append("g")
       .append("rect")
       .attr("width", width)
-      .attr("height", height)
+      .attr("height", height + margin.bottom + margin.top)
       .attr("class", "mouseoverRect")
       .style("opacity", "0")
       .on('mousemove', showStats)
@@ -927,6 +927,7 @@ function drawGraph(container_width, category) {
      ();
 
 
+
       // var category =  d3.selectAll(".toggle_button.active").attr("id").split("_")[0]
           // format = (category == "numbers") ? numberFormat : percentFormat;
       d3.selectAll(".linkText, .teacherSubText, .linkTextPhone, .teacherStatsPhoneG")
@@ -940,11 +941,17 @@ function drawGraph(container_width, category) {
         if(i !== 4){
             var bach = d3.select(".node-" + bachRace + "-Bach").node()
             var hs = d3.select(".node-" + HEADERS2[i] + "-HS").node()
-            var teaching = d3.select(".node-" + HEADERS2[i] + "-Teaching").node()
+            var teaching = d3.select(".node-" + bachRace + "-Teaching").node()
             var all = d3.select(".node-" + HEADERS2[i] + " rect").node()
             var first = (dataCategory == "all") ? all : bach;
+
             // var bottom = first.getBoundingClientRect().bottom;
             var bottom = bach.getBoundingClientRect().bottom;
+
+            var bottomButton = (bachRace == "Asian" && event.clientY >  bottom +20)
+            // if (bottom - event.clientY > 0 ){
+            //   continue;
+            // }
             // var top = first.getBoundingClientRect().top;
             var top = bach.getBoundingClientRect().top
             var rectBreaksX = (dataCategory == 'all') ? [all.getBoundingClientRect().right, hs.getBoundingClientRect().right, bach.getBoundingClientRect().right, teaching.getBoundingClientRect().right] : [all.getBoundingClientRect().right, all.getBoundingClientRect().right, bach.getBoundingClientRect().right, teaching.getBoundingClientRect().right]
@@ -967,7 +974,7 @@ function drawGraph(container_width, category) {
             })
             ();
             //SHOW ALL STATS BY DEGREE TYPE
-            if (event.clientX >= rectBreaksX[3] ||  ( !belowLine && event.clientX > rectBreaksX[2])){ 
+            if (event.clientX >= rectBreaksX[3] ||  ( !bottomButton && !belowLine && event.clientX > rectBreaksX[2])){ 
                 d3.selectAll(".labelRect-Teacher, .label-Teacher")
                   .classed("highlight", true)
                 d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher, .teacherSubTextG1-" + HEADERS2[i] + ",.teacherSubTextG2-" + HEADERS2[i] + ", .linkTextPhone-" + HEADERS2[i] + "-Teacher" + ", .teacherStatsPhoneG-" + [i])
@@ -975,7 +982,7 @@ function drawGraph(container_width, category) {
                 highlightSelected("-Teacher", "-Bach.no-TD", person + "were teachers.")
                 highlightSelected("-Teacher", "-Teaching", person + "were teachers.")
             }else 
-            if (event.clientX > rectBreaksX[2] && belowLine){ 
+            if (event.clientX > rectBreaksX[2] && (belowLine || bottomButton)){ 
                 d3.selectAll(".labelRect-Teaching, .label-Teaching")
                   .classed("highlight", true)
                 d3.selectAll(".linkText-" + HEADERS2[i] + "-Teacher" + ", .linkTextPhone-" + HEADERS2[i] + "-Teacher")
