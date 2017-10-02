@@ -504,9 +504,15 @@ function drawGraphic(container_width){
           return formatPercent(d.city_k12)
         })
         .attr("y", function(d){ 
-          return leftScale(d['city_k12'])
+          if (isPhone) {
+            return (leftScale(d['city_k12']) - rightScale(d['city_teacher'])  < 0) ? leftScale(d['city_k12']) : leftScale(d['city_k12'])
+          }else {
+            return leftScale(d['city_k12'])
+          }
         })
-        .attr("x", 9)
+        .attr("x", function() {
+          return (isPhone) ? 52 : 9;
+        })
         .attr("class", function(d) {
           return "data-label data-label-city data-label-city-left " + d.abbr + " " + d.abbr + d.city_id
         })
@@ -516,9 +522,16 @@ function drawGraphic(container_width){
           return formatPercent(d.city_teacher)
         })
         .attr("y", function(d){ 
+          if (isPhone) {
+            var slope = (leftScale(d['city_k12']) - rightScale(d['city_teacher']))/(52 - (width - margin.right - 35))
+            return (leftScale(d['city_k12']) - rightScale(d['city_teacher'])  < 0) ? rightScale(d['city_teacher']) - (rightScale(d['city_teacher']) * .15 * slope) : rightScale(d['city_teacher'])
+          }else {
           return rightScale(d['city_teacher'])
+          }
         })
-        .attr("x", width - margin.right + 8)
+        .attr("x", function() {
+          return (isPhone) ?  width - margin.right - 35 : width - margin.right + 8
+        })
         .attr("class", function(d) {
           return "data-label data-label-city data-label-city-right " + d.abbr + " " + d.abbr + d.city_id
         })            
@@ -630,9 +643,19 @@ function drawGraphic(container_width){
           return formatPercent(d.state_k12)
         })
         .attr("y", function(d){ 
+          if (isPhone) {
+            var slope = (leftScale(d['state_k12']) - rightScale(d['state_teacher']))/(52 - (width - margin.right - 35)) 
+           return (leftScale(d['state_k12']) - rightScale(d['state_teacher'])  > 0) ? leftScale(d['state_k12']) + (leftScale(d['state_k12']) * .35 * slope) : leftScale(d['state_k12'])
+          }else {
           return leftScale(d['state_k12'])
+          }
         })
-        .attr("x", 9)
+        // .attr("y", function(d){ 
+        //   return leftScale(d['state_k12'])
+        // })
+        .attr("x", function() {
+          return (isPhone) ? 52 : 9;
+        })
         .attr("class", function(d) {
           return "data-label data-label-state data-label-state-left " + d.abbr 
         })
@@ -642,9 +665,19 @@ function drawGraphic(container_width){
           return formatPercent(d.state_teacher)
         })
         .attr("y", function(d){ 
+          if (isPhone) {
+            var slope = (leftScale(d['state_k12']) - rightScale(d['state_teacher']))/(52 - (width - margin.right - 35))
+            return (leftScale(d['state_k12']) - rightScale(d['state_teacher'])  < 0) ? rightScale(d['state_teacher']) - (rightScale(d['state_teacher']) * .15 * slope) : rightScale(d['state_teacher'])
+          }else {
           return rightScale(d['state_teacher'])
+          }
         })
-        .attr("x", width - margin.right + 8)
+        // .attr("y", function(d){ 
+        //   return rightScale(d['state_teacher'])
+        // })
+        .attr("x", function() {
+          return (isPhone) ?  width - margin.right - 35 : width - margin.right + 8
+        })
         .attr("class", function(d) {
           return "data-label data-label-state data-label-state-right " + d.abbr 
         }) 
@@ -1072,9 +1105,19 @@ function drawGraphic(container_width){
               return formatPercent(d[geography + "_teacher"])
             })
             .attr("y", function(d){ 
+              if (isPhone) {
+                var slope = (leftScale(d[geography + '_k12']) - rightScale(d[geography + '_teacher']))/(52 - (width - margin.right - 35));
+                return (leftScale(d[geography + '_k12']) - rightScale(d[geography + '_teacher'])  < 0) ? rightScale(d[geography + '_teacher']) - (rightScale(d[geography + '_teacher']) * .15 * slope) : rightScale(d[geography + '_teacher'])
+              }else {
               return rightScale(d[geography + '_teacher'])
+              }
             })
-            .attr("x", width - margin.right + 8)
+            // .attr("y", function(d){ 
+            //   return rightScale(d[geography + '_teacher'])
+            // })
+            .attr("x", function() {
+              return (isPhone) ?  width - margin.right - 35 : width - margin.right + 8
+            })
             .attr("class", function(d) { 
               if (geography == "city") { 
                 if (selectedCities.indexOf(d.city) > -1){
@@ -1097,9 +1140,19 @@ function drawGraphic(container_width){
               return formatPercent(d[geography + "_k12"])
             })
             .attr("y", function(d){ 
+              if (isPhone) {
+                var slope = (leftScale(d[geography + '_k12']) - rightScale(d[geography + '_teacher']))/(52 - (width - margin.right - 35));
+                return (leftScale(d[geography + '_k12']) - rightScale(d[geography + '_teacher'])  > 0) ? leftScale(d[geography + '_k12']) + (leftScale(d[geography + '_k12']) * .35 * slope) : leftScale(d[geography + '_k12'])
+              }else {
               return leftScale(d[geography + '_k12'])
+              }
             })
-            .attr("x", 9)
+            // .attr("y", function(d){ 
+            //   return leftScale(d[geography + '_k12'])
+            // })
+            .attr("x", function() {
+              return (isPhone) ? 52 : 9;
+            })
             .attr("class", function(d) { 
               if (geography == "city") { 
                 if (selectedCities.indexOf(d.city) > -1){ 
