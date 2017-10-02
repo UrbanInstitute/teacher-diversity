@@ -4,7 +4,7 @@ body {
 */    overflow: hidden;
 }
 
-#note {
+.note {
     font-size: 11px;
 }
 #title {
@@ -17,7 +17,7 @@ body {
     font-size: 16px;
     font-style: italic;
     font-weight: 600;
-    margin: 12px 0;
+    margin: 25px 0 15px 0;
 
 }
 
