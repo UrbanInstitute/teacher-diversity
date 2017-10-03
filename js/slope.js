@@ -702,14 +702,14 @@ function drawGraphic(container_width){
             updateDataOn("on", this.id, all_data)
           }
         })
-      function removeLineInfo() { 
+      function removeLineInfo() { console.log('remove')
         d3.selectAll(".data-label")
           .classed("highlight", false)
         if (raceOn.length == 0) { 
           d3.selectAll(".stateText, .cityText")
             .text("")
         }
-        else if (d3.selectAll(".state-line.selected").size() > 0){
+        else if (d3.selectAll(".state-line.selected").size() > 0){console.log('remove')
           // highlightLine()
           var state =d3.select(".state-line.selected").datum().state
           d3.select(".stateText")
@@ -719,7 +719,7 @@ function drawGraphic(container_width){
               var graphWidth = d3.select("g.state-graph").attr("width") - margin.left - margin.right
               return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
             })
-          if (selectedCities.length > 1) { 
+          if (selectedCities.length > 1) { console.log('remove')
             d3.select(".cityText")
               .classed("no-city", false)
               .text("multiple cities") 
@@ -728,7 +728,7 @@ function drawGraphic(container_width){
                 var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
                 return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
               })  
-          }else if (selectedCities.length == 1){ 
+          }else if (selectedCities.length == 1){ console.log('remove')
             var city = d3.select(".city-line.selected").size() > 0 ? d3.select(".city-line.selected").datum().city : ""
              d3.select(".cityText")
               .classed("no-city", false)
@@ -738,7 +738,7 @@ function drawGraphic(container_width){
                 var graphWidth = d3.select("g.city-graph").attr("width") - margin.left - margin.right
                 return "translate("+(margin.left + (graphWidth - textWidth)/2.2) +",13)"
               })
-          }else if (selectedCities.length == 0){ 
+          }else if (selectedCities.length == 0){ console.log('remove')
              d3.select(".cityText")
               .text("No city data for this state") 
               .classed("no-city", true)
@@ -760,6 +760,7 @@ function drawGraphic(container_width){
           d3.selectAll(".stateText, .cityText")
             .text("")
         }
+        console.log('remove')
         d3.selectAll(".city-line, .state-line, .circle")
           .classed("highlight", false)
 
