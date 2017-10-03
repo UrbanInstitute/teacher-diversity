@@ -467,7 +467,6 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", function() {
-          console.log('remove city')
           removeLineInfo()
 
         })
@@ -609,7 +608,6 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", function() {
-          console.log('remove state')
           removeLineInfo()
         })
         .on('click', function(d) { 
@@ -709,7 +707,7 @@ function drawGraphic(container_width){
             updateDataOn("on", this.id, all_data)
           }
         })
-      function removeLineInfo() { console.log('remove')
+      function removeLineInfo() { 
         d3.selectAll(".data-label")
           .classed("highlight", false)
         if (raceOn.length == 0) { 
@@ -853,7 +851,6 @@ function drawGraphic(container_width){
           }
         }else { //IF HOVERING OVER CITY
           if (d3.select(this).attr("class").search("highlight") > 0){
-            console.log('do nothing')
           } else if(d3.select(this).attr("class").search("city") > -1) { 
             d3.selectAll(".data-label-city." + d.abbr + d.city_id + ", .data-label-state." + d.abbr)
               .classed("highlight", true)
