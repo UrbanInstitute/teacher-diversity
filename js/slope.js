@@ -263,7 +263,7 @@ function drawGraphic(container_width){
               if (isMobile) {
                 d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.39) + "px")
               }else {
-                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.13) + "px")
+                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.16) + "px")
               }
               pymChild.sendHeight();
             },
@@ -288,12 +288,12 @@ function drawGraphic(container_width){
            open: function( event, ui ) {  
             $("ul#city-select-menu").css("width", width - margin.left - margin.right - 2)
               changeDropdown()     
-              d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22) + "px")
+              // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22) + "px")
               // d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open:first-child").style("height",  "300px")
               if (isMobile) {
                 d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.28) + "px")
               }else {
-                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22) + "px")
+                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.35) + "px")
               }
               pymChild.sendHeight();
             },
