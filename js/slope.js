@@ -261,7 +261,7 @@ function drawGraphic(container_width){
             $("ul#state-select-menu").css("width", width - margin.left - margin.right - 2)
             changeDropdown()
               if (isMobile) {
-                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.39) + "px")
+                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.42) + "px")
               }else {
                 d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.16) + "px")
               }
@@ -290,8 +290,10 @@ function drawGraphic(container_width){
               changeDropdown()     
               // d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.22) + "px")
               // d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open:first-child").style("height",  "300px")
-              if (isMobile) {
-                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.28) + "px")
+              if (isPhoneSmall) {
+                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.48) + "px")
+              }else if (isMobile) {
+                d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.38) + "px")
               }else {
                 d3.select("body").style("height", (d3.select(".ui-selectmenu-menu.ui-front.ui-selectmenu-open").node().getBoundingClientRect().height*1.35) + "px")
               }
