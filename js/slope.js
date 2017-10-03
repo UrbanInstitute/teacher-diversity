@@ -466,8 +466,11 @@ function drawGraphic(container_width){
           return "city-line city-line-" + d.abbr + " city-line-" + d.abbr + d.city_id
         })
         .on("mouseover", showLineInfo)
-        .on("mouseout", removeLineInfo)
-        .on("mouseleave", removeLineInfo)
+        .on("mouseout", function() {
+          console.log('remove city')
+          removeLineInfo()
+
+        })
         .on('click', function(d) {
           showLineInfo(d, "click")
         })
@@ -605,7 +608,10 @@ function drawGraphic(container_width){
           return "state-line state-line-" + d.abbr
         })
         .on("mouseover", showLineInfo)
-        .on("mouseout", removeLineInfo)
+        .on("mouseout", function() {
+          console.log('remove state')
+          removeLineInfo()
+        })
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
