@@ -483,7 +483,6 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-        .on("mouseleave", removeLineInfo)
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
@@ -499,7 +498,6 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-        .on("mouseleave", removeLineInfo)
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
@@ -608,7 +606,6 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-        .on("mouseleave", removeLineInfo)
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
@@ -625,7 +622,6 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-        .on("mouseleave", removeLineInfo)
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
@@ -641,7 +637,6 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
-        .on("mouseleave", removeLineInfo)
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
@@ -708,7 +703,7 @@ function drawGraphic(container_width){
             updateDataOn("on", this.id, all_data)
           }
         })
-      function removeLineInfo() { 
+      function removeLineInfo() { console.log('remove')
         d3.selectAll(".data-label")
           .classed("highlight", false)
         if (raceOn.length == 0) { 
