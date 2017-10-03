@@ -852,7 +852,9 @@ function drawGraphic(container_width){
             selectedCities = [];
           }
         }else { //IF HOVERING OVER CITY
-          if(d3.select(this).attr("class").search("city") > -1) { 
+          if (d3.select(this).attr("class").search("highlight") > 0){
+            console.log('do nothing')
+          } else if(d3.select(this).attr("class").search("city") > -1) { 
             d3.selectAll(".data-label-city." + d.abbr + d.city_id + ", .data-label-state." + d.abbr)
               .classed("highlight", true)
          
