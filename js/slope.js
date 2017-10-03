@@ -467,6 +467,7 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
+        .on("mouseleave", removeLineInfo)
         .on('click', function(d) {
           showLineInfo(d, "click")
         })
@@ -482,6 +483,7 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
+        .on("mouseleave", removeLineInfo)
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
@@ -497,6 +499,7 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
+        .on("mouseleave", removeLineInfo)
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
@@ -605,6 +608,7 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
+        .on("mouseleave", removeLineInfo)
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
@@ -621,6 +625,7 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
+        .on("mouseleave", removeLineInfo)
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
@@ -636,6 +641,7 @@ function drawGraphic(container_width){
         })
         .on("mouseover", showLineInfo)
         .on("mouseout", removeLineInfo)
+        .on("mouseleave", removeLineInfo)
         .on('click', function(d) { 
           showLineInfo(d, "click")
         })
