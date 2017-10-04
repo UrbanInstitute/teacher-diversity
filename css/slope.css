@@ -1,9 +1,14 @@
 body {
     font-family: "Lato", sans-serif;
-/*    margin: 8px;
-*/    overflow: hidden;
+    overflow: hidden;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
 }
 
+a {
+    color: #1696d2;
+    text-decoration: none;
+}
 .note {
     font-size: 11px;
 }
@@ -123,8 +128,7 @@ select {
 
 
 .switch-div {
-    max-width: 609px;
-    width: 88%;
+    width: 100%;
     margin: 0 auto;
 }
 
