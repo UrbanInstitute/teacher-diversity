@@ -411,7 +411,7 @@ function drawGraphic(container_width){
         .append("text")
         .attr("class", "cityText")
 
-      var linesCityG = gCity.selectAll("g:not(.cityText-g")
+      var linesCityG = gCity.selectAll(".city-g")
         .data(cityData_nonwhite);
 
       gCity
